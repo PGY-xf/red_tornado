@@ -1,0 +1,5 @@
+<<<<<<< HEAD
+{"http:I4CrykkGIkn6t5ebigiaWZdVURypDGgyAHBSVsvI:redinnovation": {"upHosts": ["http://up-z1.qiniu.com", "http://upload-z1.qiniu.com", "-H up-z1.qiniu.com http://106.38.227.28"], "ioHosts": ["http://iovip-z1.qbox.me"], "deadline": 1577242709}}
+=======
+{"http:I4CrykkGIkn6t5ebigiaWZdVURypDGgyAHBSVsvI:redinnovation": {"upHosts": ["http://up-z1.qiniu.com", "http://upload-z1.qiniu.com", "-H up-z1.qiniu.com http://106.38.227.28"], "ioHosts": ["http://iovip-z1.qbox.me"], "deadline": 1577155007}}
+>>>>>>> 7fbb9a95bbe9f812755dd163f54e886c121de314
