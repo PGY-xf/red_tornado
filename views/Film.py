@@ -229,13 +229,12 @@ class Film_picture(BaseHandler):
         try:
             video.video_img1 = url
             sess.commit()
-            print('添加成功')
             self.redirect("/film_list")
         except:
             self.write('服务器错误')
 
 
-
+#电影上传视频
 class Film_video(BaseHandler):
     def get(self,id):
         video = sess.query(Video).filter_by(id=id).first()

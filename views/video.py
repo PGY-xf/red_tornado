@@ -214,7 +214,7 @@ class Product_micro_details(BaseHandler):
         # print(video_obj)
         self.render('../templates/product_micro_details.html',video_info=video_obj)
 
-
+#微视频图片
 class Product_micro_picture(BaseHandler):
     def get(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
@@ -226,12 +226,11 @@ class Product_micro_picture(BaseHandler):
         try:
             micro_video.video_img = url
             sess.commit()
-            print(url)
             self.redirect("/product_micro")
         except:
             self.write('服务器错误')
 
-
+#微视频视频
 class Product_micro_video(BaseHandler):
     def get(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()

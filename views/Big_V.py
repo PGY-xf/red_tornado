@@ -221,7 +221,6 @@ class Celebrity_picture(BaseHandler):
         try:
             big_v.big_v_img1 = url
             sess.commit()
-            print(url)
             self.redirect("/celebrity_list")
         except:
             self.write('服务器错误')

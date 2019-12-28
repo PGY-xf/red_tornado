@@ -322,33 +322,20 @@ class Lmicro_details(BaseHandler):
 
 # 微视频上传图片
 class Lmicro_picture(BaseHandler):
-    async def get(self,id):
+    def get(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
         self.render('../templates/camera/lmicro_picture.html', micro_video=micro_video,info = "上传图片")
-    async def post(self,id):
+    def post(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
-        data = self.request.files["file"][0]
-        if not data:
-            self.write("not get img data")
+        info = self.get_argument('info')
+        url = QINIUURLNAME+info
         try:
-            q = Auth(ACCESS_KEY,SECRET_KEY)
-            token = q.upload_token(BUCKET_NAME)
-            imgname = "{}{}".format(int(time.time()),data["filename"])
-            ret,info = put_data(token,imgname,data["body"])
-        except Exception as e:
-            logging.error(e)
-            raise Exception("上传文件到七牛云时候出现错误！")
-        if info and info.status_code != 200 :
-            raise Exception("上传文件到七牛云时候出现错误！")
-        img_name = ret["key"]
-        imgurl =QINIUURLNAME+img_name
-        try:
-            micro_video.video_img = imgurl
+            micro_video.video_img = url
             sess.commit()
-            print("上传成功！")
             self.redirect("/lmicro")
         except:
-            self.write("服务器错误，失败！")
+            self.write('服务器错误')
+
 
 
 #微视频上传
@@ -363,7 +350,6 @@ class Lmicro_video(BaseHandler):
         try:
             micro_video.video_url = url
             sess.commit()
-            print(url)
             self.redirect("/lmicro")
         except:
             self.write('服务器错误')

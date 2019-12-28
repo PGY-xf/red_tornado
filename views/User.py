@@ -233,7 +233,6 @@ class User_picture(BaseHandler):
         try:
             user.user_img = url
             sess.commit()
-            print(url)
             self.redirect("/user_list")
         except:
             self.write('服务器错误')

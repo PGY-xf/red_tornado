@@ -140,7 +140,7 @@ class Author_edit(BaseHandler):
         author.img = img
         author.info = info
         author.is_activate = is_activate
-        author.password = password
+        author.password = generate_password_hash(password)
         sess.commit()
         self.redirect('/author_list')
 
@@ -180,7 +180,6 @@ class Author_picture(BaseHandler):
         try:
             author.img = url
             sess.commit()
-            print(url)
             self.redirect("/author_list")
         except:
             self.write('服务器错误')
