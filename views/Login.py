@@ -37,7 +37,7 @@ class Login(BaseHandler):
                     mes['data'] = "密码错误"
                     self.render('../templates/login.html',**mes)
             except:
-                mes['data'] = "用户不存在"
+                mes['data'] = "管理员不存在"
                 self.render('../templates/login.html',**mes)
 
 
@@ -66,7 +66,7 @@ class Register(BaseHandler):
                     sess.commit()
                     self.redirect('/login')
                 else:
-                    mes['data'] = "用户已存在,可添加其他"
+                    mes['data'] = "管理员已存在,可添加其他"
                     self.render('../templates/register.html',**mes)
             else:
                 mes['data'] = "两次密码输入不符，请重新注册"
@@ -100,7 +100,7 @@ class Login_camera(BaseHandler):
                     self.render('../templates/camera/login_camera.html',**mes)
 
             except:
-                mes['data'] = "用户不存在"
+                mes['data'] = "摄制中心不存在"
                 self.render('../templates/camera/login_camera.html',**mes)
 
 

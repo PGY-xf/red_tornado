@@ -40,10 +40,10 @@
 				<th width="25"><input type="checkbox" name="" value=""></th>
 				<th width="40">ID</th>
 				<th width="70">用户名</th>
+				<th width="50">会员等级</th>
 				<th width="40">性别</th>
 				<th width="90">手机</th>
 				<th width="100">邮箱</th>
-				<th width="50">会员等级</th>
 				<th width="50">图片</th>
 				<th width="130">加入时间</th>
 				<th width="70">状态</th>
@@ -59,6 +59,8 @@
 			<td>{{ i['id'] }}</td>
 		<td><a href="/member_show/{{ i['id'] }}">{{ i['name'] }}</a><u style="cursor:pointer" class="text-primary" onclick="member_show('member-show.html','10001','360','400')"></u></td>
 
+		<td>{{ i['is_member'] }}</td>
+
 		<td>
 			{% if  i['gender']  == 1  %}
 				男
@@ -71,7 +73,6 @@
 		
 		<td>{{ i['email'] }}</td>
 
-		<td>{{ i['is_member'] }}</td>
 
 		<td><span class="price">
 			{% if i['user_img']%}
@@ -124,7 +125,7 @@ $(function(){
 		"bStateSave": true,//状态保存
 		"aoColumnDefs": [
 		  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-		  {"orderable":false,"aTargets":[0,2,3,4,5,6,8,7,9,10]}// 制定列不参与排序
+		  {"orderable":false,"aTargets":[0,2,4,5,6,8,7,9,10]}// 制定列不参与排序
 		]
 	});
 	

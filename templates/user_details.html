@@ -42,36 +42,36 @@
 		<tbody>
 			<tr>
 				<th class="text-r">姓名：</th>
-				<td colspan="3"><a>{{video_info["name"]}}</a></td>
+				<td colspan="2"><a>{{video_info["name"]}}</a></td>
 			</tr>
 
 			<tr>
 				<th class="text-r">手机号：</th>
-				<td colspan="3"><a>{{video_info["phone"]}}</a></td>
+				<td colspan="2"><a>{{video_info["phone"]}}</a></td>
 			</tr>
 
 			<tr>
 				<th class="text-r">邮箱：</th>
-				<td colspan="3"><a>{{video_info["email"]}}</a></td>
+				<td colspan="2"><a>{{video_info["email"]}}</a></td>
 			</tr>
 
 			<tr>
 				<th class="text-r">性别：</th>
-				<td colspan="3"><a>{{video_info["gender"]}}</a></td>
+				<td colspan="2"><a>{{video_info["gender"]}}</a></td>
 			</tr>
-
+			
 			<tr>
 				<th class="text-r">图片信息：</th>
 				{% if video_info['user_img']%}
-				<td colspan="3"><img src="{{video_info['user_img']}}" width="200" height="150" ></td>
+				<td colspan="2"><img src="{{video_info['user_img']}}" width="200" height="150" ></td>
 				{% else %}
-				<th class="text-l" colspan="3"><a href="/upload_micro/{{video_info['id']}}">还没有图片哦，点击添加</a></th>
+				<th class="text-l" colspan="2"><a href="/upload_micro/{{video_info['id']}}">还没有图片哦，点击添加</a></th>
 				{% end %}
 			</tr>
 			
 			<tr>
 				<th class="text-r">创建时间：</th>
-				<td colspan="3"><a>{{video_info["create_time"]}}</a></td>
+				<td colspan="2"><a>{{video_info["create_time"]}}</a></td>
 			</tr>
 
 			<tr>
