@@ -202,17 +202,16 @@ class App_login_user(BaseHandler):
     def post(self, *args, **kwargs):
         phone = self.get_argument("phoneno")
         password = self.get_argument("password")
-        print(phone)
-        print(password)
         user_info = sess.query(User).filter(User.phone==phone,password==password).one()
         if user_info:
-            user_id = user_info.id
+            item = {}
+            item["userid"] = user_info.id
             return self.write(
-                json.dumps({"status": 200, "msg": "登录成功！", "user_info": user_id}, cls=AlchemyEncoder,
+                json.dumps({"status": 200, "msg": "登录成功！", "user_info": item}, cls=AlchemyEncoder,
                            ensure_ascii=False))
         else:
             return self.write(
-                json.dumps({"status": 200, "msg": "登录失败"}, cls=AlchemyEncoder,
+                json.dumps({"status": 201, "msg": "登录失败"}, cls=AlchemyEncoder,
                            ensure_ascii=False))
 
 
@@ -291,6 +290,52 @@ class App_login(BaseHandler):
                     return self.write(json.dumps({"status": 10011, "msg": "密码错误"}, cls=AlchemyEncoder,ensure_ascii=False))
             except:
                 return self.write(json.dumps({"status": 10012, "msg": "用户不存在"}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
+#获取登录用户的信息
+class Get_APP_loginuserinfo(BaseHandler):
+    def post(self, *args, **kwargs):
+        userid = self.get_argument("userId")
+        userinfo = sess.query(User).filter(User.id == userid).one()
+        # 判断是否有该用户如果有则返回信息
+        if userinfo:
+            item = {}
+            item["userId"] = userinfo.id
+            item["userName"] = userinfo.name
+            item["userImg"] = userinfo.user_img
+            item["userHistoryList"] = []
+            return self.write(
+                json.dumps({"status": 200, "msg": "登录成功！", "user_info": item}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
+        else:
+            return self.write(
+                json.dumps({"status": 201, "msg": "没有此用户！"}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
+
+
+#用户修改密码
+class APP_user_update_password(BaseHandler):
+    def post(self, *args, **kwargs):
+        userid = self.get_argument("userid")
+        oldpassword = self.get_argument("oldpassword")
+        newpassword= self.get_argument("newpassword")
+        useruppassword = sess.query(User).filter(User.id==userid).one()
+        if useruppassword:
+            if useruppassword.password==oldpassword:
+                useruppassword.password = newpassword
+                sess.commit()
+                return self.write(
+                    json.dumps({"status": 200, "msg": "密码修改成功！"}, cls=AlchemyEncoder,
+                               ensure_ascii=False))
+            else:
+                return self.write(
+                    json.dumps({"status": 200, "msg":"旧密码输入错误！"}, cls=AlchemyEncoder,
+                               ensure_ascii=False))
+        else:
+            return self.write(
+                json.dumps({"status": 201, "msg": "出了点问题请稍后重试！"}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
+
 
 
 

@@ -1,5 +1,5 @@
 import tornado.web
-from views import Index,adminuser,User,AppPort,video,Film,Big_V,Author,Classify,Login,Notice
+from views import Index,adminuser,User,AppPort,video,Film,Big_V,Author,Classify,Login,Notice,AppPortone
 import config
 
 
@@ -140,14 +140,17 @@ class Application(tornado.web.Application):
             (r"/common/getverification", AppPort.App_getverification),  # 获取注册验证码
             (r"/app/register_user", AppPort.App_register_user),  # 用户注册
             (r"/app/login_user",AppPort.App_login_user),         #用户登录   
+            (r"/min/getUserinfo",AppPort.Get_APP_loginuserinfo), #登陆后获取用户信息
+            (r"/min/user_set_password", AppPort.APP_user_update_password),  #用户修改密码
 
             #############  新增
-            (r"/gitVideodetails/(\d+)", AppPort.gitVideodetails),  # 微视频视频详情页    
-            (r"/gitColumnsList",AppPort.gitColumnsList),         #栏目列表   
-            (r"/gitlabelList",AppPort.gitlabelList),            #标签列表   
-            (r"/Send_Data", AppPort.Send_Data),                #手机号验证码   
-            (r"/App_login",AppPort.App_login),                 #用户登录   
-            (r"/App_register",AppPort.App_register),              #用户登录   
+            (r"/gitVideodetails/(\d+)", AppPortone.gitVideodetails),  # 微视频视频详情页    
+            (r"/gitColumnsList",AppPortone.gitColumnsList),         #栏目列表   
+            (r"/gitlabelList",AppPortone.gitlabelList),            #标签列表   
+            (r"/Send_Data", AppPortone.Send_Data),                #手机号验证码   
+            (r"/App_login",AppPortone.App_login),                 #用户登录   
+            (r"/App_register",AppPortone.App_register),              #用户登录   
+
 
 
 
