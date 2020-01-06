@@ -4,6 +4,12 @@ import random
 from models import *
 
 
+
+
+
+print()
+
+# print(author)
 # claandvideo = sess.query(ClassAndvideo).all()
 # for a in claandvideo:
     # print(a.id)

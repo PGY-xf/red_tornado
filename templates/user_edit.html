@@ -47,22 +47,22 @@
 				<tr>
 					<td><span class="c-red">*</span><b>性别：</b></label></td>
 					<td> 
-						{% if user.gender == 1 %}
+						{% if user.gender == '男' %}
 						<div class="radio-box">
-							<input name="gender" type="radio" id="sex-1" checked value="1">
+							<input name="gender" type="radio" id="sex-1" checked value="男">
 							<label for="sex-1">男</label>
 						</div>
 						<div class="radio-box">
-							<input type="radio" id="sex-2" name="gender" value="2">
+							<input type="radio" id="sex-2" name="gender" value="女">
 							<label for="sex-2">女</label>
 						</div>
-						{% elif user.gender == 2 %}
+						{% elif user.gender == '女' %}
 						<div class="radio-box">
-								<input name="gender" type="radio" id="sex-1"  value="1">
+								<input name="gender" type="radio" id="sex-1"  value="男">
 								<label for="sex-1">男</label>
 							</div>
 							<div class="radio-box">
-								<input type="radio" id="sex-2" name="gender" checked value="2">
+								<input type="radio" id="sex-2" name="gender" checked value="女">
 								<label for="sex-2">女</label>
 							</div>
 						{% end %}

@@ -35,57 +35,30 @@
 				<tr>
 					<td colspan="3">
 						<div style="color: red;font-size: 35px;font-weight:bold;text-align: center">
-							添加用户
+							添加公告
 						</div>
 					</td>
 				</tr>
 				<tr>
-					<td><span class="c-red">*</span><b>用户名：</b></label></td>
-					<td colspan="2"><input type="text" class="input-text" value="" placeholder="请输入用户名(XXXX)" name="name"></td>
-				</tr>
-
-
-				<tr>
-					<td><span class="c-red">*</span><b>性别：</b></label></td>
-					<td> 
-						<div class="radio-box">
-							<input name="gender" type="radio" id="sex-1" checked value="男">
-							<label for="sex-1">男</label>
-						</div>
-						<div class="radio-box">
-							<input type="radio" id="sex-2" name="gender" value="女">
-							<label for="sex-2">女</label>
-						</div>
-					</td>
+					<td><span class="c-red">*</span><b>公告名称：</b></label></td>
+					<td colspan="2"><input type="text" class="input-text" value="" placeholder="请输入公告名称(XXXX)" name="name"></td>
 				</tr>
 
 				<tr>
-					<td><span class="c-red">*</span><b>手机号：</b></label></td>
-					<td colspan="2"><input type="text" class="input-text" value="" placeholder="请输入手机号(XXX)" name="phone"></td>
-				</tr>
-
-
-				<tr>
-					<td><span class="c-red"></span><b>头像地址：</b></label></td>
-					<td><input type="text" class="input-text" value="" placeholder="头像地址" name="user_img" border="0"></td>
-					<td><font color="red">填写图片地址，可填写可不填</font></td>
+					<td><span class="c-red">*</span><b>公告链接：</b></label></td>
+					<td colspan="2"><input type="text" class="input-text" value="" placeholder="请输入公告链接(XXXX)" name="notice_link"></td>
 				</tr>
 
 				<tr>
-					<td><span class="c-red">*</span><b>邮箱：</b></label></td>
-					<td colspan="2"><input type="text" class="input-text" value="" placeholder="请输入邮箱(XXX)" name="email"></td>
+					<td><span class="c-red"></span><b>公告封面图地址：</b></label></td>
+					<td><input type="text" class="input-text" value="" placeholder="公告封面图地址" name="notice_img" border="0"></td>
+					<td><font color="red">填写公告封面图地址，可填写可不填</font></td>
 				</tr>
 
-				<tr>
-					<td><span class="c-red"></span><b>地址：</b></label></td>
-					<td colspan="2"><input type="text" class="input-text" value="" placeholder="请输入地址(XXX)" name="birthplace"></td>
-				</tr>
-				
-				
 				<tr>
 					<td><b>发布状态</b></td>
 					<td colspan="2">
-						<select name="is_activate">
+						<select name="is_show">
 							<option selected value="0">发布</option>
 							<option value="1">不发布</option>
 						</select>
@@ -96,7 +69,7 @@
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				<button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存提交</button>
-				<button  class="btn btn-default radius" type="button"><a href="/user_list">取消</a></button>
+				<button  class="btn btn-default radius" type="button"><a href="/notice_list">取消</a></button>
 			</div>
 		</div>
 	</form>

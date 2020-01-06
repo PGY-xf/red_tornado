@@ -19,19 +19,21 @@
 <script type="text/javascript" src="../static/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>微视频详情</title>
+<title>公告详情</title>
 </head>
 <body>
 	<div class="cl pd-20" style=" background-color:#5bacb6">
-		{% if video_info['video_img']%}
-			<img class="avatar size-XL l" src="{{video_info['video_img']}}">
+		{% if video_info['notice_img']%}
+		<img class="avatar size-XL l" src="{{video_info['notice_img']}}">
+
+
 		{% else %}
 
 		{% end %}
 		<dl style="margin-left:80px; color:#fff">
 			<dt>
 				<span class="f-18">{{video_info["name"]}}</span>
-				<span class="pl-10 f-12">长度：</span>
+				<span class="pl-10 f-12">评分：</span>
 			</dt>
 			<dd class="pt-10 f-12" style="margin-left:0">这管理员很懒，什么也没有留下</dd>
 		</dl>
@@ -39,63 +41,32 @@
 <div class="pd-20" style="background-color: orange">
 	<table class="table" border="5">
 		<tbody>
+
 			<tr>
-				<th class="text-r">视频简介：</th>
-				<td colspan="2">
-					<div style="width: 1000px;height: 200px">
-					{{video_info["info"]}}
-					</div>
-				</td>
+				<th class="text-r">公告名称：</th>
+				<td colspan="2"><a>{{video_info["name"]}}</a></td>
 			</tr>
 
 			<tr>
-				<th class="text-r">影片信息：</th>
-				{% if video_info['video_url']%}
-				<td colspan="2"><video src="{{video_info['video_url']}}" controls="controls" width="250" height="150" ></video></td>
+				<th class="text-r">公告封面图：</th>
+				{% if video_info['notice_img']%}
+				<td colspan="2"><img src="{{video_info['notice_img']}}" width="200" height="150" ></td>
 				{% else %}
-				<th class="text-r" colspan="2"><a href="/product_micro_video/{{video_info['id']}}">还没有视频哦，点击添加</a></th>
+				<th class="text-l" colspan="3"><a href="/notice_picture/{{video_info['id']}}">还没有图片哦，点击添加</a></th>
 				{% end %}
 			</tr>
-
-			<tr>
-				<th class="text-r">图片信息：</th>
-				{% if video_info['video_img']%}
-				<td colspan="2"><img src="{{video_info['video_img']}}" width="200" height="150" ></td>
-				{% else %}
-				<th class="text-l" colspan="2"><a href="/product_micro_picture/{{video_info['id']}}">还没有图片哦，点击添加</a></th>
-				{% end %}
-			</tr>
-			<tr>
-				<th class="text-r">片长：</th>
-				<td colspan="2">{{video_info["length"]}}</td>
-			</tr>
-			<tr>
-				<th class="text-r">视频优先级：</th>
-				<td colspan="1">
-					{{video_info["weight"]}}
-				</td>
-				<td>越小越靠前。</td>
-			</tr>
-			<tr>
-				<th class="text-r">播放次数：</th>
-				<td colspan="2">{{video_info["amount"]}}</td>
-			</tr>
+			
 			<tr>
 				<th class="text-r">发布状态：</th>
 				<td colspan="2">{{video_info["is_show"]}}</td>
 			</tr>
+			
 			<tr>
-				<th class="text-r">栏目名称：</th>
-				<td colspan="2">{{video_info["column_name"]}}</td>
-			</tr>
-			<tr>
-				<th class="text-r">作者名称：</th>
-				<td colspan="2"><a>{{video_info["author_name"]}}</a></td>
-			</tr>
-		<tr>
 				<th class="text-r">发布时间：</th>
-				<td colspan="2">{{video_info["time"]}}</td>
+				<td colspan="2">{{video_info["creation_time"]}}</td>
 			</tr>
+			
+		
 		</tbody>
 	</table>
 </div>

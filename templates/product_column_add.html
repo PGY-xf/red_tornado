@@ -44,6 +44,7 @@
 							<tr class="text-c">
 								<th width="40">ID</th>
 								<th width="40">栏目名称</th>
+								<th width="40">封面图</th>
 								<th width="100">操作</th>
 							</tr>
 						</thead>
@@ -53,6 +54,14 @@
 							<tr class="text-c va-m">
 								<td>{{ i.id }}</td>
 								<td class="text-l">{{ i.name }}</td>
+								<td><span class="price">
+							
+									{% if i.columns_img%}
+										<a href="/product_column_picture/{{ i.id }}"><span class="label label-success radius">查看封面图</span></a>
+									{% else %}
+										<a href="/product_column_picture/{{ i.id }}"><span class="label radius">上传封面图</span></a>
+									{% end %}
+								</span></td>
 								<td class="td-manage">
 									<a href="/product_column_edit/{{ i.id }}">编辑</a>
 									<a href="/column_del/{{ i.id }}">删除</a>

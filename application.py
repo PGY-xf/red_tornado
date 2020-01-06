@@ -1,5 +1,5 @@
 import tornado.web
-from views import Index,adminuser,User,AppPort,video,Film,Big_V,Author,Classify,Login
+from views import Index,adminuser,User,AppPort,video,Film,Big_V,Author,Classify,Login,Notice
 import config
 
 
@@ -8,18 +8,15 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
 
-            (r"/api/uptoken", AppPort.GetToken),
-            (r"/demo/uptoken", AppPort.QiNiuHandler),  
-
 
             (r"/phone",Index.Phone),     #手机号验证码   
 
 
             (r"/login", Login.Login),                # 管理员登录   
-            (r"/register", Login.Register),          # 管理员注册
+            (r"/register", Login.Register),          # 管理员注册  
             (r"/login_camera", Login.Login_camera),             # 摄制组登录
-            (r"/lindex", Login.Lindex),                         # 摄制组首页    
-            (r"/authordetails", Login.Authordetails),     # 摄制组详情
+            (r"/lindex", Login.Lindex),                         # 摄制组首页
+            (r"/authordetails", Login.Authordetails),           # 摄制组详情
             (r"/lmicro", Login.Lmicro),                         # 微视频管理
             (r"/lmicro_add", Login.Lmicro_add),                 # 添加微视频信息
             (r'/lmicro_edit/(\d+)', Login.Lmicro_edit),         # 修改微视频
@@ -56,7 +53,25 @@ class Application(tornado.web.Application):
             (r'/film_video/(\d+)', Film.Film_video),  # 电影 上传视频
 
  
- 
+            (r"/advertising_list", Notice.Advertising_list),  # 广告管理
+            (r"/advertising_add", Notice.Advertising_add),  # 添加广告
+            (r'/advertising_del/(\d+)', Notice.Advertising_del),   # 修改广告
+            (r'/advertising_edit/(\d+)', Notice.Advertising_edit),   # 删除广告 
+            (r'/advertising_audit/(\d+)', Notice.Advertising_audit),   # 广告审核  
+            (r'/advertising_block/(\d+)', Notice.Advertising_block),   # 广告下架  
+            (r'/advertising_details/(\d+)', Notice.Advertising_details),   # 广告详情
+            (r"/advertising_picture/(\d+)", Notice.Advertising_picture),  # 广告图片上传
+
+
+
+            (r"/notice_list", Notice.Notice_list),  # 公告管理
+            (r"/notice_add", Notice.Notice_add),  # 添加公告
+            (r'/notice_del/(\d+)', Notice.Notice_del),   # 修改公告
+            (r'/notice_edit/(\d+)', Notice.Notice_edit),   # 删除公告
+            (r'/notice_audit/(\d+)', Notice.Notice_audit),   # 公告审核  
+            (r'/notice_block/(\d+)', Notice.Notice_block),   # 公告下架  
+            (r'/notice_details/(\d+)', Notice.Notice_details),   # 公告详情
+            (r"/notice_picture/(\d+)", Notice.Notice_picture),  # 公告图片上传
 
 
 
@@ -101,22 +116,42 @@ class Application(tornado.web.Application):
             (r"/product_category_edit/(\d+)", Classify.Product_category_edit),  # 修改分类
             (r"/category_del/(\d+)", Classify.Category_del),  # 删除分类
 
-
             (r"/product_column", Classify.Product_column),  # 栏目管理
             (r"/product_column_add", Classify.Product_column_add),  # 添加栏目
+            (r"/product_column_picture/(\d+)", Classify.Product_column_picture),  # 栏目封面图上传
             (r"/product_column_edit/(\d+)", Classify.Product_column_edit),  # 修改栏目
             (r"/column_del/(\d+)", Classify.Column_del),  # 删除栏目
-
               
             (r"/product_label", Classify.Product_label),  # 标签管理
             (r"/product_label_add", Classify.Product_label_add),  # 添加标签 
+            (r"/product_label_picture/(\d+)", Classify.Product_label_picture),  # 标签封面图上传
             (r"/product_label_edit/(\d+)", Classify.Product_label_edit),  # 修改标签
             (r"/label_del/(\d+)", Classify.Label_del),  # 删除标签
 
 
-            (r"/ceshi", AppPort.Ceshi),                   #app接口
+            (r"/ceshi", AppPort.Ceshi),  # app接口
+            (r"/api/uptoken", AppPort.GetToken),
+            (r"/demo/uptoken", AppPort.QiNiuHandler),
             (r"/video/micro_list/(\d+)", AppPort.gitVideolist),   #app推荐
-            (r"/index/columnsvideolist", AppPort.gitColumnsVideofourList),   #app视频
+            (r"/index/columnsvideolist", AppPort.gitColumnsVideofourList),   #主页-四个视频
+            (r"/index/compere_list", AppPort.getIndexCompere_list),  # 主页-首页-主持人-列表
+            (r"/index/compere_particulars/(\d+)", AppPort.getIndexCompere_particulars),  # 主页-首页-明星-详情页
+            (r"/index/film_videolist", AppPort.getIndexfilm_videolist),  # 主页-电影页-电影列表-详情页
+            (r"/common/getverification", AppPort.App_getverification),  # 获取注册验证码
+            (r"/app/register_user", AppPort.App_register_user),  # 用户注册
+            (r"/app/login_user",AppPort.App_login_user),         #用户登录   
+
+            #############  新增
+            (r"/gitVideodetails/(\d+)", AppPort.gitVideodetails),  # 微视频视频详情页    
+            (r"/gitColumnsList",AppPort.gitColumnsList),         #栏目列表   
+            (r"/gitlabelList",AppPort.gitlabelList),            #标签列表   
+            (r"/Send_Data", AppPort.Send_Data),                #手机号验证码   
+            (r"/App_login",AppPort.App_login),                 #用户登录   
+            (r"/App_register",AppPort.App_register),              #用户登录   
+
+
+
+
 
 
 

@@ -143,6 +143,25 @@ class Product_column_edit(BaseHandler):
 
 
 
+# 栏目上传封面图
+class Product_column_picture(BaseHandler):
+    def get(self,id):
+        columnss = sess.query(Columns).filter_by(id=id).first()
+        self.render('../templates/product_column_picture.html', columnss=columnss,info = "上传封面图")
+    def post(self,id):
+        columnss = sess.query(Columns).filter_by(id=id).first()
+        info = self.get_argument('info')
+        url = QINIUURLNAME+info
+        try:
+            columnss.columns_img = url
+            sess.commit()
+            self.redirect("/product_column_add")
+        except:
+            self.write('服务器错误')
+
+
+
+
 # 删除栏目
 class Column_del(BaseHandler):
     def get(self, id):
@@ -203,6 +222,23 @@ class Product_label_edit(BaseHandler):
         label.name = name
         sess.commit()
         self.redirect('/product_label_add')
+
+
+# 标签上传封面图
+class Product_label_picture(BaseHandler):
+    def get(self,id):
+        label = sess.query(Label).filter_by(id=id).first()
+        self.render('../templates/product_label_picture.html', label=label,info = "上传封面图")
+    def post(self,id):
+        label = sess.query(Label).filter_by(id=id).first()
+        info = self.get_argument('info')
+        url = QINIUURLNAME+info
+        try:
+            label.label_img = url
+            sess.commit()
+            self.redirect("/product_label_add")
+        except:
+            self.write('服务器错误')
 
 
 

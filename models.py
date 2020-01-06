@@ -42,7 +42,7 @@ class User(Base,IdBase):
     email = Column(String(60),default="")                   #邮箱
     user_img = Column(String(255))                          #头像
     age = Column(Integer,default=0)                         #年龄  0为保密  大于则显示
-    gender  = Column(Integer,default=0)                     #性别  0为保密 1为男  2为女
+    gender = Column(String(100))                            #性别
     birthplace = Column(String(100),default="")             #地址
     is_member = Column(Integer,default=0)                   #是否会员(会员等级1~9)
     is_activate = Column(Integer, default=0)                #是否激活    0未激活  # 1激活
@@ -61,7 +61,6 @@ class Author(Base,IdBase):
     bg_img = Column(String(255))                            #背景图片
     is_activate = Column(Integer,default=0)                 #是否激活  0未审核  1审核
     create_time = Column(DateTime(),default=datetime.now)   #注册时间（精确到秒）
-
 
 
 # 微视频表
@@ -86,6 +85,7 @@ class Micro_video(Base,IdBase):
 class Columns(Base,IdBase):
     __tablename__ = "columns"
     name = Column(String(100))                                  #栏目名称
+    columns_img = Column(String(255))                           #栏目封面图
     creation_time = Column(DateTime(),default=datetime.now)     #创建时间（精确到秒）
 
 
@@ -136,8 +136,37 @@ class Classify(Base,IdBase):
 class Label(Base,IdBase):
     __tablename__ = "label"
     name = Column(String(100))                                  #标签名称
+    label_img = Column(String(255))                             #标签封面图
     creation_time = Column(DateTime(),default=datetime.now)     #发布时间（精确到秒）
 
+
+
+# 厂家广告表
+class Advertising(Base,IdBase):
+    __tablename__ = "advertising"
+    name = Column(String(100))                                  #广告名称
+    advertising_img = Column(String(255))                       #广告封面图
+    advertising_link = Column(String(255))                      #广告链接
+    is_show = Column(Integer,default=0)                         #0未审核  1已审核
+    creation_time = Column(DateTime(),default=datetime.now)     #发布时间（精确到秒）
+
+
+# 资讯公告表
+class Notice(Base,IdBase):
+    __tablename__ = "notice"
+    name = Column(String(100))                                  #公告名称
+    notice_img = Column(String(255))                            #公告封面图
+    notice_link = Column(String(255))                           #公告链接
+    is_show = Column(Integer,default=0)                         #0未审核  1已审核
+    creation_time = Column(DateTime(),default=datetime.now)     #发布时间（精确到秒）
+
+
+# 轮播图表
+class Slideshow(Base,IdBase):
+    __tablename__ = 'slideshow'
+    video_id = Column(Integer)              #电影id
+    micro_video_id = Column(Integer)       #微视频id
+    img_stort = Column(Integer)           #图片顺序(0~4)
 
 
 
