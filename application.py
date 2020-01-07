@@ -144,6 +144,8 @@ class Application(tornado.web.Application):
             (r"/app/login_user",AppPort.App_login_user),         #用户登录   
             (r"/min/getUserinfo",AppPort.Get_APP_loginuserinfo), #登陆后获取用户信息
             (r"/min/user_set_password", AppPort.APP_user_update_password),  #用户修改密码
+            # 2020/1/7/下午
+            (r"/index/getIndexColumnsList", AppPort.getIndexColumnsList),  #主页-栏目-大全
 
             #############  新增
             (r"/gitVideodetails/(\d+)", AppPortone.gitVideodetails),  # 微视频视频详情页    

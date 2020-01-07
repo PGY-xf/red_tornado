@@ -130,16 +130,6 @@ class gitColumnsVideofourList(BaseHandler):
 
 
 
-
-
-# 生成四位随机数字
-def getCode():
-    seeds = string.digits
-    random_str = random.choices(seeds, k=4)
-    number = "".join(random_str)
-    return number
-
-
 # APP获取验证码
 class App_getverification(BaseHandler):
     def post(self, *args, **kwargs):
@@ -148,7 +138,7 @@ class App_getverification(BaseHandler):
         if code_type == "reg":
             phone = self.get_argument("phoneno")
             # 判断用户是否输入了手机号
-            isphone = re.match('^1[3,5,7,8]\d{9}$', phone)
+            isphone = re.match('^1[3,5,7,8,9]\d{9}$',phone)
             if isphone:
                 # 判断次手机号是否已经注册
                 user = sess.query(User).filter(User.phone == phone).first()
@@ -156,9 +146,10 @@ class App_getverification(BaseHandler):
                 if not user:
                     # 生成验证并将验证码发送到用户手机号上！
                     phone = phone
-                    codeNum = getCode()
+                    # 调用发送验证码的函数
+                    set_code_toRedis(code_type,phone)
                     return self.write(
-                        json.dumps({"status": 200, "msg": "验证码:" + codeNum}, cls=AlchemyEncoder,
+                        json.dumps({"status": 200, "msg": "验证码"}, cls=AlchemyEncoder,
                                    ensure_ascii=False))
                 # 如果存在则提醒已注册
                 else:
@@ -171,7 +162,20 @@ class App_getverification(BaseHandler):
                     json.dumps({"status": 201, "msg": "手机号格式错误。"}, cls=AlchemyEncoder, ensure_ascii=False))
         else:
             return self.write(
-                json.dumps({"status": 201, "msg": "请添加验证码类型！"}, cls=AlchemyEncoder, ensure_ascii=False))
+                json.dumps({"status": 201, "msg": "缺少验证码类型"}, cls=AlchemyEncoder, ensure_ascii=False))
+
+#发送验证码
+def set_code_toRedis(code_type,phone):
+    try:
+        phone = phone
+        code_type = code_type
+        code = ''.join(str(i) for i in random.sample(range(0, 9),4))  # 随机数
+        send_data(to=str(phone), body=code)
+        redis_conn.hset(code_type,phone,code)  # 设置过期时间为2分钟
+        redis_conn.expire(code_type, 120)
+        return "200"
+    except:
+        return "400"
 
 
 # APP账号注册
@@ -184,7 +188,9 @@ class App_register_user(BaseHandler):
         invitation = self.get_argument("invitation")
         #不需要做对手机号重复的判断，只需要对验证码进行判断。
         #拿到验证码之后去缓存库中判断，以key：手机号  val:验证码
-        if code:
+        iscode = redis_conn.hget("reg",phone).decode()
+        print(iscode)
+        if iscode == code:
             add_user = User(phone=phone,password=generate_password_hash(password),name=phone,user_img="/static/common/default_userimg.jpg")
             sess.add(add_user)
             sess.commit()
@@ -193,7 +199,7 @@ class App_register_user(BaseHandler):
                            ensure_ascii=False))
         else:
             return self.write(
-                json.dumps({"status": 200, "msg": "验证码错误！"}, cls=AlchemyEncoder,
+                json.dumps({"status": 201, "msg": "验证码错误！"}, cls=AlchemyEncoder,
                            ensure_ascii=False))
 
 
@@ -202,16 +208,21 @@ class App_login_user(BaseHandler):
     def post(self, *args, **kwargs):
         phone = self.get_argument("phoneno")
         password = self.get_argument("password")
-        user_info = sess.query(User).filter(User.phone==phone,password==password).one()
+        user_info = sess.query(User).filter(User.phone==phone).one()
         if user_info:
-            item = {}
-            item["userid"] = user_info.id
-            return self.write(
-                json.dumps({"status": 200, "msg": "登录成功！", "user_info": item}, cls=AlchemyEncoder,
-                           ensure_ascii=False))
+            if check_password_hash(user_info.password,password):
+                item = {}
+                item["userid"] = user_info.id
+                return self.write(
+                    json.dumps({"status": 200, "msg": "登录成功！", "user_info": item}, cls=AlchemyEncoder,
+                               ensure_ascii=False))
+            else:
+                return self.write(
+                    json.dumps({"status": 200, "msg": "密码错误"}, cls=AlchemyEncoder,
+                               ensure_ascii=False))
         else:
             return self.write(
-                json.dumps({"status": 201, "msg": "登录失败"}, cls=AlchemyEncoder,
+                json.dumps({"status": 200, "msg": "用户不存在"}, cls=AlchemyEncoder,
                            ensure_ascii=False))
 
 
@@ -360,3 +371,18 @@ class getIndexfilm_videolist(BaseHandler):
             json.dumps({"status": 200, "msg": "返回成功", "filmvideolist": videoinfoList[:4]}, cls=AlchemyEncoder,
                        ensure_ascii=False))
 
+
+# 栏目列表
+class getIndexColumnsList(BaseHandler):
+    def get(self, *args, **kwargs):
+        columns = sess.query(Columns).filter(Columns.columns_img != None).all()
+        column_list = []
+        for info in columns:
+            item = {}
+            item["id"] = info.id
+            item["name"] = info.name
+            item["columns_img"] = info.columns_img
+            column_list.append(item)
+        return self.write(
+            json.dumps({"status": 200, "msg": "返回成功", "column_list": column_list[:10]}, cls=AlchemyEncoder,
+                       ensure_ascii=False))
