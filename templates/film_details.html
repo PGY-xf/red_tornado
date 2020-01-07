@@ -50,20 +50,25 @@
 				</td>
 			</tr>
 			<tr>
+				<th class="text-r">导演：</th>
+				<td colspan="2">{{video_info["director"]}}</td>
+			</tr>
+
+			
+			<tr>
 				<th class="text-r">电影信息：</th>
 				{% if video_info['video_src']%}
 				<td><video src="{{video_info['video_src']}}" controls="controls" width="200" height="150" ></video></td>
-				
-				<tr>
-					<th class="text-r">导演：</th>
-					<td colspan="2">{{video_info["director"]}}</td>
-				</tr>
-				
+				{% else %}
+				<th class="text-l" colspan="2"><a href="/film_video/{{video_info['id']}}">
+					<h4 style="color:blue">还没有视频哦，点击添加</h4>
+				</a></th>
+				{% end %}
+			</tr>
+
+			<tr>
 				<th class="text-r">片长：</th>
 				<td>{{video_info["length"]}}</td>
-				{% else %}
-				<th class="text-r" colspan="3"><a href="/film_video/{{video_info['id']}}">还没有视频哦，点击添加</a></th>
-				{% end %}
 			</tr>
 
 			<tr>
@@ -71,9 +76,23 @@
 				{% if video_info['video_img1']%}
 				<td colspan="2"><img src="{{video_info['video_img1']}}" width="200" height="150" ></td>
 				{% else %}
-				<th class="text-l" colspan="3"><a href="/film_picture/{{video_info['id']}}">还没有图片哦，点击添加</a></th>
+				<th class="text-l" colspan="2"><a href="/film_picture/{{video_info['id']}}">
+					<h4 style="color:red">还没有图片哦，点击添加</h4>
+				</a></th>
 				{% end %}
 			</tr>
+
+			<tr>
+				<th class="text-r">轮播图：</th>
+				{% if video_info['video_slideshow']%}
+				<td colspan="2"><img src="{{video_info['video_slideshow']}}" width="200" height="150" ></td>
+				{% else %}
+				<th class="text-l" colspan="2"><a href="/film_slideshow/{{video_info['id']}}">
+					<h4 style="color: yellow">还没有轮播图哦，点击添加</h4>
+				</a></th>
+				{% end %}
+			</tr>
+
 			<tr>
 				<th class="text-r">热度：</th>
 				<td colspan="1">

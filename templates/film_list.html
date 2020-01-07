@@ -52,6 +52,7 @@
 						<th width="40">所属分类</th>
 						<th width="100">电影封面图</th>
 						<th width="60">电影地址</th>
+						<th width="80">轮播图</th>
 						<th width="60">是否审核</th>
 						<th width="100">操作</th>
 					</tr>
@@ -83,6 +84,15 @@
 								<a href="/film_details/{{ i['id'] }}"><span class="label label-success radius">查看电影</span></a>
 							{% else %}
 								<a href="/film_video/{{i['id']}}"><span class="label radius">上传电影</span></a>
+							{% end %}
+						</span></td>
+
+						<td><span class="price">
+							
+							{% if i['video_slideshow']%}
+								<a href="/film_details/{{ i['id'] }}"><span class="label label-success radius">查看轮播图</span></a>
+							{% else %}
+								<a href="/film_slideshow/{{i['id']}}"><span class="label radius">上传轮播图</span></a>
 							{% end %}
 						</span></td>
 

@@ -130,6 +130,7 @@ class Lmicro(BaseHandler):
             item["video_img"] = video.video_img
             #链接
             item["video_url"] = video.video_url
+            item["video_slideshow"] = video.video_slideshow
             item["is_show"] = video.is_show
             item["show_time"] = video.issue_time
             try:
@@ -164,6 +165,7 @@ class Lmicro(BaseHandler):
             item["video_img"] = video.video_img
             #链接
             item["video_url"] = video.video_url
+            item["video_slideshow"] = video.video_slideshow
             item["is_show"] = video.is_show
             item["show_time"] = video.issue_time
             try:
@@ -307,6 +309,7 @@ class Lmicro_details(BaseHandler):
         video_obj["video_url"] = video.video_url
         video_obj["video_img"] = video.video_img
         video_obj["weight"] = video.weight
+        video_obj["video_slideshow"] = video.video_slideshow
         video_obj["amount"] = video.amount
         video_obj["length"] = video.length
         if video.is_show != 0:
@@ -355,7 +358,7 @@ class Lmicro_video(BaseHandler):
             self.write('服务器错误')
 
 
-#作者详情
+#摄制中心详情
 class Authordetails(BaseHandler):
     def get(self):
         cookie = self.get_cookie('cookie')
@@ -369,3 +372,20 @@ class Authordetails(BaseHandler):
         video_obj["img"] = author.img
         video_obj["create_time"] = author.create_time
         self.render('../templates/camera/authordetails.html',video_info=video_obj)
+
+
+# 微视频上传轮播图
+class Lmicro_slideshow(BaseHandler):
+    def get(self,id):
+        micro_video = sess.query(Micro_video).filter_by(id=id).first()
+        self.render('../templates/camera/lmicro_slideshow.html', micro_video=micro_video,info = "上传轮播图")
+    def post(self,id):
+        micro_video = sess.query(Micro_video).filter_by(id=id).first()
+        info = self.get_argument('info')
+        url = QINIUURLNAME+info
+        try:
+            micro_video.video_slideshow = url
+            sess.commit()
+            self.redirect("/lmicro")
+        except:
+            self.write('服务器错误')

@@ -25,7 +25,8 @@ class Application(tornado.web.Application):
             (r'/lmicro_block/(\d+)', Login.Lmicro_block),       # 微视频下架
             (r'/lmicro_details/(\d+)', Login.Lmicro_details),   # 微视频详情
             (r"/lmicro_picture/(\d+)", Login.Lmicro_picture),   # 微视频图片上传 
-            (r'/lmicro_video/(\d+)', Login.Lmicro_video),       # 微视频上传视频
+            (r'/lmicro_video/(\d+)', Login.Lmicro_video),       # 微视频上传视频  
+            (r"/lmicro_slideshow/(\d+)", Login.Lmicro_slideshow),   # 微视频轮播图上传 
 
 
 
@@ -36,9 +37,9 @@ class Application(tornado.web.Application):
             (r'/product_micro_audit/(\d+)', video.Product_micro_audit),   # 微视频审核
             (r'/product_micro_block/(\d+)', video.Product_micro_block),   # 微视频下架
             (r'/product_micro_details/(\d+)', video.Product_micro_details),  # 微视频详情
-            (r"/product_micro_picture/(\d+)", video.Product_micro_picture),  # 微视频图片上传   
+            (r"/product_micro_picture/(\d+)", video.Product_micro_picture),  # 微视频图片上传  
             (r'/product_micro_video/(\d+)', video.Product_micro_video),  # 微视频 上传视频
-
+            (r"/product_micro_slideshow/(\d+)", video.Product_micro_slideshow),    # 微视频轮播图上传
 
 
 
@@ -51,6 +52,7 @@ class Application(tornado.web.Application):
             (r'/film_details/(\d+)', Film.Film_details),   # 电影详情
             (r"/film_picture/(\d+)", Film.Film_picture),  # 电影图片上传
             (r'/film_video/(\d+)', Film.Film_video),  # 电影 上传视频
+            (r"/film_slideshow/(\d+)", Film.Film_slideshow),  # 电影轮播图上传
 
  
             (r"/advertising_list", Notice.Advertising_list),  # 广告管理

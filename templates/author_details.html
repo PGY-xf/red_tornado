@@ -65,7 +65,9 @@
 				{% if video_info['img']%}
 				<td colspan="2"><img src="{{video_info['img']}}" width="200" height="150" ></td>
 				{% else %}
-				<th class="text-l" colspan="2"><a href="/author_picture/{{video_info['id']}}">还没有图片哦，点击添加</a></th>
+				<th class="text-l" colspan="2"><a href="/author_picture/{{video_info['id']}}">
+					<h4 style="color:red">还没有图片哦，点击添加</h4>
+					</a></th>
 				{% end %}
 			</tr>
 

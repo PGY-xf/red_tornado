@@ -26,6 +26,7 @@ class Film_list(BaseHandler):
             item["video_img1"] = video.video_img1
             #链接
             item["video_src"] = video.video_src
+            item["video_slideshow"] = video.video_slideshow
 
             item["is_show"] = video.is_show
             item["director"] = video.director
@@ -55,6 +56,7 @@ class Film_list(BaseHandler):
             item["video_img1"] = video.video_img1
             #链接
             item["video_src"] = video.video_src
+            item["video_slideshow"] = video.video_slideshow
 
             item["is_show"] = video.is_show
             item["director"] = video.director
@@ -198,6 +200,7 @@ class Film_details(BaseHandler):
         video_obj["director"] = video.director
         video_obj["length"] = video.length
         video_obj["hot"] = video.hot
+        video_obj["video_slideshow"] = video.video_slideshow
 
         video_obj["year"] = video.year
         video_obj["region"] = video.region
@@ -247,6 +250,25 @@ class Film_video(BaseHandler):
             video.video_src = url
             sess.commit()
             print('添加成功')
+            self.redirect("/film_list")
+        except:
+            self.write('服务器错误')
+
+
+
+
+# 电影上传轮播图
+class Film_slideshow(BaseHandler):
+    def get(self,id):
+        video = sess.query(Video).filter_by(id=id).first()
+        self.render('../templates/film_slideshow.html', video=video,info = "上传轮播图")
+    def post(self,id):
+        video = sess.query(Video).filter_by(id=id).first()
+        info = self.get_argument('info')
+        url = QINIUURLNAME+info
+        try:
+            video.video_slideshow = url
+            sess.commit()
             self.redirect("/film_list")
         except:
             self.write('服务器错误')

@@ -6,7 +6,6 @@ from models import *
 
 
 
-
 print()
 
 # print(author)

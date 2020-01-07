@@ -70,6 +70,7 @@ class Micro_video(Base,IdBase):
     info = Column(String(255))                               #简介
     video_url = Column(String(255))                          #视频地址
     video_img = Column(String(255))                          #视频封面图
+    video_slideshow = Column(String(255))                    #轮播图
     length = Column(String(100))                             #片长
     weight = Column(Integer,default=50)                      #权重越小越靠前（1~99）
     amount = Column(Integer,default=0)                       #播放次数
@@ -100,7 +101,7 @@ class Video(Base,IdBase):
     cinemanufacturer = Column(String(100))       #制片人
     length = Column(String(100))                 #片长
     video_img1 = Column(String(100))             #视频封面图
-    video_img2 = Column(String(100))             #视频封面图2
+    video_slideshow = Column(String(100))        #轮播图
     video_src = Column(String(100))              #视频地址  （必填）
     protagonist = Column(String(100))            #主演
     classify_id = Column(Integer)                #分类id

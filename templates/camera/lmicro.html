@@ -52,6 +52,7 @@
 						<th width="60">作者</th>
 						<th width="60">图片地址</th>
 						<th width="60">微视频地址</th>
+						<th width='60'>轮播图</th>
 						<th width="60">发布时间</th>
  						<th width="60">是否审核</th>
 						<th width="100">操作</th>
@@ -91,6 +92,14 @@
 									<a href="/lmicro_details/{{ i['id'] }}"><span class="label label-success radius">查看微视频</span></a>
 								{% else %}
 									<a href="/lmicro_video/{{i['id']}}"><span class="label radius">上传微视频</span></a>
+								{% end %}
+							</td>
+
+							<td>
+								{% if i['video_slideshow']%}
+									<a href="/lmicro_details/{{ i['id'] }}"><span class="label label-success radius">查看轮播图</span></a>
+								{% else %}
+									<a href="/lmicro_slideshow/{{i['id']}}"><span class="label radius">上传轮播图</span></a>
 								{% end %}
 							</td>
 

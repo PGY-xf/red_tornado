@@ -23,6 +23,7 @@ class Product_micro(BaseHandler):
             item["video_img"] = video.video_img
             #链接
             item["video_url"] = video.video_url
+            item["video_slideshow"] = video.video_slideshow
             item["is_show"] = video.is_show
             item["show_time"] = video.issue_time
             try:
@@ -55,6 +56,7 @@ class Product_micro(BaseHandler):
             item["video_img"] = video.video_img
             #链接
             item["video_url"] = video.video_url
+            item["video_slideshow"] = video.video_slideshow
             item["is_show"] = video.is_show
             item["show_time"] = video.issue_time
             try:
@@ -82,7 +84,7 @@ class Product_micro_add(BaseHandler):
         mes = {}
         mes['data'] = ''
         columns = sess.query(Columns).all()
-        author = sess.query(Author).filter(Author.account=='央视融媒').one()
+        author = sess.query(Author).filter(Author.account=='yangshi').one()
         self.render('../templates/product_micro_add.html',columns=columns,author=author,**mes)
     def post(self, *args, **kwargs):
         columns = sess.query(Columns).all()
@@ -160,7 +162,7 @@ class Product_micro_edit(BaseHandler):
         mes['data'] = ''
         video = sess.query(Micro_video).filter_by(id=id).first()
         columns = sess.query(Columns).all()
-        author = sess.query(Author).filter(Author.account=='央视融媒').one()
+        author = sess.query(Author).filter(Author.account=='yangshi').one()
         self.render('../templates/product_micro_edit.html',video=video,columns=columns,author=author,**mes)
     def post(self, id):
         video = sess.query(Micro_video).filter_by(id=id).first()
@@ -202,6 +204,7 @@ class Product_micro_details(BaseHandler):
         video_obj["weight"] = video.weight
         video_obj["amount"] = video.amount
         video_obj["length"] = video.length
+        video_obj["video_slideshow"] = video.video_slideshow
         if video.is_show != 0:
             video_obj["is_show"] = "未发布"
         else:
@@ -248,3 +251,19 @@ class Product_micro_video(BaseHandler):
             self.write('服务器错误')
 
 
+
+# 微视频上传轮播图
+class Product_micro_slideshow(BaseHandler):
+    def get(self,id):
+        micro_video = sess.query(Micro_video).filter_by(id=id).first()
+        self.render('../templates/product_micro_slideshow.html', micro_video=micro_video,info = "上传轮播图")
+    def post(self,id):
+        micro_video = sess.query(Micro_video).filter_by(id=id).first()
+        info = self.get_argument('info')
+        url = QINIUURLNAME+info
+        try:
+            micro_video.video_slideshow = url
+            sess.commit()
+            self.redirect("/product_micro")
+        except:
+            self.write('服务器错误')

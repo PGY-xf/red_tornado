@@ -139,3 +139,36 @@ class gitlabelList(BaseHandler):
             item["label_img"] = info.label_img
             label_list.append(item)
         return self.write(json.dumps({"status": 200, "msg": "返回成功","label_list":label_list[:10]}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
+#公告列表
+class getnotice(BaseHandler):
+    def get(self, *args, **kwargs):
+        notice = sess.query(Notice).all()
+        notice_list = []
+        for info in notice:
+            item = {}
+            item["id"] = info.id
+            item["name"] = info.name
+            item["notice_img"] = info.notice_img
+            item["notice_link"] = info.notice_link
+            item["is_show"] = info.is_show
+            notice_list.append(item)
+        return self.write(json.dumps({"status": 200, "msg": "返回成功","notice_list":notice_list[:10]}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
+
+#广告列表
+class getadvertising(BaseHandler):
+    def get(self, *args, **kwargs):
+        advertising = sess.query(Advertising).all()
+        advertising_list = []
+        for info in advertising:
+            item = {}
+            item["id"] = info.id
+            item["name"] = info.name
+            item["advertising_img"] = info.advertising_img
+            item["advertising_link"] = info.advertising_link
+            item["is_show"] = info.is_show
+            advertising_list.append(item)
+        return self.write(json.dumps({"status": 200, "msg": "返回成功","advertising_list":advertising_list[:10]}, cls=AlchemyEncoder,ensure_ascii=False))
