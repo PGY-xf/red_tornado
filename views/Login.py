@@ -207,6 +207,7 @@ class Lmicro_add(BaseHandler):
         video_img = self.get_argument('video_img')
         video_url = self.get_argument('video_url')
         auth_id = self.get_argument('auth_id')
+        video_slideshow = self.get_argument('video_slideshow')
         columns_id = self.get_argument('columns_id')
         weight = self.get_argument('weight')
         if not all([name,info]): 
@@ -223,6 +224,7 @@ class Lmicro_add(BaseHandler):
                     info=info,
                     video_url=video_url,
                     video_img=video_img,
+                    video_slideshow=video_slideshow,
                     column_id=columns_id,
                     auth_id=auth_id,
                     weight=weight
@@ -280,6 +282,7 @@ class Lmicro_edit(BaseHandler):
         info = self.get_argument('info','')
         video_img = self.get_argument('video_img')
         video_url = self.get_argument('video_url')
+        video_slideshow = self.get_argument('video_slideshow')
         auth_id = self.get_argument('auth_id')
         columns_id = self.get_argument('columns_id')
         weight = self.get_argument('weight')
@@ -287,6 +290,7 @@ class Lmicro_edit(BaseHandler):
         video.info = info
         video.video_img = video_img
         video.video_url = video_url
+        video.video_slideshow = video_slideshow
         video.auth_id = auth_id   
         video.column_id = columns_id   
         video.weight = weight

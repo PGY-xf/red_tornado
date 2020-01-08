@@ -15,59 +15,6 @@ import datetime
 from datetime import timedelta
 
 
-
-#发送手机号验证码
-class Phone(BaseHandler):
-    def get(self,*args,**kwargs):
-        self.render('../templates/phone.html')
-    def post(self,*args,**kwargs):
-        phone = self.get_argument('phone')
-        print(phone)
-        isphone = re.match('^1[3,5,7,8]\d{9}$', phone)
-        # 数据校验
-        if isphone:
-            # sample(seq, n) 从序列seq中选择n个随机且独立的元素；
-            id = ''.join(str(i) for i in random.sample(range(0, 9), 5))  # 随机数
-            # 发送短信
-            send_datas(
-                to='+86' + phone,
-                from_='16788203823',
-                body='【验证码】--->:' + id,
-            )
-            # 存入redis
-            redis_conn.set("code", id, ex=120)  # 过期时间 120s
-            self.write('短信已发送成功')
-            # self.write(json.dumps({"status": 200, "msg": "短信已发送成功"}, ensure_ascii=False, indent=4))
-        else:
-            self.write('手机号输入不正确')
-            # self.write(json.dumps({"status": 1005, "msg": "手机号输入不正确"}, ensure_ascii=False, indent=4))
-
-
-# class Submits(BaseHandler):
-#     def get(self,*args,**kwargs):
-#         mes = {}
-#         mes['data'] = ''
-#         self.render('../templates/phone.html',**mes)
-#     def post(self,*args,**kwargs):
-#         mes = {}
-#         mes['data'] = ''
-#         phone = self.get_argument('phone')
-#         code = self.get_argument('code')
-#         if not all(['phone','code']):
-#             mes['data'] = "不能为空"
-#             self.render('../templates/phone.html',**mes)
-#         else:
-#             if code == redis_conn.get("code"):
-#                 user = User(phone=phone)
-#                 sess.add(user)
-#                 sess.commit()
-#                 self.render('../templates/phone.html',**mes)
-#             else:
-#                 mes['data'] = "验证码错误"
-#                 self.render('../templates/phone.html',**mes)
-
-
-
 # 首页
 class Index(BaseHandler):
     @log_decorator

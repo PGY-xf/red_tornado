@@ -89,6 +89,7 @@ class Film_add(BaseHandler):
         region = self.get_argument('region')
         intro = self.get_argument('intro')
         video_img1 = self.get_argument('video_img1')
+        video_slideshow = self.get_argument('video_slideshow')
         video_src = self.get_argument('video_src')
         classify_id = self.get_argument('classify_id','')
         hot = self.get_argument('hot','')
@@ -109,6 +110,7 @@ class Film_add(BaseHandler):
                     intro=intro,
                     region = region,
                     video_img1=video_img1,
+                    video_slideshow=video_slideshow,
                     video_src=video_src,
                     classify_id=classify_id,
                     hot=hot,
@@ -165,6 +167,7 @@ class Film_edit(BaseHandler):
         region = self.get_argument('region')
         intro = self.get_argument('intro')
         video_img1 = self.get_argument('video_img1')
+        video_slideshow = self.get_argument('video_slideshow')
         video_src = self.get_argument('video_src')
         classify_id = self.get_argument('classify_id','')
         hot = self.get_argument('hot','')
@@ -175,6 +178,7 @@ class Film_edit(BaseHandler):
         video.region = region
         video.intro = intro
         video.video_img1 = video_img1
+        video.video_slideshow = video_slideshow
         video.video_src = video_src
         video.classify_id = classify_id
         video.hot = hot

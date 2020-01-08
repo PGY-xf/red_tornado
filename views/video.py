@@ -95,6 +95,7 @@ class Product_micro_add(BaseHandler):
         info = self.get_argument('info','')
         video_img = self.get_argument('video_img')
         video_url = self.get_argument('video_url')
+        video_slideshow = self.get_argument('video_slideshow')
         column_id = self.get_argument('columns_id')
         auth_id = self.get_argument('auth_id')
         weight = self.get_argument('weight')
@@ -115,6 +116,7 @@ class Product_micro_add(BaseHandler):
                     video_img=video_img,
                     column_id = column_id,
                     auth_id=auth_id,
+                    video_slideshow =video_slideshow,
                     weight=weight,
                     is_show=is_show
                 )
@@ -173,10 +175,12 @@ class Product_micro_edit(BaseHandler):
         column_id = self.get_argument('columns_id')
         auth_id = self.get_argument('auth_id')
         weight = self.get_argument('weight')
+        video_slideshow = self.get_argument('video_slideshow')
         is_show = self.get_argument('is_show')
         video.name = name
         video.info = info
         video.video_img = video_img
+        video.video_slideshow = video_slideshow
         video.video_url = video_url
         video.column_id = column_id
         video.auth_id = auth_id

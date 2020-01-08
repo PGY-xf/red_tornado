@@ -14,21 +14,8 @@ import time
 # 分类管理
 class Product_category(BaseHandler):
     def get(self, *args, **kwargs):
-        classify = sess.query(Classify).all()
-        lens = len(classify)
-        self.render('../templates/product_category.html', lens=lens)
+        self.render('../templates/product_category.html')
 
-    def post(self, *args, **kwargs):
-        title = self.get_argument('title', '')
-        classify = sess.query(Classify).filter(Classify.name.like('%' + title + '%')).all()
-        a = []
-        for i in classify:
-            b = {}
-            b['id'] = i.id
-            b['name'] = i.name
-            a.append(b)
-        str_json = json.dumps(a, indent=2, ensure_ascii=False)
-        self.write(str_json)
 
 
 
@@ -109,6 +96,7 @@ class Product_column_add(BaseHandler):
         columns = sess.query(Columns).all()
         mes = {}
         name = self.get_argument('name', '')
+        columns_img = self.get_argument('columns_img', '')
         if not name:
             mes['data'] = '参数不能为空，请重新输入'
             self.render('../templates/product_column_add.html',columns=columns,**mes)
@@ -116,13 +104,21 @@ class Product_column_add(BaseHandler):
             try:
                 sess.query(Columns).filter(Columns.name==name).one()
             except:
-                columns = Columns(name=name)
+                columns = Columns(name=name,columns_img=columns_img)
                 sess.add(columns)
                 sess.commit()
                 self.redirect('/product_column_add')
             else:
                  mes['data'] = '此分类已存在，可添加其他'
                  self.render('../templates/Product_column_add.html',columns=columns,**mes)
+
+
+# 栏目详情页
+class Product_column_details(BaseHandler):
+    def get(self,id):
+        columnss = sess.query(Columns).filter_by(id=id).first()
+        self.render('../templates/product_column_details.html', columnss=columnss,info = "查看封面图")
+
 
 
 
@@ -137,7 +133,9 @@ class Product_column_edit(BaseHandler):
     def post(self, id):
         columns = sess.query(Columns).filter_by(id=id).first()
         name = self.get_argument('name','')
+        columns_img = self.get_argument('columns_img', '')
         columns.name = name
+        columns.columns_img = columns_img
         sess.commit()
         self.redirect('/product_column_add')
 
@@ -174,14 +172,16 @@ class Column_del(BaseHandler):
 
 
 
-# 标签列表
+
+#标签列表
 class Product_label(BaseHandler):
-    def get(self, *args, **kwargs):
+    def get(self,*args,**kwargs):
+        label = sess.query(Label).all()
+        lens = len(label)
+        self.render('../templates/product_label.html',label=label,lens=lens)
 
-        self.render('../templates/product_label.html')
 
-
-# 添加标签
+#添加标签
 class Product_label_add(BaseHandler):
     def get(self, *args, **kwargs):
         label = sess.query(Label).all()
@@ -192,6 +192,7 @@ class Product_label_add(BaseHandler):
         label = sess.query(Label).all()
         mes = {}
         name = self.get_argument('name', '')
+        label_img = self.get_argument('label_img', '')
         if not name:
             mes['data'] = '参数不能为空，请重新输入'
             self.render('../templates/product_label_add.html',label=label,**mes)
@@ -199,10 +200,10 @@ class Product_label_add(BaseHandler):
             try:
                 sess.query(Label).filter(Label.name==name).one()
             except:
-                label = Label(name=name)
+                label = Label(name=name,label_img=label_img)
                 sess.add(label)
                 sess.commit()
-                self.redirect('/product_label_add')
+                self.redirect('/product_label')
             else:
                  mes['data'] = '此分类已存在，可添加其他'
                  self.render('../templates/product_label_add.html',label=label,**mes)
@@ -219,9 +220,22 @@ class Product_label_edit(BaseHandler):
     def post(self, id):
         label = sess.query(Label).filter_by(id=id).first()
         name = self.get_argument('name','')
+        label_img = self.get_argument('label_img', '')
         label.name = name
+        label.label_img = label_img
         sess.commit()
-        self.redirect('/product_label_add')
+        self.redirect('/product_label')
+
+
+
+# 删除标签
+class Product_label_del(BaseHandler):
+    def get(self, id):
+        label = sess.query(Label).filter(Label.id == id).one()
+        sess.delete(label)
+        sess.commit()
+        self.redirect('/product_label')
+
 
 
 # 标签上传封面图
@@ -236,16 +250,13 @@ class Product_label_picture(BaseHandler):
         try:
             label.label_img = url
             sess.commit()
-            self.redirect("/product_label_add")
+            self.redirect("/product_label")
         except:
             self.write('服务器错误')
 
 
-
-# 删除标签
-class Label_del(BaseHandler):
-    def get(self, id):
-        label = sess.query(Label).filter(Label.id == id).one()
-        sess.delete(label)
-        sess.commit()
-        self.redirect('/product_label_add')
+# 标签详情页
+class Product_label_details(BaseHandler):
+    def get(self,id):
+        label = sess.query(Label).filter_by(id=id).first()
+        self.render('../templates/product_label_details.html', label=label,info = "查看封面图")

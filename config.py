@@ -19,7 +19,7 @@ setting = {
     'static_path':os.path.join(BASE_DIRS,'static'),         # 静态资源
     'template_path':os.path.join(BASE_DIRS,'templates'),    # html页面
     'debug':True,
-    # 'autoreload':True
+    # 'autoreload':True  flase
 }
 
 #mysql配置

@@ -27,9 +27,13 @@
 			<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">
 						<span class="c-red">*</span>
-						栏目名称：</label>
+						栏目名称：<br>
+						轮播图地址：
+					   </label>
+						
 					<div class="formControls col-xs-6 col-sm-6">
 						<input type="text" class="input-text" value="" placeholder="请输入分类名称" id="name" name="name">
+						<input type="text" class="input-text" value="" placeholder="请输入封面图地址" id="columns_img" name="columns_img">
 					</div>
 				</div>
 				<div class="row cl">
@@ -57,7 +61,7 @@
 								<td><span class="price">
 							
 									{% if i.columns_img%}
-										<a href="/product_column_picture/{{ i.id }}"><span class="label label-success radius">查看封面图</span></a>
+										<a href="/product_column_details/{{ i.id }}"><span class="label label-success radius">查看封面图</span></a>
 									{% else %}
 										<a href="/product_column_picture/{{ i.id }}"><span class="label radius">上传封面图</span></a>
 									{% end %}
@@ -85,10 +89,6 @@
 <script type="text/javascript" src="/static/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="/static/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="/static/lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript">
-$(function(){
-	
-});
-</script>
+
 </body>
 </html>

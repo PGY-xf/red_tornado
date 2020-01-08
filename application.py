@@ -8,10 +8,6 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
 
-
-            (r"/phone",Index.Phone),     #手机号验证码   
-
-
             (r"/login", Login.Login),                # 管理员登录   
             (r"/register", Login.Register),          # 管理员注册  
             (r"/login_camera", Login.Login_camera),             # 摄制组登录
@@ -121,14 +117,16 @@ class Application(tornado.web.Application):
             (r"/product_column", Classify.Product_column),  # 栏目管理
             (r"/product_column_add", Classify.Product_column_add),  # 添加栏目
             (r"/product_column_picture/(\d+)", Classify.Product_column_picture),  # 栏目封面图上传
-            (r"/product_column_edit/(\d+)", Classify.Product_column_edit),  # 修改栏目
+            (r"/product_column_edit/(\d+)", Classify.Product_column_edit),  # 修改栏目   
+            (r"/product_column_details/(\d+)", Classify.Product_column_details),  # 栏目详情页
             (r"/column_del/(\d+)", Classify.Column_del),  # 删除栏目
               
             (r"/product_label", Classify.Product_label),  # 标签管理
             (r"/product_label_add", Classify.Product_label_add),  # 添加标签 
             (r"/product_label_picture/(\d+)", Classify.Product_label_picture),  # 标签封面图上传
             (r"/product_label_edit/(\d+)", Classify.Product_label_edit),  # 修改标签
-            (r"/label_del/(\d+)", Classify.Label_del),  # 删除标签
+            (r"/product_label_details/(\d+)", Classify.Product_label_details),  # 标签详情页
+            (r"/product_label_del/(\d+)", Classify.Product_label_del),  # 删除标签    
 
 
             (r"/ceshi", AppPort.Ceshi),  # app接口
