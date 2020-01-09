@@ -1,10 +1,21 @@
 <!doctype html>
 <html lang="zh">
 
-    <center><h1 style="color: blue">{{info}}</h1></center>
-        <h2 style="color: #0a6999">标题：{{label.name}}</h2>
-        <center><td colspan="2"><img src="{{ label.label_img }}" width="400" height="250" ></td></center>
-
+    <center><h1 style="color: blue">{{ info }}</h1></center>
+        <h2 style="color: #0a6999">标题：{{ label.name }}</h2>
+        <tr>
+            <h2 style="color: #0a6999">图片信息：</h2>
+            {% if label.label_img %}
+            <center><td colspan="2"><img src="{{ label.label_img }}" width="400" height="250" >
+                <button  class="btn btn-default radius" type="button"><a href="" style="color:red"> 删除图片</a></button>
+            
+            </td></center>
+            {% else %}
+            <th class="text-l" colspan="2"><a href="/product_label_picture/{{ label.id }}">
+                <center><h2 style="color:red">还没有图片哦，点击添加</h2></center>
+            </a></th>
+            {% end %}
+        </tr>
         <br>
 
 <head>

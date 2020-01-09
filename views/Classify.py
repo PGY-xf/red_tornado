@@ -14,7 +14,26 @@ import time
 # 分类管理
 class Product_category(BaseHandler):
     def get(self, *args, **kwargs):
-        self.render('../templates/product_category.html')
+        classify = sess.query(Classify).all()
+        lens = len(classify)
+        c_list = []
+        for info in classify:
+            item={}
+            item["id"] = info.id
+            item["name"]=info.name
+            c_list.append(item)
+        self.render('../templates/product_category.html',classify=c_list,lens=lens)
+    def post(self,*args,**kwargs):
+        title = self.get_argument('title', '')
+        classify = sess.query(Classify).filter(Classify.name.like('%' + title + '%')).all()
+        lens = len(classify)
+        c_list = []
+        for info in classify:
+            item={}
+            item["id"] = info.id
+            item["name"]=info.name
+            c_list.append(item)
+        self.render('../templates/product_category.html', classify=c_list, lens=lens)
 
 
 
@@ -40,7 +59,7 @@ class Product_category_add(BaseHandler):
                 classify = Classify(name=name)
                 sess.add(classify)
                 sess.commit()
-                self.redirect('/product_category_add')
+                self.redirect('/product_category')
             else:
                  mes['data'] = '此分类已存在，可添加其他'
                  self.render('../templates/product_category_add.html',classify=classify,**mes)
@@ -53,14 +72,13 @@ class Product_category_edit(BaseHandler):
         mes = {}
         mes['data'] = ''
         classifys = sess.query(Classify).filter_by(id=id).first()
-        classify = sess.query(Classify).all()
-        self.render('../templates/product_category_edit.html',classifys=classifys,classify=classify,**mes)
+        self.render('../templates/product_category_edit.html',classifys=classifys,**mes)
     def post(self, id):
         classifys = sess.query(Classify).filter_by(id=id).first()
         name = self.get_argument('name','')
         classifys.name = name
         sess.commit()
-        self.redirect('/product_category_add')
+        self.redirect('/product_category')
 
 
 
@@ -70,19 +88,36 @@ class Category_del(BaseHandler):
         classify = sess.query(Classify).filter(Classify.id == id).one()
         sess.delete(classify)
         sess.commit()
-        self.redirect('/product_category_add')
+        self.redirect('/product_category')
 
 
 
 
-
-
-
-# 栏目列表
+#栏目列表
 class Product_column(BaseHandler):
-    def get(self, *args, **kwargs):
-        self.render('../templates/product_column.html')
-
+    def get(self,*args,**kwargs):
+        columns = sess.query(Columns).all()
+        lens = len(columns)
+        c_list = []
+        for info in columns:
+            item={}
+            item["id"] = info.id
+            item["name"]=info.name
+            item["columns_img"]=info.columns_img
+            c_list.append(item)
+        self.render('../templates/product_column.html',columns=c_list,lens=lens)
+    def post(self,*args,**kwargs):
+        title = self.get_argument('title', '')
+        columns = sess.query(Columns).filter(Columns.name.like('%' + title + '%')).all()
+        lens = len(columns)
+        c_list = []
+        for info in columns:
+            item={}
+            item["id"] = info.id
+            item["name"]=info.name
+            item["columns_img"]=info.columns_img
+            c_list.append(item)
+        self.render('../templates/product_column.html', columns=c_list, lens=lens)
 
 
 # # 添加栏目
@@ -107,19 +142,10 @@ class Product_column_add(BaseHandler):
                 columns = Columns(name=name,columns_img=columns_img)
                 sess.add(columns)
                 sess.commit()
-                self.redirect('/product_column_add')
+                self.redirect('/product_column')
             else:
                  mes['data'] = '此分类已存在，可添加其他'
-                 self.render('../templates/Product_column_add.html',columns=columns,**mes)
-
-
-# 栏目详情页
-class Product_column_details(BaseHandler):
-    def get(self,id):
-        columnss = sess.query(Columns).filter_by(id=id).first()
-        self.render('../templates/product_column_details.html', columnss=columnss,info = "查看封面图")
-
-
+                 self.render('../templates/product_column_add.html',columns=columns,**mes)
 
 
 #编辑栏目
@@ -137,7 +163,17 @@ class Product_column_edit(BaseHandler):
         columns.name = name
         columns.columns_img = columns_img
         sess.commit()
-        self.redirect('/product_column_add')
+        self.redirect('/product_column')
+
+
+
+# 删除栏目
+class Product_column_del(BaseHandler):
+    def get(self, id):
+        columns = sess.query(Columns).filter(Columns.id == id).one()
+        sess.delete(columns)
+        sess.commit()
+        self.redirect('/product_column')
 
 
 
@@ -159,16 +195,11 @@ class Product_column_picture(BaseHandler):
 
 
 
-
-# 删除栏目
-class Column_del(BaseHandler):
-    def get(self, id):
-        columns = sess.query(Columns).filter(Columns.id == id).one()
-        sess.delete(columns)
-        sess.commit()
-        self.redirect('/product_column_add')
-
-
+# 栏目详情页
+class Product_column_details(BaseHandler):
+    def get(self,id):
+        columnss = sess.query(Columns).filter_by(id=id).first()
+        self.render('../templates/product_column_details.html', columnss=columnss,info = "查看封面图")
 
 
 
@@ -178,7 +209,28 @@ class Product_label(BaseHandler):
     def get(self,*args,**kwargs):
         label = sess.query(Label).all()
         lens = len(label)
-        self.render('../templates/product_label.html',label=label,lens=lens)
+        l_list = []
+        for info in label:
+            item={}
+            item["id"] = info.id
+            item["name"]=info.name
+            item["label_img"]=info.label_img
+            l_list.append(item)
+        self.render('../templates/product_label.html', label=l_list, lens=lens)
+    def post(self,*args,**kwargs):
+        title = self.get_argument('title', '')
+        label = sess.query(Label).filter(Label.name.like('%' + title + '%')).all()
+        lens = len(label)
+        l_list = []
+        for info in label:
+            item={}
+            item["id"] = info.id
+            item["name"]=info.name
+            item["label_img"]=info.label_img
+            l_list.append(item)
+        self.render('../templates/product_label.html', label=l_list, lens=lens)
+
+
 
 
 #添加标签
@@ -209,6 +261,8 @@ class Product_label_add(BaseHandler):
                  self.render('../templates/product_label_add.html',label=label,**mes)
 
 
+
+
 #编辑标签
 class Product_label_edit(BaseHandler):
     def get(self, id):
@@ -235,6 +289,7 @@ class Product_label_del(BaseHandler):
         sess.delete(label)
         sess.commit()
         self.redirect('/product_label')
+
 
 
 

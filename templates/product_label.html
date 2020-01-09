@@ -55,19 +55,19 @@
 						{% for i in label %}
 					<tr class="text-c va-m">
 						<td><input type="checkbox" value="1" name=""></td>
-						<td>{{ i.id }}</td>
-						<td class="text-l">{{ i.name }}</td>
+						<td>{{ i['id'] }}</td>
+						<td class="text-l"><a href="/product_label_details/{{ i['id'] }}">{{ i['name'] }}</a></td>
 						<td><span class="price">
 					
-							{% if i.label_img%}
-								<a href="/product_label_details/{{ i.id }}"><span class="label label-success radius">查看封面图</span></a>
+							{% if i['label_img'] %}
+								<a href="/product_label_details/{{ i['id'] }}"><span class="label label-success radius">查看封面图</span></a>
 							{% else %}
-								<a href="/product_label_picture/{{ i.id }}"><span class="label radius">上传封面图</span></a>
+								<a href="/product_label_picture/{{ i['id'] }}"><span class="label radius">上传封面图</span></a>
 							{% end %}
 						</span></td>
 						<td class="td-manage">
-							<a href="/product_label_edit/{{ i.id }}">编辑</a>
-							<a href="/product_label_del/{{ i.id }}">删除</a>
+							<a href="/product_label_edit/{{ i['id'] }}">编辑</a>
+							<a href="/product_label_del/{{ i['id'] }}">删除</a>
 					</tr>
 					{% end %}
 				</tbody>

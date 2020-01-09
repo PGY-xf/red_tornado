@@ -19,49 +19,31 @@
 <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>添加产品分类</title>
+<title>添加分类</title>
 </head>
 <body>
 <div class="page-container">
 	<form action="" method="post" class="form form-horizontal" id="form-user-add">
+		<body>
+			
 			<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">
-						<span class="c-red">*</span>
-						分类名称：</label>
-					<div class="formControls col-xs-6 col-sm-6">
-						<input type="text" class="input-text" value="{{ classifys.name }}" placeholder="请输入分类名称" id="name" name="name">
-					</div>
+				<label class="form-label col-xs-4 col-sm-2">
+					<span class="c-red">*</span>
+					分类名称：</label>
+				<div class="formControls col-xs-6 col-sm-6">
+					<input type="text" class="input-text" value="{{ classifys.name }}" placeholder="请输入分类名称" id="name" name="name">
+
 				</div>
-				<div class="row cl">
-					<div class="col-9 col-offset-2">
-						<button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 修改</button></br>
-						<b style="color: red">{{ data }}</b>
-					</div>
+			</div>
+
+			<div class="row cl">
+				<div class="col-9 col-offset-2">
+					<b style="color: red">{{ data }}</b></br>
+					<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+					<button  class="btn btn-default radius" type="button"><a href="/product_category">取消</a></button>
+
 				</div>
-			<div class="mt-20">
-		
-					<table class="table table-border table-bordered table-bg table-hover table-sort">
-						<thead>
-							<tr class="text-c">
-								<th width="40">ID</th>
-								<th width="40">分类名称</th>
-								<th width="100">操作</th>
-							</tr>
-						</thead>
-						<tbody>
-								{% for i in classify %}
-							<tr class="text-c va-m">
-								<td>{{ i.id }}</td>
-								<td class="text-l">{{ i.name }}</td>
-								<td class="td-manage">
-									<a href="/product_category_edit/{{ i.id }}">编辑</a>
-									<a href="/category_del/{{ i.id }}">删除</a>
-								</tr>
-							{% end %}
-						</tbody>
-					</table>
-				</div>
-		
+			</div>
 
 		
 	</form>

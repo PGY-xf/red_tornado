@@ -51,7 +51,10 @@
 			<tr>
 				<th class="text-r">影片信息：</th>
 				{% if video_info['video_url']%}
-				<td colspan="2"><video src="{{video_info['video_url']}}" controls="controls" width="250" height="150" ></video></td>
+				<td colspan="2"><video src="{{video_info['video_url']}}" controls="controls" width="250" height="150" ></video>
+					<button  class="btn btn-default radius" type="button"><a href="" style="color:red"> 删除视频</a></button>
+				
+				</td>
 				{% else %}
 				<th class="text-l" colspan="2"><a href="/product_micro_video/{{video_info['id']}}">
 					<h4 style="color:blue">还没有视频哦，点击添加</h4>
@@ -66,7 +69,10 @@
 			<tr>
 				<th class="text-r">图片信息：</th>
 				{% if video_info['video_img']%}
-				<td colspan="2"><img src="{{video_info['video_img']}}" width="200" height="150" ></td>
+				<td colspan="2"><img src="{{video_info['video_img']}}" width="200" height="150" >
+					<button  class="btn btn-default radius" type="button"><a href="" style="color:red"> 删除图片</a></button>
+				
+				</td>
 				{% else %}
 				<th class="text-l" colspan="2"><a href="/product_micro_picture/{{video_info['id']}}">
 					<h4 style="color:red">还没有图片哦，点击添加</h4>
@@ -77,7 +83,10 @@
 			<tr>
 				<th class="text-r">轮播图：</th>
 				{% if video_info['video_slideshow']%}
-				<td colspan="2"><img src="{{video_info['video_slideshow']}}" width="200" height="150" ></td>
+				<td colspan="2"><img src="{{video_info['video_slideshow']}}" width="300" height="150" >
+					<button  class="btn btn-default radius" type="button"><a href="" style="color:red"> 删除轮播图</a></button>
+				
+				</td>
 				{% else %}
 				<th class="text-l" colspan="2"><a href="/product_micro_slideshow/{{video_info['id']}}">
 					<h4 style="color: yellow">还没有轮播图哦，点击添加</h4>

@@ -50,7 +50,10 @@
 			<tr>
 				<th class="text-r">公告封面图：</th>
 				{% if video_info['notice_img']%}
-				<td colspan="2"><img src="{{video_info['notice_img']}}" width="200" height="150" ></td>
+				<td colspan="2"><img src="{{video_info['notice_img']}}" width="200" height="150" >
+					<button  class="btn btn-default radius" type="button"><a href="" style="color:red"> 删除图片</a></button>
+				
+				</td>
 				{% else %}
 				<th class="text-l" colspan="3"><a href="/notice_picture/{{video_info['id']}}">
 					<h4 style="color:red">还没有图片哦，点击添加</h4>

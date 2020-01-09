@@ -109,19 +109,19 @@ class Application(tornado.web.Application):
 
 
 
-            (r"/product_category", Classify.Product_category),  # 分类管理
+            (r"/product_category", Classify.Product_category),  # 分类列表
             (r"/product_category_add", Classify.Product_category_add),  # 添加分类
             (r"/product_category_edit/(\d+)", Classify.Product_category_edit),  # 修改分类
             (r"/category_del/(\d+)", Classify.Category_del),  # 删除分类
 
-            (r"/product_column", Classify.Product_column),  # 栏目管理
+            (r"/product_column", Classify.Product_column),  # 栏目列表
             (r"/product_column_add", Classify.Product_column_add),  # 添加栏目
             (r"/product_column_picture/(\d+)", Classify.Product_column_picture),  # 栏目封面图上传
             (r"/product_column_edit/(\d+)", Classify.Product_column_edit),  # 修改栏目   
             (r"/product_column_details/(\d+)", Classify.Product_column_details),  # 栏目详情页
-            (r"/column_del/(\d+)", Classify.Column_del),  # 删除栏目
+            (r"/product_column_del/(\d+)", Classify.Product_column_del),  # 删除栏目
               
-            (r"/product_label", Classify.Product_label),  # 标签管理
+            (r"/product_label", Classify.Product_label),  # 标签列表
             (r"/product_label_add", Classify.Product_label_add),  # 添加标签 
             (r"/product_label_picture/(\d+)", Classify.Product_label_picture),  # 标签封面图上传
             (r"/product_label_edit/(\d+)", Classify.Product_label_edit),  # 修改标签
