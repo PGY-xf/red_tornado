@@ -86,10 +86,10 @@
 			</tr>
 
 			<tr>
-				<th class="text-r">图片信息：</th>
+				<th class="text-r">图片：</th>
 				{% if video_info['big_v_img1']%}
 				<td colspan="2"><img src="{{video_info['big_v_img1']}}" width="200" height="150" >
-					<button  class="btn btn-default radius" type="button"><a href="" style="color:red"> 删除图片</a></button>
+					<button  class="btn btn-default radius" type="button"><a href="/celebrity_picture_delete/{{video_info['id']}}" style="color:red"> 删除图片</a></button>
 				</td>
 				{% else %}
 				<th class="text-l" colspan="2"><a href="/celebrity_picture/{{video_info['id']}}">

@@ -212,7 +212,14 @@ class App_login_user(BaseHandler):
         if user_info:
             if check_password_hash(user_info.password,password):
                 item = {}
-                item["userid"] = user_info.id
+                item["id"] = user_info.id
+                item["mobile"] = user_info.phone
+                if user_info.name != "" and user_info.name != None:
+                    item["nickname"] = user_info.name
+                else:
+                    item["nickname"] = user_info.phone + "用户"
+                item["portrait"] = user_info.user_img
+                item["userHistoryList"] = []
                 return self.write(
                     json.dumps({"status": 200, "msg": "登录成功！", "user_info": item}, cls=AlchemyEncoder,
                                ensure_ascii=False))
@@ -236,9 +243,13 @@ class Get_APP_loginuserinfo(BaseHandler):
         # 判断是否有该用户如果有则返回信息
         if userinfo:
             item = {}
-            item["userId"] = userinfo.id
-            item["userName"] = userinfo.name
-            item["userImg"] = userinfo.user_img
+            item["id"] = userinfo.id
+            item["mobile"] = userinfo.phone
+            if userinfo.name !="" and userinfo.name != None:
+                item["nickname"] = userinfo.name
+            else:
+                item["nickname"] = userinfo.phone+"用户"
+            item["portrait"] = userinfo.user_img
             item["userHistoryList"] = []
             return self.write(
                 json.dumps({"status": 200, "msg": "登录成功！", "user_info": item}, cls=AlchemyEncoder,
@@ -375,7 +386,8 @@ class getIndexfilm_videolist(BaseHandler):
 # 栏目列表
 class getIndexColumnsList(BaseHandler):
     def get(self, *args, **kwargs):
-        columns = sess.query(Columns).filter(Columns.columns_img != None).all()
+        # 展示栏目但不展示不带图片的
+        columns = sess.query(Columns).filter(Columns.columns_img != "",Columns.columns_img != None).all()
         column_list = []
         for info in columns:
             item = {}
@@ -386,3 +398,33 @@ class getIndexColumnsList(BaseHandler):
         return self.write(
             json.dumps({"status": 200, "msg": "返回成功", "column_list": column_list[:10]}, cls=AlchemyEncoder,
                        ensure_ascii=False))
+
+
+#获取图片的主色
+from PIL import Image
+import colorsys
+def get_dominant_color(image):
+    # 颜色模式转换，以便输出rgb颜色值
+    image = image.convert('RGBA')
+    # 生成缩略图，减少计算量，减小cpu压力
+    image.thumbnail((200, 200))
+    max_score = 0 # 原来的代码此处为None
+    dominant_color = 0 # 原来的代码此处为None，但运行出错，改为0以后
+    # 运行成功，原因在于在下面的
+    # score > max_score的比较中，max_score的初始格式不定
+    for count, (r, g, b, a) in image.getcolors(image.size[0] * image.size[1]):
+        # 跳过纯黑色
+        if a == 0:
+            continue
+        saturation = colorsys.rgb_to_hsv(r / 255.0, g / 255.0, b / 255.0)[1]
+        y = min(abs(r * 2104 + g * 4130 + b * 802 + 4096 + 131072) >> 13, 235)
+        y = (y - 16.0) / (235 - 16)
+        # 忽略高亮色
+        if y > 0.9:
+            continue
+        score = (saturation + 0.1) * count
+        if score > max_score:
+            max_score = score
+            dominant_color = (r,g,b)
+    return dominant_color
+# print(get_dominant_color(Image.open('static/imgs/123321.png')))

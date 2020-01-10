@@ -7,7 +7,7 @@ import qiniu.config
 import logging
 from qiniu import Auth,put_data,etag,urlsafe_base64_encode
 import time
-
+from func_tools import *
 
 
 
@@ -89,6 +89,10 @@ class Category_del(BaseHandler):
         sess.delete(classify)
         sess.commit()
         self.redirect('/product_category')
+
+
+
+
 
 
 
@@ -189,9 +193,25 @@ class Product_column_picture(BaseHandler):
         try:
             columnss.columns_img = url
             sess.commit()
-            self.redirect("/product_column_add")
+            self.redirect("/product_column")
         except:
             self.write('服务器错误')
+
+
+#删除栏目图片
+class Column_picture_delete(BaseHandler):
+    def get(self,id):
+        columnss = sess.query(Columns).filter_by(id=id).first()
+        columns_img = str(columnss.columns_img)
+        print(columns_img)
+        a = 'http://qiniu.weiinng.cn/'
+        picture = columns_img.replace(a,'') 
+        print(picture)
+        deleteap(picture)
+        print('---删除成功----')
+        columnss.columns_img = ''
+        sess.commit()
+        self.redirect("/product_column")
 
 
 
@@ -200,6 +220,11 @@ class Product_column_details(BaseHandler):
     def get(self,id):
         columnss = sess.query(Columns).filter_by(id=id).first()
         self.render('../templates/product_column_details.html', columnss=columnss,info = "查看封面图")
+
+
+
+
+
 
 
 
@@ -308,6 +333,27 @@ class Product_label_picture(BaseHandler):
             self.redirect("/product_label")
         except:
             self.write('服务器错误')
+
+
+
+
+
+#删除栏目图片
+class Label_picture_delete(BaseHandler):
+    def get(self,id):
+        label = sess.query(Label).filter_by(id=id).first()
+        label_img = str(label.label_img)
+        print(label_img)
+        a = 'http://qiniu.weiinng.cn/'
+        picture = label_img.replace(a,'') 
+        print(picture)
+        deleteap(picture)
+        print('---删除成功----')
+        label.label_img = ''
+        sess.commit()
+        self.redirect("/product_label")
+
+
 
 
 # 标签详情页

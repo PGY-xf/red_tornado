@@ -7,6 +7,8 @@ import qiniu.config
 import logging
 from qiniu import Auth,put_data,etag,urlsafe_base64_encode
 import time
+from func_tools import *
+
 
 
 #用户管理
@@ -236,3 +238,19 @@ class User_picture(BaseHandler):
             self.redirect("/user_list")
         except:
             self.write('服务器错误')
+
+
+#删除用户头像
+class User_picture_delete(BaseHandler):
+    def get(self,id):
+        user = sess.query(User).filter_by(id=id).first()
+        user_img = str(user.user_img)
+        print(user_img)
+        a = 'http://qiniu.weiinng.cn/'
+        picture = user_img.replace(a,'') 
+        print(picture)
+        deleteap(picture)
+        print('---删除成功----')
+        user.user_img = ''
+        sess.commit()
+        self.redirect("/user_list")

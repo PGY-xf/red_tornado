@@ -8,6 +8,8 @@ import logging
 from qiniu import Auth,put_data,etag,urlsafe_base64_encode
 from werkzeug.security import generate_password_hash,check_password_hash
 import time
+from func_tools import *
+
 
 
 #作者管理
@@ -183,3 +185,19 @@ class Author_picture(BaseHandler):
             self.redirect("/author_list")
         except:
             self.write('服务器错误')
+
+
+#删除作者图片  
+class Author_picture_delete(BaseHandler):
+    def get(self,id):
+        author = sess.query(Author).filter_by(id=id).first()
+        img = str(author.img)
+        print(img)
+        a = 'http://qiniu.weiinng.cn/'
+        picture = img.replace(a,'') 
+        print(picture)
+        deleteap(picture)
+        print('---删除成功----')
+        author.img = ''
+        sess.commit()
+        self.redirect("/author_list")

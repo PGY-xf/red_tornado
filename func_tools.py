@@ -39,3 +39,29 @@ redis_conn = redis.Redis(host="localhost", port=6379)
 
 
 
+#七牛云删除单个文件
+
+from config import *
+
+access_key = ACCESS_KEY  #AK
+secret_key = SECRET_KEY    #SK
+bucket_name = BUCKET_NAME   #name
+url = QINIU_URL  #url
+
+from qiniu import Auth
+from qiniu import BucketManager
+
+def deleteap(picture):
+    access_key = ACCESS_KEY
+    secret_key = SECRET_KEY
+    #初始化Auth状态
+    q = Auth(access_key, secret_key)
+    #初始化BucketManager
+    bucket = BucketManager(q)
+    #你要测试的空间， 并且这个key在你空间中存在
+    bucket_name = BUCKET_NAME
+    key = picture
+    #删除bucket_name 中的文件 key
+    ret, info = bucket.delete(bucket_name, key)
+    print(info)
+    # assert ret == {}

@@ -9,6 +9,8 @@ from config import *
 from qiniu import Auth,put_data,etag,urlsafe_base64_encode
 import time
 from werkzeug.security import generate_password_hash,check_password_hash
+from func_tools import *
+
 
 
 # 登录
@@ -73,7 +75,7 @@ class Register(BaseHandler):
                 self.render('../templates/register.html',**mes)
                 
 
-#摄制组登录
+#摄制中心登录
 class Login_camera(BaseHandler):
     def get(self, *args, **kwargs):
         mes = {}
@@ -105,7 +107,7 @@ class Login_camera(BaseHandler):
 
 
 
-#摄制组首页
+#摄制中心首页
 class Lindex(BaseHandler):
     @log_camera
     def get(self, *args, **kwargs):
@@ -114,7 +116,7 @@ class Lindex(BaseHandler):
 
 
 
-#微视频管理
+#摄制中心微视频管理
 class Lmicro(BaseHandler):
     def get(self, *args, **kwargs):
         cookie = self.get_cookie('cookie')
@@ -187,7 +189,7 @@ class Lmicro(BaseHandler):
 
 
 
-#添加微视频
+#摄制中心添加微视频
 class Lmicro_add(BaseHandler):
     def get(self, *args, **kwargs):
         cookie = self.get_cookie('cookie')
@@ -237,7 +239,7 @@ class Lmicro_add(BaseHandler):
                 self.render('../templates/camera/lmicro_add.html',author=author,columns=columns,**mes)
 
 
-#删除微视频
+#摄制中心删除微视频
 class Lmicro_del(BaseHandler):
     def get(self, id):
         micro_video = sess.query(Micro_video).filter(Micro_video.id == id).one()
@@ -245,7 +247,7 @@ class Lmicro_del(BaseHandler):
         sess.commit()
         self.redirect('/lmicro')
 
-#微视频审核
+#摄制中心微视频审核
 class Lmicro_audit(BaseHandler):
     def get(self,id):
         micro_video = sess.query(Micro_video).filter(Micro_video.id == id).one()
@@ -255,7 +257,7 @@ class Lmicro_audit(BaseHandler):
 
 
 
-#微视频下架
+#摄制中心微视频下架
 class Lmicro_block(BaseHandler):
     def get(self,id):
         micro_video = sess.query(Micro_video).filter(Micro_video.id == id).one()
@@ -266,7 +268,7 @@ class Lmicro_block(BaseHandler):
 
 
 
-#编辑微视频
+#摄制中心编辑微视频
 class Lmicro_edit(BaseHandler):
     def get(self, id):
         cookie = self.get_cookie('cookie')
@@ -300,7 +302,7 @@ class Lmicro_edit(BaseHandler):
 
 
 
-#微视频详情
+#摄制中心微视频详情
 class Lmicro_details(BaseHandler):
     def get(self,id):
         video = sess.query(Micro_video).filter(Micro_video.id==id).one()
@@ -327,7 +329,7 @@ class Lmicro_details(BaseHandler):
         self.render('../templates/camera/lmicro_details.html',video_info=video_obj)
 
 
-# 微视频上传图片
+# 摄制中心微视频上传图片
 class Lmicro_picture(BaseHandler):
     def get(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
@@ -345,7 +347,25 @@ class Lmicro_picture(BaseHandler):
 
 
 
-#微视频上传
+#摄制中心删除微视频图片  
+class Lmicro_picture_delete(BaseHandler):
+    def get(self,id):
+        micro_video = sess.query(Micro_video).filter_by(id=id).first()
+        video_img = str(micro_video.video_img)
+        print(video_img)
+        a = 'http://qiniu.weiinng.cn/'
+        picture = video_img.replace(a,'') 
+        print(picture)
+        deleteap(picture)
+        print('---删除成功----')
+        micro_video.video_img = ''
+        sess.commit()
+        self.redirect("/lmicro")
+
+
+
+
+#摄制中心微视频上传
 class Lmicro_video(BaseHandler):
     def get(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
@@ -360,6 +380,26 @@ class Lmicro_video(BaseHandler):
             self.redirect("/lmicro")
         except:
             self.write('服务器错误')
+
+
+
+#摄制中心删除微视频视频  
+class Lmicro_video_delete(BaseHandler):
+    def get(self,id):
+        micro_video = sess.query(Micro_video).filter_by(id=id).first()
+        video_url = str(micro_video.video_url)
+        print(video_url)
+        a = 'http://qiniu.weiinng.cn/'
+        picture = video_url.replace(a,'') 
+        print(picture)
+        deleteap(picture)
+        print('---删除成功----')
+        micro_video.video_url = ''
+        sess.commit()
+        self.redirect("/lmicro")
+
+
+
 
 
 #摄制中心详情
@@ -378,7 +418,7 @@ class Authordetails(BaseHandler):
         self.render('../templates/camera/authordetails.html',video_info=video_obj)
 
 
-# 微视频上传轮播图
+# 摄制中心微视频上传轮播图
 class Lmicro_slideshow(BaseHandler):
     def get(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
@@ -393,3 +433,20 @@ class Lmicro_slideshow(BaseHandler):
             self.redirect("/lmicro")
         except:
             self.write('服务器错误')
+
+
+
+#摄制中心删除微视频轮播图
+class Lmicro_slideshow_delete(BaseHandler):
+    def get(self,id):
+        micro_video = sess.query(Micro_video).filter_by(id=id).first()
+        video_slideshow = str(micro_video.video_slideshow)
+        print(video_slideshow)
+        a = 'http://qiniu.weiinng.cn/'
+        picture = video_slideshow.replace(a,'') 
+        print(picture)
+        deleteap(picture)
+        print('---删除成功----')
+        micro_video.video_slideshow = ''
+        sess.commit()
+        self.redirect("/lmicro")

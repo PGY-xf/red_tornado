@@ -64,7 +64,7 @@
 				<th class="text-r">图片信息：</th>
 				{% if video_info['img']%}
 				<td colspan="2"><img src="{{video_info['img']}}" width="200" height="150" >
-					<button  class="btn btn-default radius" type="button"><a href="" style="color:red"> 删除图片</a></button>
+					<button  class="btn btn-default radius" type="button"><a href="/author_picture_delete/{{video_info['id']}}" style="color:red"> 删除图片</a></button>
 				</td>
 				{% else %}
 				<th class="text-l" colspan="2"><a href="/author_picture/{{video_info['id']}}">

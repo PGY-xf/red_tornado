@@ -7,6 +7,8 @@ import qiniu.config
 import logging
 from qiniu import Auth,put_data,etag,urlsafe_base64_encode
 import time
+from func_tools import *
+
 
 
 #微视频管理
@@ -237,6 +239,27 @@ class Product_micro_picture(BaseHandler):
         except:
             self.write('服务器错误')
 
+
+
+#删除微视频图片  
+class Micro_picture_delete(BaseHandler):
+    def get(self,id):
+        micro_video = sess.query(Micro_video).filter_by(id=id).first()
+        video_img = str(micro_video.video_img)
+        print(video_img)
+        a = 'http://qiniu.weiinng.cn/'
+        picture = video_img.replace(a,'') 
+        print(picture)
+        deleteap(picture)
+        print('---删除成功----')
+        micro_video.video_img = ''
+        sess.commit()
+        self.redirect("/product_micro")
+
+
+
+
+
 #微视频视频
 class Product_micro_video(BaseHandler):
     def get(self,id):
@@ -255,6 +278,23 @@ class Product_micro_video(BaseHandler):
             self.write('服务器错误')
 
 
+#删除微视频视频  
+class Micro_video_delete(BaseHandler):
+    def get(self,id):
+        micro_video = sess.query(Micro_video).filter_by(id=id).first()
+        video_url = str(micro_video.video_url)
+        print(video_url)
+        a = 'http://qiniu.weiinng.cn/'
+        picture = video_url.replace(a,'') 
+        print(picture)
+        deleteap(picture)
+        print('---删除成功----')
+        micro_video.video_url = ''
+        sess.commit()
+        self.redirect("/product_micro")
+
+
+
 
 # 微视频上传轮播图
 class Product_micro_slideshow(BaseHandler):
@@ -271,3 +311,20 @@ class Product_micro_slideshow(BaseHandler):
             self.redirect("/product_micro")
         except:
             self.write('服务器错误')
+
+
+
+#删除微视频轮播图
+class Micro_slideshow_delete(BaseHandler):
+    def get(self,id):
+        micro_video = sess.query(Micro_video).filter_by(id=id).first()
+        video_slideshow = str(micro_video.video_slideshow)
+        print(video_slideshow)
+        a = 'http://qiniu.weiinng.cn/'
+        picture = video_slideshow.replace(a,'') 
+        print(picture)
+        deleteap(picture)
+        print('---删除成功----')
+        micro_video.video_slideshow = ''
+        sess.commit()
+        self.redirect("/product_micro")

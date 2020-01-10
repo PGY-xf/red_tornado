@@ -7,7 +7,7 @@
             <h2 style="color: #0a6999">图片信息：</h2>
             {% if label.label_img %}
             <center><td colspan="2"><img src="{{ label.label_img }}" width="400" height="250" >
-                <button  class="btn btn-default radius" type="button"><a href="" style="color:red"> 删除图片</a></button>
+                <button  class="btn btn-default radius" type="button"><a href="/label_picture_delete/{{ label.id }}" style="color:red"> 删除图片</a></button>
             
             </td></center>
             {% else %}

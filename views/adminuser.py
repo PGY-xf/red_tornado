@@ -1,7 +1,7 @@
 from .base import BaseHandler
 from models import *
 import json
-
+from func_tools import *
 
 #管理员列表
 class Admin_list(BaseHandler):

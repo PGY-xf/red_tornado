@@ -51,7 +51,7 @@
 				<th class="text-r">公告封面图：</th>
 				{% if video_info['notice_img']%}
 				<td colspan="2"><img src="{{video_info['notice_img']}}" width="200" height="150" >
-					<button  class="btn btn-default radius" type="button"><a href="" style="color:red"> 删除图片</a></button>
+					<button  class="btn btn-default radius" type="button"><a href="/notice_picture_delete/{{video_info['id']}}" style="color:red"> 删除图片</a></button>
 				
 				</td>
 				{% else %}

@@ -7,7 +7,7 @@ import qiniu.config
 import logging
 from qiniu import Auth,put_data,etag,urlsafe_base64_encode
 import time
-
+from func_tools import *
 
 
 #公告列表
@@ -124,6 +124,29 @@ class Notice_edit(BaseHandler):
         self.redirect('/notice_list')
 
 
+
+
+#删除公告图片  
+class Notice_picture_delete(BaseHandler):
+    def get(self,id):
+        notice = sess.query(Notice).filter_by(id=id).first()
+        notice_img = str(notice.notice_img)
+        print(notice_img)
+        a = 'http://qiniu.weiinng.cn/'
+        picture = notice_img.replace(a,'') 
+        print(picture)
+        deleteap(picture)
+        print('---删除成功----')
+        notice.notice_img = ''
+        sess.commit()
+        self.redirect("/notice_list")
+
+
+
+
+
+
+
 #公告详情
 class Notice_details(BaseHandler):
     def get(self,id):
@@ -161,6 +184,11 @@ class Notice_picture(BaseHandler):
             self.redirect("/notice_list")
         except:
             self.write('服务器错误')
+
+
+
+
+
 
 
 
@@ -279,6 +307,28 @@ class Advertising_edit(BaseHandler):
         advertising.is_show = is_show
         sess.commit()
         self.redirect('/advertising_list')
+
+
+
+
+#删除广告图片  
+class Advertising_picture_delete(BaseHandler):
+    def get(self,id):
+        advertising = sess.query(Advertising).filter_by(id=id).first()
+        advertising_img = str(advertising.advertising_img)
+        print(advertising_img)
+        a = 'http://qiniu.weiinng.cn/'
+        picture = advertising_img.replace(a,'') 
+        print(picture)
+        deleteap(picture)
+        print('---删除成功----')
+        advertising.advertising_img = ''
+        sess.commit()
+        self.redirect("/advertising_list")
+
+
+
+
 
 
 #广告详情

@@ -56,10 +56,10 @@
 
 			
 			<tr>
-				<th class="text-r">电影信息：</th>
+				<th class="text-r">电影视频：</th>
 				{% if video_info['video_src']%}
 				<td><video src="{{video_info['video_src']}}" controls="controls" width="200" height="150" ></video>
-					<button  class="btn btn-default radius" type="button"><a href="" style="color:red"> 删除视频</a></button>
+					<button  class="btn btn-default radius" type="button"><a href="/film_video_delete/{{video_info['id']}}" style="color:blue"> 删除视频</a></button>
 				
 				</td>
 				{% else %}
@@ -75,10 +75,10 @@
 			</tr>
 
 			<tr>
-				<th class="text-r">图片信息：</th>
+				<th class="text-r">封面图：</th>
 				{% if video_info['video_img1']%}
 				<td colspan="2"><img src="{{video_info['video_img1']}}" width="200" height="150" >
-					<button  class="btn btn-default radius" type="button"><a href="" style="color:red"> 删除图片</a></button>
+					<button  class="btn btn-default radius" type="button"><a href="/film_picture_delete/{{video_info['id']}}" style="color:red"> 删除封面图</a></button>
 				
 				</td>
 				{% else %}
@@ -92,12 +92,12 @@
 				<th class="text-r">轮播图：</th>
 				{% if video_info['video_slideshow']%}
 				<td colspan="2"><img src="{{video_info['video_slideshow']}}" width="300" height="150" >
-					<button  class="btn btn-default radius" type="button"><a href="" style="color:red"> 删除轮播图</a></button>
+					<button  class="btn btn-default radius" type="button"><a href="/film_slideshow_delete/{{video_info['id']}}" style="color:black"> 删除轮播图</a></button>
 				
 				</td>
 				{% else %}
 				<th class="text-l" colspan="2"><a href="/film_slideshow/{{video_info['id']}}">
-					<h4 style="color: yellow">还没有轮播图哦，点击添加</h4>
+					<h4 style="color: azure">还没有轮播图哦，点击添加</h4>
 				</a></th>
 				{% end %}
 			</tr>
