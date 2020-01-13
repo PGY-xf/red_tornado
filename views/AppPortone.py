@@ -172,3 +172,6 @@ class getadvertising(BaseHandler):
             item["is_show"] = info.is_show
             advertising_list.append(item)
         return self.write(json.dumps({"status": 200, "msg": "返回成功","advertising_list":advertising_list[:10]}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
+

@@ -164,20 +164,20 @@ class Application(tornado.web.Application):
 
 
 
-            (r"/ceshi", AppPort.Ceshi),  # app接口
             (r"/api/uptoken", AppPort.GetToken),
             (r"/demo/uptoken", AppPort.QiNiuHandler),
-            (r"/video/micro_list/(\d+)", AppPort.gitVideolist),   #app推荐
-            (r"/index/columnsvideolist", AppPort.gitColumnsVideofourList),   #主页-四个视频
-            (r"/index/compere_list", AppPort.getIndexCompere_list),  # 主页-首页-主持人-列表
-            (r"/index/compere_particulars/(\d+)", AppPort.getIndexCompere_particulars),  # 主页-首页-明星-详情页
-            (r"/index/film_videolist", AppPort.getIndexfilm_videolist),  # 主页-电影页-电影列表-详情页
-            (r"/common/getverification", AppPort.App_getverification),  # 获取注册验证码
-            (r"/app/register_user", AppPort.App_register_user),  # 用户注册
-            (r"/app/login_user",AppPort.App_login_user),         #用户登录   
-            (r"/min/getUserinfo",AppPort.Get_APP_loginuserinfo), #登陆后获取用户信息
-            (r"/min/user_set_password", AppPort.APP_user_update_password),  #用户修改密码
-            (r"/index/getIndexColumnsList", AppPort.getIndexColumnsList),  #主页-栏目-大全
+            (r"/app/get/index/love_look/video_list/(\d+)", AppPort.gitVideolist),   #app推荐
+            (r"/app/get/index/recommend/four_video_list", AppPort.gitColumnsVideofourList),   #主页-四个视频
+            (r"/app/get/index/recommend/compere_list", AppPort.getIndexCompere_list),  # 主页-首页-主持人-列表
+            (r"/app/get/index/recommend/compere_particulars/(\d+)", AppPort.getIndexCompere_particulars),  # 主页-首页-明星-详情页
+            (r"/app/get/index/index_film/film_videolist", AppPort.getIndexfilm_videolist),  # 主页-电影页-电影列表-详情页
+            (r"/app/post/common/get_code_info", AppPort.App_getverification),  # 获取注册验证码
+            (r"/app/post/mine/user_reg", AppPort.App_register_user),  # 用户注册
+            (r"/app/post/mine/user_login",AppPort.App_login_user),         #用户登录
+            (r"/app/post/min/update_password", AppPort.APP_user_update_password),  #用户修改密码
+            (r"/app/get/index/recommend/column_list", AppPort.getIndexColumnsList),  #主页-栏目-大全
+            (r"/app/post/index/recommend/column_info", AppPort.getAPP_IndexColumns_info),  # 主页-栏目-info
+            (r"/app/post/common/video_particulars", AppPort.get_app_common_video_particulars),  # 视频详情页
             #############  新增
             (r"/gitVideodetails/(\d+)", AppPortone.gitVideodetails),  # 微视频视频详情页    
             (r"/gitColumnsList",AppPortone.gitColumnsList),         #栏目列表   

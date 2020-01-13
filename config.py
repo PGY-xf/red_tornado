@@ -25,7 +25,7 @@ setting = {
 #mysql配置
 HOSTNAME = '106.13.67.197'   #ip地址
 PORT = '3306'                #端口
-DATABASE = 'zzzz'          #数据库名  主库:red_dbs  测试库:zzzz,red_db
+DATABASE = 'red_dbs'          #数据库名  主库:red_dbs  测试库:zzzz,red_db
 USERNAME = 'root'            #账号
 PASSWORD = '123456'          #密码
 

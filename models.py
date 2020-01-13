@@ -230,6 +230,7 @@ class Comment(Base,IdBase):
     user_id = Column(Integer)                                #用户id
     video_id = Column(Integer)                               #电影id
     micro_video_id = Column(Integer)                         #微视频id
+    comment_id = Column(Integer)                             #评论id
 
 
 

@@ -60,15 +60,6 @@ class QiNiuHandler(BaseHandler):
 
 
 
-# 后台首页
-# 首页
-class Ceshi(BaseHandler):
-    def get(self, *args, **kwargs):
-        print("有人对我发起了请求！")
-        goods_list = "请求到了页面！"
-        return self.write(json.dumps({"status": 200, "msg": "返回成功", 'goods': goods_list}, cls=AlchemyEncoder, ensure_ascii=False))
-
-
 #推荐页微视频
 class gitVideolist(BaseHandler):
     def get(self, id,*args, **kwargs):
@@ -230,33 +221,6 @@ class App_login_user(BaseHandler):
         else:
             return self.write(
                 json.dumps({"status": 200, "msg": "用户不存在"}, cls=AlchemyEncoder,
-                           ensure_ascii=False))
-
-
-
-
-#获取登录用户的信息
-class Get_APP_loginuserinfo(BaseHandler):
-    def post(self, *args, **kwargs):
-        userid = self.get_argument("userId")
-        userinfo = sess.query(User).filter(User.id == userid).one()
-        # 判断是否有该用户如果有则返回信息
-        if userinfo:
-            item = {}
-            item["id"] = userinfo.id
-            item["mobile"] = userinfo.phone
-            if userinfo.name !="" and userinfo.name != None:
-                item["nickname"] = userinfo.name
-            else:
-                item["nickname"] = userinfo.phone+"用户"
-            item["portrait"] = userinfo.user_img
-            item["userHistoryList"] = []
-            return self.write(
-                json.dumps({"status": 200, "msg": "登录成功！", "user_info": item}, cls=AlchemyEncoder,
-                           ensure_ascii=False))
-        else:
-            return self.write(
-                json.dumps({"status": 201, "msg": "没有此用户！"}, cls=AlchemyEncoder,
                            ensure_ascii=False))
 
 
@@ -428,3 +392,81 @@ def get_dominant_color(image):
             dominant_color = (r,g,b)
     return dominant_color
 # print(get_dominant_color(Image.open('static/imgs/123321.png')))
+
+
+
+
+# 栏目列表
+class getAPP_IndexColumns_info(BaseHandler):
+    def post(self, *args, **kwargs):
+        column_id = self.get_argument("id",0)
+        id = int(column_id)
+        if id >0:
+            column_info = sess.query(Columns.id, Columns.name, Columns.columns_img).filter(Columns.id == id).one()
+            item = {}
+            item["id"] = column_info[0]
+            item["title"] = column_info[1]
+            item["titlepic"] = column_info[2]
+            item["totalnum"] = "615113"
+            item["todaynum"] = "5156"
+            item["desc"] = "欢迎观看" + column_info[1] + "的作品"
+            item["colnum_videolist"] = []
+            item["colnum_new_videolist"] = []
+            microall = sess.query(Micro_video.id, Micro_video.name, Micro_video.video_img).filter(Micro_video.is_show == 0,
+                                                                                                  Micro_video.video_url != None,
+                                                                                                  Micro_video.video_url != "",
+                                                                                                  Micro_video.video_img != None,
+                                                                                                  Micro_video.video_url != "",
+                                                                                                  Micro_video.column_id ==
+                                                                                                  column_info[0]).all()[:5]
+            for video in microall:
+                video_item = {}
+                video_item["id"] = video[0]
+                video_item["title"] = video[1]
+                video_item["video_img"] = video[2]
+                item["colnum_videolist"].append(video_item)
+            new_microall = sess.query(Micro_video.id, Micro_video.name, Micro_video.video_img).filter(
+                Micro_video.is_show == 0, Micro_video.video_url != None, Micro_video.video_url != "",
+                Micro_video.video_img != None, Micro_video.video_url != "",
+                Micro_video.column_id == column_info[0]).order_by(-Micro_video.issue_time).all()[:5]
+            for new_video in new_microall:
+                new_video_item = {}
+                new_video_item["id"] = new_video[0]
+                new_video_item["title"] = new_video[1]
+                new_video_item["video_img"] = new_video[2]
+                item["colnum_new_videolist"].append(new_video_item)
+            return self.write(
+                json.dumps({"status": 200, "msg": "返回成功", "column_info_obj": item}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
+        else:
+            return self.write(
+                json.dumps({"status": 201, "msg": "返回成功"}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
+
+#视频详情页
+class get_app_common_video_particulars(BaseHandler):
+    def post(self, *args, **kwargs):
+        video_id = self.get_argument("video_id",0)
+        id = int(video_id)
+        if id>0:
+            info = sess.query(Micro_video.id, Micro_video.name, Micro_video.video_url, Columns.id, Columns.name, Author.id,
+                              Author.name, Author.img).join(Columns, Columns.id == Micro_video.column_id).join(Author,
+                                                                                                               Author.id == Micro_video.auth_id).filter(
+                Micro_video.id == 1).one()
+            item = {}
+            item["id"] = info[0]
+            item["video_name"] = info[1]
+            item["video_src"] = info[2]
+            item["columns_id"] = info[3]
+            item["columns_name"] = info[4]
+            item["author_id"] = info[5]
+            item["author_name"] = info[6]
+            item["author_img"] = info[7]
+            item["is_comment"] = 1
+            return self.write(
+                json.dumps({"status": 200, "msg": "返回成功","info_item":item}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
+        else:
+            return self.write(
+                json.dumps({"status": 201, "msg": "失败"}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
