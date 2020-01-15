@@ -80,9 +80,11 @@ class Film_add(BaseHandler):
         mes = {}
         mes['data'] = ''
         classify = sess.query(Classify).all()
-        self.render('../templates/film_add.html',classify=classify,**mes)
+        label = sess.query(Label).all()
+        self.render('../templates/film_add.html',classify=classify,label=label,**mes)
     def post(self, *args, **kwargs):
         classify = sess.query(Classify).all()
+        label = sess.query(Label).all()
         mes = {}
         mes['data'] = ''
         name = self.get_argument('name','')
@@ -98,12 +100,12 @@ class Film_add(BaseHandler):
         is_show = self.get_argument('is_show','')
         if not all([name,director,intro]):
             mes['data'] = "请将带红色*参数填写完整！"
-            self.render('../templates/film_add.html',classify=classify,**mes)
+            self.render('../templates/film_add.html',classify=classify,label=label,**mes)
         else:
             try:
                 sess.query(Video).filter(Video.name==name).one()
                 mes['data'] = "此商品已存在，可添加其他"
-                self.render('../templates/film_add.html',classify=classify, **mes)
+                self.render('../templates/film_add.html',classify=classify,label=label,**mes)
             except:
                 video = Video(
                     name=name,
@@ -123,7 +125,7 @@ class Film_add(BaseHandler):
                 self.redirect('/film_list')
             else:
                 mes['data'] = "未知错误，请重新添加！"
-                self.render('../templates/film_add.html',classify=classify, **mes)
+                self.render('../templates/film_add.html',classify=classify,label=label,**mes)
 
 
 #删除微视频
@@ -160,7 +162,8 @@ class Film_edit(BaseHandler):
         mes['data'] = ''
         video = sess.query(Video).filter_by(id=id).first()
         classify = sess.query(Classify).all()
-        self.render('../templates/film_edit.html',video=video,classify=classify,**mes)
+        label = sess.query(Label).all()
+        self.render('../templates/film_edit.html',video=video,classify=classify,label=label,**mes)
     def post(self, id):
         video = sess.query(Video).filter_by(id=id).first()
         name = self.get_argument('name','')
