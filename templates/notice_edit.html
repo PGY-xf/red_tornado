@@ -35,7 +35,7 @@
 				<tr>
 					<td colspan="3">
 						<div style="color: red;font-size: 35px;font-weight:bold;text-align: center">
-							添加公告
+							编辑公告
 						</div>
 					</td>
 				</tr>
@@ -50,28 +50,85 @@
 				</tr>
 
 				<tr>
-					<td><span class="c-red"></span><b>公告封面图地址：</b></label></td>
-					<td><input type="text" class="input-text" value="{{ notice.notice_img }}" placeholder="公告封面图地址" name="notice_img" border="0"></td>
-					<td><font color="red">填写公告封面图地址，可填写可不填</font></td>
+					{% if notice.types == 0 %}
+					<tr>
+						<td><span class="c-red">*</span><b>页面展示</b></td>
+						<td colspan="2">
+							<select name="types" >
+								<option selected value="0">精选页</option>
+								<option value="1">电影页</option>
+								<option value="2">电视剧页</option>
+								<option value="3">动漫页</option>
+							</select>
+						</td>
+					</tr>
+					{% elif notice.types == 1 %}
+					<tr>
+						<td><span class="c-red">*</span><b>页面展示</b></td>
+						<td colspan="2">
+							<select name="types" >
+								<option value="0">精选页</option>
+								<option selected value="1">电影页</optionselected>
+								<option value="2">电视剧页</option>
+								<option value="3">动漫页</option>
+							</select>
+						</td>
+					</tr>
+					{% elif notice.types == 2 %}
+					<tr>
+						<td><span class="c-red">*</span><b>页面展示</b></td>
+						<td colspan="2">
+							<select name="types" >
+								<option value="0">精选页</option>
+								<option value="1">电影页</option>
+								<option selected value="2">电视剧页</option>
+								<option value="3">动漫页</option>
+							</select>
+						</td>
+					</tr>
+					{% elif notice.types == 3 %}
+					<tr>
+						<td><span class="c-red">*</span><b>页面展示</b></td>
+						<td colspan="2">
+							<select name="types" >
+								<option value="0">精选页</option>
+								<option value="1">电影页</option>
+								<option value="2">电视剧页</option>
+								<option selected value="3">动漫页</option>
+							</select>
+						</td>
+					</tr>
+					{% end %}
 				</tr>
+				
 
 				<tr>
 					{% if notice.is_show == 0 %}
-					<td><b>发布状态</b></td>
-					<td colspan="2">
-						<select name="is_show">
-							<option selected value="0">发布</option>
-							<option value="1">不发布</option>
-						</select>
-					</td>
+					<tr>
+						<td><span class="c-red"></span><b>发布状态：</b></label></td>
+						<td> 
+							<div class="radio-box">
+								<input name="is_show" type="radio" id="sex-1" checked value="0">
+								<label for="sex-1">发布</label>
+							</div>
+							<div class="radio-box">
+								<input type="radio" id="sex-2" name="is_show" value="1">
+								<label for="sex-2">不发布</label>
+							</div>
+						</td>
 					{% elif notice.is_show == 1 %}
-					<td><b>发布状态</b></td>
-					<td colspan="2">
-						<select name="is_show">
-							<option  value="0">发布</option>
-							<option selected value="1">不发布</option>
-						</select>
-					</td>
+					<tr>
+						<td><span class="c-red"></span><b>发布状态：</b></label></td>
+						<td> 
+							<div class="radio-box">
+								<input name="is_show" type="radio" id="sex-1" value="0">
+								<label for="sex-1">发布</label>
+							</div>
+							<div class="radio-box">
+								<input type="radio" id="sex-2" name="is_show" checked value="1">
+								<label for="sex-2">不发布</label>
+							</div>
+						</td>
 					{% end %}
 				</tr>
 			</table>

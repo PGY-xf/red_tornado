@@ -23,13 +23,8 @@
 </head>
 <body>
 	<div class="cl pd-20" style=" background-color:#5bacb6">
-		{% if video_info['notice_img']%}
-		<img class="avatar size-XL l" src="{{video_info['notice_img']}}">
 
 
-		{% else %}
-
-		{% end %}
 		<dl style="margin-left:80px; color:#fff">
 			<dt>
 				<span class="f-18">{{video_info["name"]}}</span>
@@ -47,19 +42,6 @@
 				<td colspan="2"><a>{{video_info["name"]}}</a></td>
 			</tr>
 
-			<tr>
-				<th class="text-r">公告封面图：</th>
-				{% if video_info['notice_img']%}
-				<td colspan="2"><img src="{{video_info['notice_img']}}" width="200" height="150" >
-					<button  class="btn btn-default radius" type="button"><a href="/notice_picture_delete/{{video_info['id']}}" style="color:red"> 删除图片</a></button>
-				
-				</td>
-				{% else %}
-				<th class="text-l" colspan="3"><a href="/notice_picture/{{video_info['id']}}">
-					<h4 style="color:red">还没有图片哦，点击添加</h4>
-				</a></th>
-				{% end %}
-			</tr>
 			
 			<tr>
 				<th class="text-r">发布状态：</th>

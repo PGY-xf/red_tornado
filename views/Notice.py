@@ -20,8 +20,8 @@ class Notice_list(BaseHandler):
             item={}
             item["id"] = info.id
             item["name"]=info.name
-            item["notice_img"]=info.notice_img
-            item["notice_link"]=info.notice_link
+            item["types"]=info.types
+            item["notice_link"]=info.notice_link.replace('../../pages/friend-link/common-link?weburl=','')
             item["is_show"]=info.is_show
             a_list.append(item)
         self.render('../templates/notice_list.html', notice=a_list, lens=lens)
@@ -34,8 +34,8 @@ class Notice_list(BaseHandler):
             item={}
             item["id"] = info.id
             item["name"]=info.name
-            item["notice_img"]=info.notice_img
-            item["notice_link"]=info.notice_link
+            item["types"]=info.types
+            item["notice_link"]=info.notice_link.replace('../../pages/friend-link/common-link?weburl=','')
             item["is_show"]=info.is_show
             a_list.append(item)
         self.render('../templates/notice_list.html', notice=a_list, lens=lens)
@@ -51,10 +51,10 @@ class Notice_add(BaseHandler):
         mes = {}
         mes['data'] = ''
         name = self.get_argument('name','')
-        notice_img = self.get_argument('notice_img')
+        types = self.get_argument('types')
         notice_link = self.get_argument('notice_link')
         is_show = self.get_argument('is_show','')
-        if not all([name,notice_link]):
+        if not all([name,notice_link,types]):
             mes['data'] = "请将带红色*参数填写完整！"
             self.render('../templates/notice_add.html',**mes)
         else:
@@ -65,8 +65,8 @@ class Notice_add(BaseHandler):
             except:
                 notice = Notice(
                     name=name,
-                    notice_img=notice_img,
-                    notice_link=notice_link,
+                    types=types,
+                    notice_link="../../pages/friend-link/common-link?weburl="+notice_link,
                     is_show=is_show
                 )
                 sess.add(notice)
@@ -113,12 +113,12 @@ class Notice_edit(BaseHandler):
     def post(self, id):
         notice = sess.query(Notice).filter_by(id=id).first()
         name = self.get_argument('name','')
-        notice_img = self.get_argument('notice_img','')
+        types = self.get_argument('types','')
         notice_link = self.get_argument('notice_link')
         is_show = self.get_argument('is_show','')
         notice.name = name
-        notice.notice_img =notice_img
-        notice.notice_link = notice_link
+        notice.types =types
+        notice.notice_link = "../../pages/friend-link/common-link?weburl="+notice_link
         notice.is_show = is_show
         sess.commit()
         self.redirect('/notice_list')
@@ -154,8 +154,8 @@ class Notice_details(BaseHandler):
         video_obj = {}
         video_obj["id"] = notice.id
         video_obj["name"] = notice.name
-        video_obj["notice_img"] = notice.notice_img
-        video_obj["notice_link"] = notice.notice_link
+        video_obj["types"] = notice.types
+        video_obj["notice_link"] = notice.notice_link.replace('../../pages/friend-link/common-link?weburl=','')
         video_obj["creation_time"] = notice.creation_time
         video_obj["is_show"] = notice.is_show
 
@@ -189,12 +189,6 @@ class Notice_picture(BaseHandler):
 
 
 
-
-
-
-
-
-
 #广告列表
 class Advertising_list(BaseHandler):
     def get(self, *args, **kwargs):
@@ -206,7 +200,8 @@ class Advertising_list(BaseHandler):
             item["id"] = info.id
             item["name"]=info.name
             item["advertising_img"]=info.advertising_img
-            item["advertising_link"]=info.advertising_link
+            item["advertising_link"]=info.advertising_link.replace('../../pages/friend-link/common-link?weburl=','') 
+            item["types"]=info.types
             item["is_show"]=info.is_show
             a_list.append(item)
         self.render('../templates/advertising_list.html', advertising=a_list, lens=lens)
@@ -220,7 +215,8 @@ class Advertising_list(BaseHandler):
             item["id"] = info.id
             item["name"]=info.name
             item["advertising_img"]=info.advertising_img
-            item["advertising_link"]=info.advertising_link
+            item["advertising_link"]=info.advertising_link.replace('../../pages/friend-link/common-link?weburl=','')
+            item["types"]=info.types
             item["is_show"]=info.is_show
             a_list.append(item)
         self.render('../templates/advertising_list.html', advertising=a_list, lens=lens)
@@ -238,8 +234,9 @@ class Advertising_add(BaseHandler):
         name = self.get_argument('name','')
         advertising_img = self.get_argument('advertising_img')
         advertising_link = self.get_argument('advertising_link')
+        types = self.get_argument('types')
         is_show = self.get_argument('is_show','')
-        if not all([name,advertising_link]):
+        if not all([name,advertising_link,types]):
             mes['data'] = "请将带红色*参数填写完整！"
             self.render('../templates/advertising_add.html',**mes)
         else:
@@ -251,8 +248,9 @@ class Advertising_add(BaseHandler):
                 advertising = Advertising(
                     name=name,
                     advertising_img=advertising_img,
-                    advertising_link=advertising_link,
-                    is_show=is_show
+                    advertising_link="../../pages/friend-link/common-link?weburl="+advertising_link,
+                    is_show=is_show,
+                    types=types
                 )
                 sess.add(advertising)
                 sess.commit()
@@ -301,10 +299,12 @@ class Advertising_edit(BaseHandler):
         advertising_img = self.get_argument('advertising_img','')
         advertising_link = self.get_argument('advertising_link')
         is_show = self.get_argument('is_show','')
+        types = self.get_argument('types','')
         advertising.name = name
         advertising.advertising_img = advertising_img
-        advertising.advertising_link = advertising_link
+        advertising.advertising_link = "../../pages/friend-link/common-link?weburl="+advertising_link
         advertising.is_show = is_show
+        advertising.types = types
         sess.commit()
         self.redirect('/advertising_list')
 
@@ -339,7 +339,7 @@ class Advertising_details(BaseHandler):
         video_obj["id"] = advertising.id
         video_obj["name"] = advertising.name
         video_obj["advertising_img"] = advertising.advertising_img
-        video_obj["advertising_link"] = advertising.advertising_link
+        video_obj["advertising_link"] = advertising.advertising_link.replace('../../pages/friend-link/common-link?weburl=','')
         video_obj["creation_time"] = advertising.creation_time
         video_obj["is_show"] = advertising.is_show
 

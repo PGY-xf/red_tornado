@@ -65,3 +65,11 @@ def deleteap(picture):
     ret, info = bucket.delete(bucket_name, key)
     print(info)
     # assert ret == {}
+
+
+
+import time
+#根据日期生成唯一订单号
+def get_order_code():
+    order_no = str(time.strftime('%Y%m%d%H%M%S', time.localtime(time.time())))
+    return order_no

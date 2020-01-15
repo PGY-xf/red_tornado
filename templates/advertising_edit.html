@@ -56,22 +56,86 @@
 				</tr>
 
 				<tr>
+					{% if advertising.types == 0 %}
+					<tr>
+						<td><span class="c-red">*</span><b>页面展示</b></td>
+						<td colspan="2">
+							<select name="types" >
+								<option selected value="0">精选页</option>
+								<option value="1">电影页</option>
+								<option value="2">电视剧页</option>
+								<option value="3">动漫页</option>
+							</select>
+						</td>
+					</tr>
+					{% elif advertising.types == 1 %}
+					<tr>
+						<td><span class="c-red">*</span><b>页面展示</b></td>
+						<td colspan="2">
+							<select name="types" >
+								<option value="0">精选页</option>
+								<option selected value="1">电影页</optionselected>
+								<option value="2">电视剧页</option>
+								<option value="3">动漫页</option>
+							</select>
+						</td>
+					</tr>
+					{% elif advertising.types == 2 %}
+					<tr>
+						<td><span class="c-red">*</span><b>页面展示</b></td>
+						<td colspan="2">
+							<select name="types" >
+								<option value="0">精选页</option>
+								<option value="1">电影页</option>
+								<option selected value="2">电视剧页</option>
+								<option value="3">动漫页</option>
+							</select>
+						</td>
+					</tr>
+					{% elif advertising.types == 3 %}
+					<tr>
+						<td><span class="c-red">*</span><b>页面展示</b></td>
+						<td colspan="2">
+							<select name="types" >
+								<option value="0">精选页</option>
+								<option value="1">电影页</option>
+								<option value="2">电视剧页</option>
+								<option selected value="3">动漫页</option>
+							</select>
+						</td>
+					</tr>
+					{% end %}
+				</tr>
+
+
+				<tr>
 					{% if advertising.is_show == 0 %}
-					<td><b>发布状态</b></td>
-					<td colspan="2">
-						<select name="is_show">
-							<option selected value="0">发布</option>
-							<option value="1">不发布</option>
-						</select>
-					</td>
+					<tr>
+						<td><span class="c-red"></span><b>发布状态：</b></label></td>
+						<td> 
+							<div class="radio-box">
+								<input name="is_show" type="radio" id="sex-1" checked value="0">
+								<label for="sex-1">发布</label>
+							</div>
+							<div class="radio-box">
+								<input type="radio" id="sex-2" name="is_show" value="1">
+								<label for="sex-2">不发布</label>
+							</div>
+						</td>
 					{% elif advertising.is_show == 1 %}
-					<td><b>发布状态</b></td>
-					<td colspan="2">
-						<select name="is_show">
-							<option  value="0">发布</option>
-							<option selected value="1">不发布</option>
-						</select>
-					</td>
+					<tr>
+						<td><span class="c-red"></span><b>发布状态：</b></label></td>
+						<td> 
+							<div class="radio-box">
+								<input name="is_show" type="radio" id="sex-1" value="0">
+								<label for="sex-1">发布</label>
+							</div>
+							<div class="radio-box">
+								<input type="radio" id="sex-2" name="is_show" checked value="1">
+								<label for="sex-2">不发布</label>
+							</div>
+						</td>
+					</tr>
 					{% end %}
 				</tr>
 			</table>

@@ -106,16 +106,16 @@ class Video(Base,IdBase):
     protagonist = Column(String(100))            #主演
     classify_id = Column(Integer)                #分类id
     column_id = Column(Integer)                  #栏目id
+    thiscat_id = Column(Integer)                 #标签id
+    tag = Column(String(100))                    #服务标签(‘,’分割)
     scriptwriter = Column(String(100))           #编剧
     release_date = Column(String(100))           #上映时间 
     box_office = Column(String(100))             #票房
     intro = Column(Text)                         #电影简介 （必填）
     year = Column(String(100))                   #制片年份 （必填）
     region = Column(String(100))                 #影片地区 （必填）
-    tag = Column(String(100))                    #影片标签 
     amount = Column(Integer,default=0)           #播放次数
     hot = Column(Integer,default=1)              #热度值
-    thiscat_id = Column(Integer)                 #视频所属的栏目   （必填）
     video_weight = Column(Integer,default=40)    #视频权重（0~99）越小越靠前默认为40
     is_vip = Column(Integer,default=0)           #是否是会员视频 0为否  1为是
     is_selection = Column(Integer,default=0)     #是否为精选 默认为否
@@ -142,32 +142,19 @@ class Label(Base,IdBase):
 
 
 
-# 厂家广告表
-class Advertising(Base,IdBase):
-    __tablename__ = "advertising"
-    name = Column(String(100))                                  #广告名称
-    advertising_img = Column(String(255))                       #广告封面图
-    advertising_link = Column(String(255))                      #广告链接
+
+# 公告广告表 
+class Affiche(Base,IdBase):
+    __tablename__ = "affiche"
+    name = Column(String(100))                                  #名称
+    img = Column(String(255))                                   #封面图
+    link = Column(String(255))                                  #链接
+    is_advertising = Column(Integer,default=0)                  #是否广告（0：公告   1：广告）
     is_show = Column(Integer,default=0)                         #0未审核  1已审核
+    types = Column(Integer,default=0)                           #页面展示  0精选页  1电影页  2电视剧页  3动漫页 
     creation_time = Column(DateTime(),default=datetime.now)     #发布时间（精确到秒）
 
 
-# 资讯公告表
-class Notice(Base,IdBase):
-    __tablename__ = "notice"
-    name = Column(String(100))                                  #公告名称
-    notice_img = Column(String(255))                            #公告封面图
-    notice_link = Column(String(255))                           #公告链接
-    is_show = Column(Integer,default=0)                         #0未审核  1已审核
-    creation_time = Column(DateTime(),default=datetime.now)     #发布时间（精确到秒）
-
-
-# 轮播图表
-class Slideshow(Base,IdBase):
-    __tablename__ = 'slideshow'
-    video_id = Column(Integer)              #电影id
-    micro_video_id = Column(Integer)       #微视频id
-    img_stort = Column(Integer)           #图片顺序(0~4)
 
 
 
@@ -196,28 +183,6 @@ class Big_V(Base,IdBase):
 
 
 
-# #大V 身份表
-# class Identity(Base,IdBase):
-#     __tablename__ = "identity"
-#     name = Column(String(60))         #身份名称
-
-
-
-# #大V and 身份
-# class V_and_identity(Base,IdBase):
-#     __tablename__ = "v_and_identity"     
-#     v_id = Column(Integer)           
-#     identity_id = Column(Integer)
-
-
-
-# #大V and 电影表
-# class V_andvideo(Base,IdBase):
-#     __tablename__ = "v_andvideo"
-#     v_id = Column(Integer)
-#     video_id = Column(Integer)
-
-
 
 
 # 评论表
@@ -238,10 +203,10 @@ class Comment(Base,IdBase):
 #用户收藏表
 class Collect(Base,IdBase):
     __tablename__ = "collect"
-    user_id = Column(Integer)            #用户id
-    video_id = Column(Integer)           #电影id
-    micro_video_id = Column(Integer)     #微视频id
-
+    user_id = Column(Integer)                                 #用户id
+    video_type = Column(Integer)                              #影片类型    0微电影    1电影      
+    video_id = Column(Integer)                                #用户关注的影片id
+    create_time = Column(DateTime(),default=datetime.now)     #创建时间
 
 
 
@@ -249,10 +214,11 @@ class Collect(Base,IdBase):
 #用户关注表
 class Attention(Base,IdBase):
     __tablename__ = "attention"
-    user_id = Column(Integer)               #用户id
-    video_id = Column(Integer)              #电影id
-    micro_video_id = Column(Integer)        #微视频id
-    types = Column(Integer)                 #关注的类型 1为栏目，2为明星 3为导演 4位主持人
+    user_id = Column(Integer)                                   #用户id
+    attent_type = Column(Integer)                               #关注的类型id   0作者    1主持人    2栏目
+    attent_id = Column(Integer)                                 #基于类型的关注id
+    create_time = Column(DateTime(),default=datetime.now)       #创建时间
+
 
 
 
@@ -296,7 +262,77 @@ class System(Base):
     create_time = Column(DateTime(),default=datetime.now)   #修改时间（精确到秒）
 
 
+#################
 
+
+# 厂家广告表
+class Advertising(Base,IdBase):
+    __tablename__ = "advertising"
+    name = Column(String(100))                                  #广告名称
+    advertising_img = Column(String(255))                       #广告封面图
+    advertising_link = Column(String(255))                      #广告链接
+    is_show = Column(Integer,default=0)                         #0未审核  1已审核
+    types = Column(Integer,default=0)                           #页面展示  0精选页  1电影页  2电视剧页  3动漫页 
+    creation_time = Column(DateTime(),default=datetime.now)     #发布时间（精确到秒）
+
+
+
+
+# 资讯公告表
+class Notice(Base,IdBase):
+    __tablename__ = "notice"
+    name = Column(String(100))                                  #公告名称
+    notice_link = Column(String(255))                           #公告链接
+    is_show = Column(Integer,default=0)                         #0未审核  1已审核
+    types = Column(Integer,default=0)                           #页面展示  0精选页  1电影页  2电视剧页  3动漫页 
+    creation_time = Column(DateTime(),default=datetime.now)     #发布时间（精确到秒）
+
+
+
+
+
+
+# #订单表
+# class Order(Base,IdBase):
+#     __tablename__='order'
+#     trading_status=Column(Integer,default=0)         #支付状态  0已支付  1未支付 2 退款
+#     order_amout=Column(Integer)                      #订单金额
+#     payment_generation_time=Column(DateTime(),default=datetime.now)     #订单生成时间
+#     outer_traed_number=Column(String(255))           #订单号
+
+
+
+
+
+# #订单明细表
+# class Order_detail(Base,IdBase):
+#     __tablename__='order_detail'
+#     order=Column(String(255),ForeignKey('order.id'))
+#     goods_list=Column(Text)#商品列表
+#     shipment_status=Column(Integer,default=0)#配送状态
+#     shop_addr=Column(String(255))#收货地址
+
+
+
+
+
+# #优惠卷表
+# class Coupon(Base,IdBase):
+#     __tablename__ ='coupon'
+#     coupon_name = Column(String(50),unique=True) # 优惠卷码
+#     coupon_code = Column(Integer,default=0) #是否使用
+#     coupon_time = Column(DateTime,default=datetime.now) #过期时间
+#     coupon_price = Column(DECIMAL(2,1)) #折扣
+
+
+
+
+# # 轮播图表
+# class Slideshow(Base,IdBase):
+#     __tablename__ = 'slideshow'
+#     micro_type = Column(Integer)       #微视频id
+#     video_id = Column(Integer)              #电影id
+#     img_stort = Column(Integer)           #图片顺序(0~4)
 
 
 def sqlalchemy_json(self):

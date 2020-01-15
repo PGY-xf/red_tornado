@@ -93,6 +93,19 @@
 					</td>
 					<td><a href="/product_category">点击添加分类</a></td>
 				</tr>
+
+				<tr>
+					<td><span class="c-red">*</span><b>标签：</b></label></td>
+					<td>
+						<select name="thiscat_id">
+							{% for i in label %}
+							<option value="{{ i.id }}">{{ i.name }}</option>
+							{% end %}
+						</select>
+					</td>
+					<td><a href="/product_category">点击添加分类</a></td>
+				</tr>
+
 				<tr>
 					<td><span class="c-red"></span><b>热度：</b></label></td>
 					<td><input type="text" class="input-text" value="" placeholder="热度默认为1.0" name="hot"></td>

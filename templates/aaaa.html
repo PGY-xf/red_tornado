@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src='/static/js/jquery-1.12.1.min.js'></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <form method="post">
+        <b style="color: red">{{ data }}</b></br>
+        <div>
+            <tr>
+                <td>id</td>
+                <td>名称</td>
+            </tr>
+                    <br>
+            <tr>
+                <td>{{ video.id }}</td>
+                <td>{{ video.name }}</td>
+            </tr>   <br>
+            <input name='count'>
+            <button type="submit">评论</button><br>
+        </div>
+
+        <div>
+            评论：<br>
+            <tr>
+                <td>用户</td>
+                <td>评论内容</td>
+
+            </tr><br>
+            
+            {% for i in comment %}
+            <tr>
+                <td>{{ i.user_id }}</td>
+                <td>{{ i.content }}</td>
+            </tr>
+                <br>
+            {% end %}<br>
+            <input name='abc' value="" type="text">
+                <button type="button" id="huifu" onclick="dianjiyici()">回复</button>
+        </div>
+
+    </form>
+</body>
+<script type="text/javascript">
+// $("#huifu").click(function(){
+//     alert($("input[name='abc']").val())
+// })
+
+function dianjiyici(){
+    alert($("input[name='abc']").val())
+}
+
+
+// $("按钮").click(function(){ 
+//     $.ajax({
+//         type: "POST",
+//         url: "接口地址",
+//         data: 传到服务器的数据
+//     })
+//     .done(function( msg ) {
+//         做个弹框，解析返回的msg，插进弹框
+//     });
+// });
+</script>
+</html>

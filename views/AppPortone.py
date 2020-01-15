@@ -75,10 +75,13 @@ class App_register(BaseHandler):
                 self.write(json.dumps({"status": 10011, "msg": "用户已注册"}, ensure_ascii=False, indent=4))
 
 
-
+# import tornado.web
+# import tornado.gen
 
 #app登录
 class App_login(BaseHandler):
+    # @tornado.web.asynchronous  
+    # @tornado.gen.coroutine     #异步
     def post(self, *args, **kwargs):
         phone = self.get_argument("phoneno")
         password = self.get_argument("password")
@@ -175,3 +178,133 @@ class getadvertising(BaseHandler):
 
 
 
+# # Comment评论表   Video电影表
+# #评论
+# class Aaaa(BaseHandler):
+#     def get(self,*args,**kwargs):
+#         mes = {}
+#         mes['data'] = ''
+#         video = sess.query(Video).filter_by(id=1).first()
+#         comment = sess.query(Comment).filter(Comment.video_id==1).all()
+#         self.render('../templates/aaaa.html',video=video,comment=comment,**mes)
+#     def post(self,*args,**kwargs):
+#         mes = {}
+#         mes['data'] = ''
+#         video = sess.query(Video).filter_by(id=1).first()
+#         comment = sess.query(Comment).filter(Comment.video_id==1).all()
+#         count = self.get_argument('count')
+#         if not count:
+#             mes['data'] = "参数不能为空"
+#             self.render('../templates/aaaa.html',video=video,comment=comment,**mes)
+#         else:
+#             content = Comment(
+#                     content=count,
+#                     user_id=1,
+#                     video_id=1
+#                     )
+#             sess.add(content)
+#             sess.commit()
+#             self.redirect('/aaaa')
+
+
+
+# class Aaaapp(BaseHandler):
+#     def get(self,*args,**kwargs):
+#         self.render('../templates/aaaapp.html')
+
+
+
+
+ 
+# from pay import AliPay
+
+# #初始化阿里支付对象
+# def get_ali_object():
+#     # 沙箱环境地址：https://openhome.alipay.com/platform/appDaily.htm?tab=info
+#     app_id = "2016100100641427"  #  APPID （沙箱应用）
+
+#     # 支付完成后，支付偷偷向这里地址发送一个post请求，识别公网IP,如果是 192.168.20.13局域网IP ,支付宝找不到，def page2() 接收不到这个请求
+#     notify_url = "/alipayreturn"
+
+#     # 支付完成后，跳转的地址。
+#     return_url = "/alipayreturn"
+
+#     #秘钥地址
+#     key_path = os.path.dirname(os.path.dirname(__file__))+"/keys/"
+    
+#     merchant_private_key_path = key_path+"app_private_2048.txt" # 应用私钥
+#     alipay_public_key_path = key_path+"alipay_public_2048.txt"  # 支付宝公钥
+#     alipay = AliPay(
+#         appid=app_id,
+#         app_notify_url=notify_url,
+#         return_url=return_url,
+#         app_private_key_path=merchant_private_key_path,
+#         alipay_public_key_path=alipay_public_key_path,  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥
+#         debug=True,  # 默认False,
+#     )
+#     return alipay
+
+
+
+
+
+# import random
+# #支付宝支付
+# class PayPageHandler(BaseHandler):
+#     async def post(self):
+#         abc = random.randint(0000000,9999999)
+#         # 根据当前用户的配置，生成URL，并跳转。
+#         money = self.get_argument('money')
+#         print(money)
+#         a = float(money)
+#         b = round(a,2)
+#         alipay = get_ali_object()
+
+#         # 生成支付的url
+#         query_params = alipay.direct_pay(
+#             subject="央视融媒",  # 商品简单描述
+#             out_trade_no= str(get_order_code()) + str(abc),  # 用户购买的商品订单号（每次不一样） 20180301073422891
+#             total_amount=b,  # 交易金额(单位: 元 保留俩位小数)
+#         )
+
+#         pay_url = "https://openapi.alipaydev.com/gateway.do?{0}".format(query_params)  # 支付宝网关地址（沙箱应用）
+#         self.write(pay_url)
+
+
+
+
+ 
+# #支付宝回调
+# class PayRetrunHandler(BaseHandler):
+#     def get(self):
+#         params = self.request.arguments
+#         print(params)
+#         order = Order(
+#             id = str(params['trade_no'][0],'utf-8'),
+#             order_amout = str(params['total_amount'][0],'utf-8'),
+#             payment_generation_time = str(params['timestamp'][0],'utf-8'),
+#             outer_traed_number = str(params['out_trade_no'][0],'utf-8')
+#             )
+#         sess.add(order)
+#         sess.commit()
+#         self.redirect('checkout')
+
+
+
+# #支付宝退款
+# class Refund(BaseHandler):
+#     def post(self):
+#         money = self.get_argument('money','')  #商品总价
+#         id = self.get_argument('id','')        #商品订单号
+#         #实例化支付类
+#         alipay = get_ali_object()
+#         #调用退款方法
+#         order_string = alipay.api_alipay_trade_refund(
+#             out_trade_no = id,                               #订单号，一定要注意，这是支付成功后返回的唯一订单号
+#             refund_amount= money,                            #退款金额，注意精确到分，不要超过订单支付总金额
+#             notify_url='/alipayreturn'  #回调网址
+#         )
+#         order = sess.query(Order).filter(Order.outer_traed_number==id).one()
+#         order.trading_status = 2
+#         sess.commit()
+#         self.write(json.dumps({"status":200,"msg":"退款成功,请注意查看"},ensure_ascii=False,indent=4))

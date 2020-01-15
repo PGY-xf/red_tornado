@@ -48,7 +48,7 @@
 						<th width="40">ID</th>
 						<th width="70">公告名称</th>
 						<th width="70">公告链接</th>
-						<th width="100">公告封面图</th>
+						<th width="100">使属页面</th>
 						<th width="60">是否审核</th>
 						<th width="100">操作</th>
 					</tr>
@@ -63,14 +63,17 @@
 						<td><span class="price">{{ i['notice_link'] }}</span></td>
 
 
-						<td><span class="price">
-							
-							{% if i['notice_img']%}
-								<a href="/notice_details/{{ i['id'] }}"><span class="label label-success radius">查看图片</span></a>
-							{% else %}
-								<a href="/notice_picture/{{i['id']}}"><span class="label radius">上传图片</span></a>
+						<td class="td-status">
+							{% if i['types'] == 0 %}
+							<span >精选页</span>
+							{% elif i['types'] == 1 %}
+							<span>电影页</span>
+							{% elif i['types'] == 2 %}
+							<span>电视剧页</span>
+							{% elif i['types'] == 3 %}
+							<span>动漫页</span>
 							{% end %}
-						</span></td>
+						</td>
 
 
 						<td class="td-status">

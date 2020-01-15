@@ -187,7 +187,11 @@ class Application(tornado.web.Application):
             (r"/App_register",AppPortone.App_register),              #用户登录   
 
 
-
+            # (r"/aaaapp",AppPortone.Aaaapp),            
+            # (r"/aaaa",AppPortone.Aaaa),              #用户登录   
+            # (r"/page", AppPortone.PayPageHandler),     #支付
+            # (r"/alipayreturn", AppPortone.PayRetrunHandler),   #回调
+            # (r"/refund", AppPortone.Refund),     #退款
 
 
             #主页面操作

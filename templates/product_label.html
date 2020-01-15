@@ -47,7 +47,7 @@
 						<th width="25"><input type="checkbox" name="" value=""></th>
 						<th width="40">ID</th>
 						<th width="40">标签名称</th>
-						<th width="40">封面图</th>
+						<th width="40">轮播图</th>
 						<th width="100">操作</th>
 					</tr>
 				</thead>
@@ -60,9 +60,9 @@
 						<td><span class="price">
 					
 							{% if i['label_img'] %}
-								<a href="/product_label_details/{{ i['id'] }}"><span class="label label-success radius">查看封面图</span></a>
+								<a href="/product_label_details/{{ i['id'] }}"><span class="label label-success radius">查看轮播图</span></a>
 							{% else %}
-								<a href="/product_label_picture/{{ i['id'] }}"><span class="label radius">上传封面图</span></a>
+								<a href="/product_label_picture/{{ i['id'] }}"><span class="label radius">上传轮播图</span></a>
 							{% end %}
 						</span></td>
 						<td class="td-manage">
