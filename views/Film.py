@@ -23,13 +23,14 @@ class Film_list(BaseHandler):
             item["name"]=video.name
             item["director"]=video.director
             item["year"]=video.year
-            item["region"]=video.region
+            item["region"]=video.region  
             #图片
             item["video_img1"] = video.video_img1
             #链接
             item["video_src"] = video.video_src
             item["video_slideshow"] = video.video_slideshow
 
+            item["is_vip"] = video.is_vip
             item["is_show"] = video.is_show
             item["director"] = video.director
             try:
@@ -61,6 +62,7 @@ class Film_list(BaseHandler):
             item["video_slideshow"] = video.video_slideshow
 
             item["is_show"] = video.is_show
+            item["is_vip"] = video.is_vip
             item["director"] = video.director
             try:
                 classify = sess.query(Classify.id,Classify.name).filter(Classify.id==video.classify_id)
@@ -98,6 +100,8 @@ class Film_add(BaseHandler):
         classify_id = self.get_argument('classify_id','')
         hot = self.get_argument('hot','')
         is_show = self.get_argument('is_show','')
+        is_vip = self.get_argument('is_vip','')
+        is_selection = self.get_argument('is_selection','')
         if not all([name,director,intro]):
             mes['data'] = "请将带红色*参数填写完整！"
             self.render('../templates/film_add.html',classify=classify,label=label,**mes)
@@ -118,7 +122,9 @@ class Film_add(BaseHandler):
                     video_src=video_src,
                     classify_id=classify_id,
                     hot=hot,
-                    is_show=is_show
+                    is_show=is_show,
+                    is_vip=is_vip,
+                    is_selection=is_selection
                 )
                 sess.add(video)
                 sess.commit()
@@ -177,6 +183,8 @@ class Film_edit(BaseHandler):
         classify_id = self.get_argument('classify_id','')
         hot = self.get_argument('hot','')
         is_show = self.get_argument('is_show','')
+        is_vip = self.get_argument('is_vip','')
+        is_selection = self.get_argument('is_selection','')
         video.name = name
         video.director = director
         video.year = year
@@ -188,6 +196,8 @@ class Film_edit(BaseHandler):
         video.classify_id = classify_id
         video.hot = hot
         video.is_show = is_show
+        video.is_vip = is_vip
+        video.is_selection = is_selection
         sess.commit()
         self.redirect('/film_list')
 

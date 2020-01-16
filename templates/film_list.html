@@ -62,8 +62,14 @@
 					{% for i in videos %}
 					<tr class="text-c va-m">
 						<td><input name="" type="checkbox" value=""></td>
+							{% if i['is_vip'] == 1 %}
+						<td><i class="icon Hui-iconfont"></i>{{ i['id'] }}</td>
+							{% else %}
 						<td>{{ i['id'] }}</td>
-                        <td class="price"><b><a href="/film_details/{{ i['id'] }}">{{ i['name'] }}</a></b></td>
+							{% end %}
+
+
+						<td class="price"><b><a href="/film_details/{{ i['id'] }}"> {{ i['name'] }}</a></b></td>
 						<td><span class="price">{{ i['director'] }}</span></td>
 						<td class="price"><b class="text-success">{{ i['region'] }}</b></td>
 						<td class="price">{{ i['classify_name'] }}</td>

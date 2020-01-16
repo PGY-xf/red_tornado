@@ -90,7 +90,7 @@ class Product_micro_add(BaseHandler):
         self.render('../templates/product_micro_add.html',columns=columns,author=author,**mes)
     def post(self, *args, **kwargs):
         columns = sess.query(Columns).all()
-        author = sess.query(Author).all()
+        author = sess.query(Author).filter(Author.account=='yangshi').one()
         mes = {}
         mes['data'] = ''
         name = self.get_argument('name','')

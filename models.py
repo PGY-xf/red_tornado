@@ -368,4 +368,3 @@ class AlchemyEncoder(json.JSONEncoder):
 if __name__ == "__main__":
     #创建表
     Base.metadata.create_all()
-    # Base.metadata.drop_all()

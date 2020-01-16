@@ -1,4 +1,3 @@
-<!--_meta 作为公共模版分离出去-->
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -8,119 +7,164 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 <!--[if lt IE 9]>
-<script type="text/javascript" src="../static/lib/html5shiv.js"></script>
-<script type="text/javascript" src="../static/lib/respond.min.js"></script>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
 
 <![endif]-->
 <link rel="stylesheet" type="text/css" href="/static/h-ui/css/H-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/H-ui.admin.css" />
 <link rel="stylesheet" type="text/css" href="/static/lib/Hui-iconfont/1.0.8/iconfont.css" />
-
-<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/style.css" />
 <!--[if IE 6]>
-<script type="text/javascript" src="../static/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<!--/meta 作为公共模版分离出去-->
-
-<link href="/static/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+<title>修改微视频</title>
 </head>
 <body>
 <div class="page-container">
-	<form action="" method="post" class="form form-horizontal" id="form-article-add">
-				<b style="color: red">{{ data }}</b></br>
-			<div style="align-items: center;display: flex;width:500px;justify-content: center;font-size: 32px">
-				<table border="1">
-				<tr>
-					<td colspan="3">
-						<div style="color: red;font-size: 35px;font-weight:bold;text-align: center">
-							修改微视频
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td><span class="c-red">*</span><b>微视频标题：</b></label></td>
-					<td colspan="2"><input type="text" class="input-text" value="{{ video.name }}" placeholder="请输入视频名称！" name="name"></td>
-				</tr>
-				<tr>
-					<td><span class="c-red">*</span><b>视频简介</b></td>
-					<td colspan="2">
-						<textarea style="width:300px;height:100px;" name="info">{{ video.info }}</textarea>
-					</td>
-					</tr>
-				<tr>
-					<td><span class="c-red"></span><b>图片地址：</b></label></td>
-					<td><input type="text" class="input-text" value="{{ video.video_img }}" placeholder="图片地址" name="video_img" border="0"></td>
-					<td><font color="red">填写图片地址，可填写可不填</font></td>
-				</tr>
-				<tr>
-					<td><span class="c-red"></span><b>视频地址：</b></label></td>
-					<td><input type="text" class="input-text" value="{{ video.video_url }}" placeholder="视频地址" name="video_url"></td>
-					<td><font color="red">填写视频地址，可填写可不填</font></td>
-				</tr>
-				<tr>
-					<td><span class="c-red"></span><b>轮播图地址：</b></label></td>
-					<td><input type="text" class="input-text" value="{{ video.video_slideshow }}" placeholder="轮播图地址" name="video_slideshow" border="0"></td>
-					<td><font color="red">填写轮播图地址，可填写可不填</font></td>
-				</tr>
-				<tr>
-					<td><span class="c-red">*</span><b>所属栏目：</b></label></td>
-					<td colspan="2">
-						<select name="columns_id">
+	<form action="" method="post" class="form form-horizontal" id="form-user-add">
+		<body>
+			<div class="row cl">
+				<div style="color: red;font-size: 35px;font-weight:bold;text-align: center">
+					修改微视频
+				</div>
+			</div>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">
+					<span class="c-red">*</span>
+					微视频名称：</label>
+				<div class="formControls col-xs-6 col-sm-6">
+					<input type="text" class="input-text" value="{{ video.name }}" placeholder="请输入微视频名称(格式：XXXX)" id="name" name="name">
+				</div>
+			</div>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">微视频简介：</label>
+				<div class="formControls col-xs-6 col-sm-6">
+					<textarea name="info" cols="" rows="" class="textarea" placeholder="请输入微视频简介......"*10-100" dragonfly="true" nullmsg="备注不能为空！" onkeyup="$.Huitextarealength(this,200)">{{ video.info }}</textarea>
+					<p class="textarea-numberbar">
+						<!-- <em class="textarea-length">0</em>/200</p> -->
+				</div>
+			</div>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">
+					<span class="c-red"></span>
+					图片地址：</label>
+				<div class="formControls col-xs-5 col-sm-5">
+					<input type="text" class="input-text" value="{{ video.video_img }}" placeholder="请输入图片地址[格式：http://qiniu.weiinng.cn/XXXXXX]" id="video_img" name="video_img">
+				</div>
+				<div class="formControls col-xs-4 col-sm-2">
+					<b style="color: red">(--可不填--)</b>
+				</div>
+			</div>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">
+					<span class="c-red"></span>
+					电影地址：</label>
+				<div class="formControls col-xs-5 col-sm-5">
+					<input type="text" class="input-text" value="{{ video.video_url }}" placeholder="请输入电影地址[格式：http://qiniu.weiinng.cn/XXXXXX]" id="video_url" name="video_url">
+				</div>
+				<div class="formControls col-xs-4 col-sm-2">
+					<b style="color: red">(--可不填--)</b>
+				</div>
+			</div>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">
+					<span class="c-red"></span>
+					轮播图地址：</label>
+				<div class="formControls col-xs-5 col-sm-5">
+					<input type="text" class="input-text" value="{{ video.video_slideshow }}" placeholder="请输入轮播图地址[格式：http://qiniu.weiinng.cn/XXXXXX]" id="video_slideshow" name="video_slideshow">
+				</div>
+				<div class="formControls col-xs-4 col-sm-2">
+					<b style="color: red">(--可不填--)</b>
+				</div>
+			</div>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">
+					<span class="c-red"></span>
+					权重：</label>
+				<div class="formControls col-xs-6 col-sm-6">
+					<input type="text" class="input-text" value="{{ video.weight }}" placeholder="权重默认为50【范围（1~99），越大越靠前】" id="weight" name="weight">
+				</div>
+			</div>
+			
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>栏目：</label>
+				<div class="formControls col-xs-4 col-sm-2">
+					<span class="select-box">
+					<select name="columns_id" class="select">
 							{% for a in columns %}
 							<option value="{{ a.id }}">{{ a.name }}</option>
 							{% end %}
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td><span class="c-red">*</span><b>作者：</b></label></td>
-					<td>
-						<select name="auth_id">
-							<option value="{{ author.id }}">{{ author.name }}</option>
-						</select>
-					</td>
-					<td><a>添加作者页面</a></td>
-				</tr>
-				<tr>
-					<td><span class="c-red">*</span><b>权重：</b></label></td>
-					<td><input type="text" class="input-text" value="{{ video.weight }}" placeholder="权重默认为50" name="weight"></td>
-					<td>范围（1~99），越大越靠前</td>
-				</tr>
-
-
-				<tr>
-					{% if video.is_show == 1 %}
-					<td><b>发布状态</b></td>
-					<td colspan="2">
-						<select name="is_show">
-							<option selected value="1">发布</option>
-							<option value="0">不发布</option>
-						</select>
-					</td>
-					{% elif video.is_show == 0 %}
-					<td><b>发布状态</b></td>
-					<td colspan="2">
-						<select name="is_show">
-							<option  value="1">发布</option>
-							<option selected value="0">不发布</option>
-						</select>
-					</td>
-					{% end %}
-				</tr>
-
-			</table>
+							
+					</select>
+					</span>
+				</div>
+				<div class="formControls col-xs-4 col-sm-2">
+				<a href="/product_column_add"  style="color: red">添加栏目</a>
+				</div>
 			</div>
-		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存提交</button>
-				<button  class="btn btn-default radius" type="button"><a href="/product_micro">取消</a></button>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>作者：</label>
+				<div class="formControls col-xs-4 col-sm-2">
+					<span class="select-box">
+					<select name="auth_id" class="select">
+						<option value="{{ author.id }}">{{ author.name }}</option>
+					</select>
+					</span>
+				</div>
+				<div class="formControls col-xs-4 col-sm-2">
+					<a href="/author_add" style="color: red">添加作者</a>
+				</div>
 			</div>
-		</div>
+
+			{% if video.is_show == 1 %}
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>发布状态：</label>
+				<div class="formControls col-xs-6 col-sm-6 col-sm-6">
+					<div class="radio-box">
+							<input name="is_show" type="radio" id="sex-1" checked value="1">
+							<label for="sex-1">发布</label>
+						</div>
+						<div class="radio-box">
+							<input type="radio" id="sex-2" name="is_show" value="0">
+							<label for="sex-2">不发布</label>
+						</div>
+				</div>
+			</div>
+			{% elif video.is_show == 0 %}
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>发布状态：</label>
+				<div class="formControls col-xs-6 col-sm-6 col-sm-6">
+					<div class="radio-box">
+							<input name="is_show" type="radio" id="sex-1"  value="1">
+							<label for="sex-1">发布</label>
+						</div>
+						<div class="radio-box">
+							<input type="radio" id="sex-2" name="is_show" checked value="0">
+							<label for="sex-2">不发布</label>
+						</div>
+				</div>
+			</div>
+			{% end %}
+
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+					<button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存提交</button>
+					<button  class="btn btn-default radius" type="button"><a href="/product_micro">取消</a></button>
+				</div>
+			</div>
+
+		
 	</form>
 </div>
-
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="/static/lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="/static/lib/layer/2.4/layer.js"></script>
@@ -128,13 +172,13 @@
 <script type="text/javascript" src="/static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="/static/lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="/static/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
-<script type="text/javascript" src="/static/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="/static/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="/static/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="/static/lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript" src="/static/lib/webuploader/0.1.5/webuploader.min.js"></script> 
-<script type="text/javascript" src="/static/lib/ueditor/1.4.3/ueditor.config.js"></script>
-<script type="text/javascript" src="/static/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
-<script type="text/javascript" src="/static/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+$(function(){
+	
+});
+</script>
 </body>
 </html>

@@ -32,6 +32,14 @@
 					</div>
 				</td>
 			</tr>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">
+					<span class="c-red"></span>
+					</label>
+					<div class="formControls col-xs-6 col-sm-6">
+						<b style="color: red;">{{ data }}</b>
+					</div>
+			</div>
 			
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-2">
@@ -44,13 +52,15 @@
 			</div>
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-2">轮播图地址：</label>
-				<div class="formControls col-xs-6 col-sm-6">
-					<input type="text" class="input-text" value="" placeholder="请输入轮播图地址[格式：http://qiniu.weiinng.cn/XXXXXX(--可不填--)]" id="label_img" name="label_img">
+				<div class="formControls col-xs-5 col-sm-5s">
+					<input type="text" class="input-text" value="" placeholder="请输入轮播图地址[格式：http://qiniu.weiinng.cn/XXXXXX]" id="label_img" name="label_img">
+				</div>
+				<div class="formControls col-xs-4 col-sm-2">
+					<b style="color: red">(--可不填--)</b>
 				</div>
 			</div>
 			<div class="row cl">
 				<div class="col-9 col-offset-2">
-					<b style="color: red">{{ data }}</b></br>
 					<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
 					<button  class="btn btn-default radius" type="button"><a href="/product_label">取消</a></button>
 

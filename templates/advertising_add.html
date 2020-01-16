@@ -31,6 +31,14 @@
 					添加广告
 				</div>
 			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">
+					<span class="c-red"></span>
+					</label>
+					<div class="formControls col-xs-6 col-sm-6">
+						<b style="color: red;">{{ data }}</b>
+					</div>
+			</div>
 
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-2">
@@ -53,8 +61,11 @@
 				<label class="form-label col-xs-4 col-sm-2">
 					<span class="c-red"></span>
 					轮播图地址：</label>
-				<div class="formControls col-xs-6 col-sm-6">
-					<input type="text" class="input-text" value="" placeholder="请输入轮播图地址[格式：http://qiniu.weiinng.cn/XXXXXX(--可不填--)]" id="advertising_img" name="advertising_img">
+				<div class="formControls col-xs-5 col-sm-5">
+					<input type="text" class="input-text" value="" placeholder="请输入轮播图地址[格式：http://qiniu.weiinng.cn/XXXXXX]" id="advertising_img" name="advertising_img">
+				</div>
+				<div class="formControls col-xs-4 col-sm-2">
+					<a style="color: red"><b>(--可不填--)</b></a>
 				</div>
 			</div>
 			
@@ -88,7 +99,7 @@
 			</div>
 			<div class="row cl">
 				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-					<b style="color: red">{{ data }}</b></br>
+		
 					<button  class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存提交</button>
 					<button  class="btn btn-default radius" type="button"><a href="/advertising_list">取消</a></button>
 				</div>
