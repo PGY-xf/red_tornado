@@ -5,11 +5,7 @@ BASE_DIRS = os.path.dirname(__file__)
 
 #参数
 options = {
-    'port':8000,
-}
-
-options_img={
-    'port':8001
+    'port':8001,
 }
 
 

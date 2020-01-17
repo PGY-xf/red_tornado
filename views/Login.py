@@ -333,7 +333,7 @@ class Lmicro_details(BaseHandler):
 class Lmicro_picture(BaseHandler):
     def get(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
-        self.render('../templates/camera/lmicro_picture.html', micro_video=micro_video,info = "上传图片")
+        self.render('../templates/camera/lmicro_picture.html', micro_video=micro_video,info = "上传微视频图片")
     def post(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
         info = self.get_argument('info')
@@ -369,7 +369,7 @@ class Lmicro_picture_delete(BaseHandler):
 class Lmicro_video(BaseHandler):
     def get(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
-        self.render('../templates/camera/lmicro_video.html',micro_video=micro_video,info = "上传视频")
+        self.render('../templates/camera/lmicro_video.html',micro_video=micro_video,info = "上传微视频")
     def post(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
         info = self.get_argument('info')
@@ -422,7 +422,7 @@ class Authordetails(BaseHandler):
 class Lmicro_slideshow(BaseHandler):
     def get(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
-        self.render('../templates/camera/lmicro_slideshow.html', micro_video=micro_video,info = "上传轮播图")
+        self.render('../templates/camera/lmicro_slideshow.html', micro_video=micro_video,info = "上传微视频轮播图")
     def post(self,id):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
         info = self.get_argument('info')

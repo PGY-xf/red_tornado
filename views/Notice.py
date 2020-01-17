@@ -173,7 +173,7 @@ class Notice_details(BaseHandler):
 class Notice_picture(BaseHandler):
     def get(self,id):
         notice = sess.query(Notice).filter_by(id=id).first()
-        self.render('../templates/notice_picture.html', notice=notice,info = "上传图片")
+        self.render('../templates/notice_picture.html', notice=notice,info = "上传公告图片")
     def post(self,id):
         notice = sess.query(Notice).filter_by(id=id).first()
         info = self.get_argument('info')
@@ -357,7 +357,7 @@ class Advertising_details(BaseHandler):
 class Advertising_picture(BaseHandler):
     def get(self,id):
         advertising = sess.query(Advertising).filter_by(id=id).first()
-        self.render('../templates/advertising_picture.html', advertising=advertising,info = "上传图片")
+        self.render('../templates/advertising_picture.html', advertising=advertising,info = "上传广告图片")
     def post(self,id):
         advertising = sess.query(Advertising).filter_by(id=id).first()
         info = self.get_argument('info')
@@ -368,3 +368,12 @@ class Advertising_picture(BaseHandler):
             self.redirect("/advertising_list")
         except:
             self.write('服务器错误')
+
+
+
+
+
+class inform_add(BaseHandler):
+    def get(self,*args,**kwargs):
+        self.render('../templates/inform_add.html')
+        

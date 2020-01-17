@@ -227,7 +227,7 @@ class User_delete(BaseHandler):
 class User_picture(BaseHandler):
     def get(self,id):
         user = sess.query(User).filter_by(id=id).first()
-        self.render('../templates/user_picture.html', user=user,info = "上传图片")
+        self.render('../templates/user_picture.html', user=user,info = "上传用户头像")
     def post(self,id):
         user = sess.query(User).filter_by(id=id).first()
         info = self.get_argument('info')

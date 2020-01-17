@@ -174,7 +174,7 @@ class Author_details(BaseHandler):
 class Author_picture(BaseHandler):
     def get(self,id):
         author = sess.query(Author).filter_by(id=id).first()
-        self.render('../templates/author_picture.html', author=author,info = "上传图片")
+        self.render('../templates/author_picture.html', author=author,info = "上传作者图片")
     def post(self,id):
         author = sess.query(Author).filter_by(id=id).first()
         info = self.get_argument('info')

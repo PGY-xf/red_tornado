@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>js上传文件到七牛</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	</head>
+	<body>
+			<div class="body">
+				<h1>添加轮播图或公告</h1>
+				<div class="index-list1">
+					<div class="font1">
+						请选择要添加的类型：
+					</div>
+					<div class="group">
+					    {% for value in places%}
+					    	<label id="active{{value['placetype']}}">
+					        <input type="radio" name="istype" value="{{value['placetype']}}" checked="checked"/>
+					        {{value['typename']}}</label>
+					    {% end %}
+					</div>
+				</div>
+			<div class="index-list2">
+				<div class="index-list3">
+						{%for place in places%}
+							<div id="place{{place['placetype']}}" class="places">
+								{%for a in place['placelist']%}
+                                <div>
+                                    <input name="placetype" type="radio" value="{{ a['id'] }}">
+                                    {{ a['value'] }}
+                                </div>
+                             {% end %}
+							</div>
+                    {%end%}
+				</div>
+				<div class="addtitle">
+					添加内容:<input type="text" placeholder="公告内容不得少于6字！"  name="title_info"/>
+				</div>
+				<div class="addimgsrc">		
+					<div class="font1">选择上传方式：</div>
+					<div class="isimg">
+						<div><input type="radio" name="isimg" value="0" checked="checked" />本地上传</div>
+						<div><input type="radio" name="isimg" value="1" />网络链接</div>
+					</div>
+					
+					<div class="imgs1">
+						<div class="helptext">友情提示:为本地上传,将本地的图片上传到七牛云服务器，确保是图片类型</div>
+						<div class="imgs_type">
+							<div id="uploadImage">选择文件</div>
+						</div>
+					</div>
+					<div class="imgs2">
+						<div class="helptext">友情提示：直接传入图片链接，非专业人士请勿操作,如果你使用本地上传了图片，再次使用这个链接会将其覆盖。</div>
+						<div class="imgs_type">
+							网络链接：<input type="text" name="imgvalue" value="" placeholder="请填写图片链接。" style="width: 500px;"/>
+						</div>
+					</div>
+						<div class="img-div">
+							<div id="container">
+							    <div class="upload-progress"></div>
+							</div>
+						</div>
+				</div>
+				
+			</div>
+			<div class="tiaozhengweizhi" ></div>
+			<div class="is_show">
+				<div class="font1">
+						请选择跳转的链接的位置：
+					</div>
+				<div >
+					<select name="link_type">
+						<option value="0">请选择</option>
+						{% for value in links%}
+							<option value="{{value['id']}}">{{value['name']}}</option>
+						{% end %}
+					</select>
+					<div class="add_link">
+						<input class="add_link" name="add_link" type="text" value="" placeholder="请填写有效链接！"/>
+						<!--<button id="ifrequest">验证链接</button>-->
+					</div>
+					<div class="font1">
+						指定页面
+					</div>
+					<button id="getData">请求数据</button>
+					<select name="add_id" class="add_id">
+						<option value="0">请选择</option>
+					</select>
+				</div>
+				
+			</div>
+			
+		</div>
+		<div class="anniu-list">
+			<button id="submittoserver">提交</button>
+			<button id="cancel">取消</button>
+		</div>	
+	</body>
+<script src="/static/qiniudemo/moxie.js"></script>
+<script src="/static/qiniudemo/plupload.full.min.js"></script>
+<script src="/static/qiniudemo/qiniu.min.js"></script>
+<script src="/static/qiniudemo/jquery-1.12.1.min.js"></script>
+<script>
+    var uploader = Qiniu.uploader({
+        disable_statistics_report: false,                                   // 禁止自动发送上传统计信息到七牛，默认允许发送
+        runtimes: 'html5,flash,html4',                                      // 上传模式，依次退化
+        browse_button: 'uploadImage',                                       // 上传选择的点选按钮，必需
+        container: 'container',                                             // 上传区域DOM ID，默认是browser_button的父元素
+        max_file_size: '2048mb',                                             // 最大文件体积限制
+        flash_swf_url: 'Moxie.swf',                                         // 引入flash，相对路径
+        dragdrop: false,                                                    // 关闭可拖曳上传
+        chunk_size: '4mb',                                                  // 分块上传时，每块的体积
+        multi_selection: !(moxie.core.utils.Env.OS.toLowerCase() === "ios"),
+        uptoken_url: '/demo/uptoken',                                                 // 在初始化时，uptoken，uptoken_url，uptoken_func三个参数中必须有一个被设置,uptoken是上传凭证，由其他程序生成;uptoken_url是提供了获取上传凭证的地址，如果需要定制获取uptoken的过程则可以设置uptoken_func;其优先级为uptoken > uptoken_url > uptoken_func
+        //uptoken:'q06bq54Ps5JLfZyP8Ax-qvByMBdu8AoIVJpMco2m:kyTiuN6GBUpfNt1nJIA7C8CCStY=:eyJzY29wZSI6IjEzMTIzMTIzMTIzIiwiZGVhZGxpbmUiOjE1NzY0MTM3MTB9',
+        domain: 'redinnovation.s3-cn-north-1.qiniucs.com',                                                      // bucket域名，下载资源时用到，必需
+        get_new_uptoken: false,                                              // 设置上传文件的时候是否每次都重新获取新的uptoken
+        auto_start: true,                                                   // 选择文件后自动上传，若关闭需要自己绑定事件触发上传
+        max_retries: 3,                                                     // 上传失败最大重试次数
+        save_key: true,
+        resize: {                                                           // 想限制上传图片尺寸，直接用resize这个属性
+            width: 300,
+            height: 300
+        },
+        init: {
+            'FilesAdded': function(up, files) {                             // 文件添加进队列后，处理相关的事情
+                plupload.each(files, function(file) {
+                    console.log(file)
+                });
+            },
+            'BeforeUpload': function(up, file) {                            // 每个文件上传前，处理相关的事情
+                console.log("开始上传之前");
+                $(".upload-progress").show();
+            },
+            'UploadProgress': function(up, file) {                          // 每个文件上传时，处理相关的事情
+                console.log("上传中");
+                $(".upload-progress").html("上传进度:"+file.percent + "%");
+            },
+            'FileUploaded': function(up, file, info) {                       // 每个文件上传成功后，处理相关的事情
+                console.log("上传成功");
+                console.log(info);
+
+                infohash = $.parseJSON(info.response);
+                console.log(infohash.hash)
+                
+               	$("[name='imgvalue']").val('http://qiniu.weiinng.cn/'+infohash.hash)
+                var myimg  = ""
+				myimg += "<img src='http://qiniu.weiinng.cn/"+infohash.hash+"' style='width:200px;height:200px'/>";
+				$(".img-div").html(myimg);
+                
+                
+//               $(".upload-progress").hide();
+//               $("#constants").show()
+//               var img = new Image();                                      //创建一个Image对象，实现图片的预下载
+//               img.src = "http://qiniu.weiinng.cn/"+infohash.hash;
+//               $("#container").append(img);
+                
+            },
+
+            'Error': function(up, err, errTip) {
+                console.log("上传出错")
+            },
+            'UploadComplete': function() {
+                //队列文件处理完毕后，处理相关的事情
+            }
+        }
+    });
+		$(function(){
+			
+
+			  var demand_str = $('input:radio:checked').val()
+			  console.log(demand_str)
+			  $(".group label").click(function () {
+			      var index = $(this).index();
+			       $(".group label").removeClass("active"), 
+			       $(".group label").eq(index).addClass("active")
+			})
+			   $(".group input").click(function () {
+			      var index = $(this).index();
+			      demand_str = $('input:radio:checked').val(); //获取单选的值有三种写法
+			      console.log(demand_str)
+			})
+			   
+			$("[name='istype']").css({'color':'gray','display':'none'})
+			var titleinfo =  $("[name='title_info']");
+			var imgsrcinfo =  $("[name='imgsrc_info']");
+			
+			var link_type =  $("[name='link_type']");
+			var add_link =  $("[name='add_link']");
+			var add_id =  $("[name='add_id']");
+			
+			var getdata = $("#getData")
+			
+			var isshow = $(".is_show")
+			var isshowaddtitle = $(".addtitle")
+			var isshowaddimgsrc = $(".addimgsrc")
+			
+			var radio_placetype = $("[name='placetype']");
+			var datalist = Array;
+			var rangeList = Array;
+			var typenum = 9999
+			var placenum = 9999
+			
+			//选择轮播图或者公告
+			$("[name='istype']").click(function(){
+			    let value = $(this).val()  //获取选中的radio的值
+			    typenum = value
+			    
+			    //选择了公告
+			    if(value == 1){
+			    	//根据这个0来判断可以投放的范围,先来获取可以请求到的数据。
+			    	
+			    	$("#place1").show()
+			    	$("#place2").hide()
+			    	$("#place3").hide()
+			    	isshowaddtitle.show()
+			    	isshowaddimgsrc.hide()
+			    	isshow.show()
+			    }
+			    else if(value == 2){
+			    	$("#place1").hide()
+			    	$("#place2").show()
+			    	$("#place3").hide()
+			    	isshowaddtitle.hide()
+			    	isshowaddimgsrc.show()
+			    	isshow.show()
+			    	
+			    }
+			    else if(value == 3){
+			    	alert("暂无广告！")
+			    	$("#place1").hide()
+			    	$("#place2").hide()
+			    	$("#place3").show()
+			    	isshowaddtitle.hide()
+			    	isshowaddimgsrc.hide()
+			    	isshow.hide()
+			    }
+			});
+			//监控下拉菜单
+			//发生调整及时清空列表数据
+			link_type.click(function(){
+				var value = $(this).val()
+				if(value ==0){
+					add_link.hide()
+					add_id.hide()
+					getdata.hide()
+					datalist = []
+					
+				}
+				else if(value == 1){
+					add_link.hide()
+					add_id.hide()
+					getdata.hide()
+					datalist = []
+				}
+				else if(value == 2){
+					getdata.hide()
+					add_id.hide()
+					datalist = []
+					$(".add_link").show()
+				}
+				else{
+					add_link.hide()
+					add_id.hide()
+					getdata.show()
+					datalist = []		
+				}
+			})
+			
+			$("[name='isimg']").click(function(){
+				var value = $(this).val()
+				if(value == 0){
+					$(".imgs1").show()
+					$(".imgs2").hide()
+				}
+				else{
+					$(".imgs1").hide()
+					$(".imgs2").show()
+				}
+			})	
+			getdata.click(function(){
+				$.ajax({
+					type:"post",
+					url:"/afterend/advertising_manage/getplacedata",
+					async:true,
+					data:{
+						'place_info':$("[name='link_type']").val()
+					},
+					success:function(datas){
+						var datais = JSON.parse(datas)
+						let list_len = datais.datainfo.length
+						var cm = ""
+						for(var i = 0; i < list_len; i++){
+							cm += "<option value='"+datais.datainfo[i].id+"'>"+datais.datainfo[i].value+"</option>";
+						}
+						add_id.html(cm);
+					}
+				});
+				getdata.hide()
+				add_id.show()
+			})
+			
+			//选择广告位置
+			$("input[name='placetype']").click(function(){
+				var value = $(this).val()
+				placenum = value
+			})
+			
+			//提交数据到服务器
+			$("#submittoserver").click(function(){
+				//先进性数据验证，这里我直接用alter弹窗
+				let _istype = ""
+				let _place = ""
+				let _title = ""
+				let _imgsrc = ""
+				let _linksrc = ""
+				let _linkinfo = ""
+				//添加公告的逻辑
+				if(typenum==1){
+					_istype = typenum  //类型
+					if(placenum == 9999){
+						alert("请选择投放位置")
+					}
+					else{
+						_place = placenum   //位置
+						if(titleinfo.val().length > 6){
+							_title = titleinfo.val()  //名称
+							if($("[name='link_type']").val() == 0){	
+								alert("请选择跳转的位置！")
+							}
+							else if($("[name='link_type']").val() == 1){
+								//不填写连接的情况下发起的请求
+								sed_ajax(_istype,_place,_title,_imgsrc,_linksrc,_linkinfo)
+							}
+							else if($("[name='link_type']").val() == 2){
+								if($("[name ='add_link']").val().length > 0){
+									_linksrc = $("[name='link_type']").val()
+									_linkinfo = add_link.val() 
+									sed_ajax(_istype,_place,_title,_imgsrc,_linksrc,_linkinfo)
+								}
+								else{
+									alert("外部连接不能为空")
+								}
+							}
+							else{
+								if($("[name='add_id']").val()>0){
+									_linksrc = $("[name='link_type']").val()
+									_linkinfo = $("[name='add_id']").val()
+									sed_ajax(_istype,_place,_title,_imgsrc,_linksrc,_linkinfo)
+									
+								}
+								else{
+									alert("请补充后面的内容！")
+								}
+							}
+						}
+						else{
+							alert("请按要求填写公告！")
+						}
+					}
+				}
+				//添加轮播图逻辑
+				else if(typenum==2){
+					_istype = typenum  //类型
+					if(placenum == 9999){
+						alert("请选择投放位置")
+					}
+					else{
+						_place = placenum   //位置
+						if(	$("[name='imgvalue']").val().length == 0){
+							alert("请选择文件。")
+						}
+						else{
+							_imgsrc = $("[name='imgvalue']").val()  //名称
+							if($("[name='link_type']").val() == 0){	
+								alert("请选择跳转的位置！")
+							}
+							else if($("[name='link_type']").val() == 1){
+								//不填写连接的情况下发起的请求
+								sed_ajax(_istype,_place,_title,_imgsrc,_linksrc,_linkinfo)
+							}
+							else if($("[name='link_type']").val() == 2){
+								if($("[name ='add_link']").val().length > 0){
+									_linksrc = $("[name='link_type']").val()
+									_linkinfo = add_link.val() 
+									sed_ajax(_istype,_place,_title,_imgsrc,_linksrc,_linkinfo)
+								}
+								else{
+									alert("外部连接不能为空")
+								}
+							}
+							else{
+								if($("[name='add_id']").val()>0){
+									_linksrc = $("[name='link_type']").val()
+									_linkinfo = $("[name='add_id']").val()
+									sed_ajax(_istype,_place,_title,_imgsrc,_linksrc,_linkinfo)
+									
+								}
+								else{
+									alert("请补充后面的内容！")
+								}
+							}
+						}
+					}
+				}
+				else if(typenum==3){
+					alert("提交到广告")
+				}
+				else{
+					alert("没有没有选择类型！")
+				}
+			})
+			function sed_ajax(ja_type,aj_place,aj_title,aj_imgsrc,aj_linksrc,aj_linkinfo){
+				$.ajax({
+					type:"post",
+					url:"/afterend/advertising_manage/add",
+					async:true,
+					data:{
+						'_istype':ja_type,
+						'_place':aj_place,
+						'_title':aj_title,
+						'_imgsrc':aj_imgsrc,
+						'_linksrc':aj_linksrc,
+						'_linkinfo':aj_linkinfo,
+					},
+					success:function(datas){
+						var datais = JSON.parse(datas)
+						if(datais.status ==200){
+							alert("成功！")
+						}
+					}
+				});
+			}
+//			$("#ifrequest").click(function(){
+//				if(add_link.val()){
+//					$.ajax({
+//						type:"post",
+//						url:"/afterend/advertising_manage/request_link",
+//						async:true,
+//						data:{
+//							"url":add_link.val()
+//						},
+//						success:function(datas){
+//							console.log(datas)
+//							if(datas.status == 200){
+//								alert(datas.msg)
+//							}
+//							else{
+//								alert("发生异常")
+//							}
+//						},
+//						error:function (XMLHttpRequest, textStatus, errorThrown) {
+//		                    // 状态码
+//		                    console.log(XMLHttpRequest.status);
+//		                    // 状态
+//		                    console.log(XMLHttpRequest.readyState);
+//		                    // 错误信息   
+//		                    console.log(textStatus);
+//			            }	
+//					});
+//				}
+//				else{
+//					alert("请补充链接！")
+//				}
+//			})
+	})
+	</script>
+	<style type="text/css">
+
+		
+		
+	.group>label{
+	    /*未选中状态*/
+	    float: left;
+	    color: #333333;
+	    font-size: 13px;
+	    padding: 9px 16px;
+	    border: 1px solid #333333;
+	    margin: 15px 15px 15px 0px ;
+	    font-weight: Medium;
+	    border-radius: 10px;
+	    text-align: center;
+	}
+	.group>label.active{
+	    /*选中状态*/
+	    color: #1770E6;
+	    font-size: 13px;
+	    padding: 7px 14px;
+	    border: 1px solid #1770E6;
+	    font-weight: Medium;
+	    border: 3px black solid;
+	    background-color: bisque;
+	    font-weight: 700;
+	}	
+	.addimgsrc,.addtitle,.add_link,.add_id,#getData,.is_show,.imgs2{
+		display: none;
+	}
+		#place1,#place2,#place3{
+			display: none;
+		}
+		.img-div>div:first-child{
+			width: 230px;
+			height: 180px ;
+			background-color: aqua;
+			align-content: center;
+		}
+		.body{
+			border: #0F51E4 1px solid;
+			width: 600px;
+			height: 800px;
+			align-content: center;
+			margin: 0 auto;
+			border-radius: 50px 0px 50px  0px ;
+			padding: 0px 20px ;
+			
+		}
+		.body>h1{
+			color: #DC2C5A;
+			text-align: center;
+			
+		}
+		.font1{
+			font-weight: 700;
+			color: darkorchid;
+		
+		}
+		.index-list1{
+			height: 100px;
+		}
+		img{
+			margin: 0 auto;
+		}
+		.index-list2{
+			height: 350px;
+		}
+		.places,.isimg{
+			display: flex;
+			align-content: flex-start;
+		}
+		.places>div,.isimg>div{
+			margin-right: 10px;
+			background-color: bisque;
+			border-radius: 5px;
+			border: 1px solid #000000;
+			padding: 0px 10px;
+		}
+		.places>div{
+			width: 265px;
+			float: left;
+		}
+		.index-list3{
+			height: 80px;
+		}
+		
+		.anniu-list{
+			text-align: center;
+			
+		}
+		.anniu-list>button{
+			margin: 30px;
+			border: 1px seagreen solid;
+			width: 200px;
+			height: 80px;
+			background-color: coral;
+			text-align: center;
+			font-size: 38px;
+			border-radius: 30px;
+		}
+		.helptext{
+			margin: 10px 0px;
+			font-size: 13px;
+			border: 3px lightgreen dashed;
+			height: 35px;
+			border-radius: 5px;
+			
+		}
+		.is_show{
+			bottom: 0px;
+			border: 3upx #0F51E4 solid;
+			height: 100px;
+		}
+		.imgs_type{
+			height: 40px;
+		}
+		.tiaozhengweizhi{
+			margin-top: 50px;
+		}
+		
+		 #container{
+            width:200px;
+            height:200px;
+            border:1px solid #9d9d9d;
+            border-radius: 6px;
+            margin:50px auto;
+/*            position: relative;*/
+            overflow: hidden;
+            background-color: #005FCC;
+            display: none;
+        }
+        .upload-progress{
+            width:100%;
+            height:100%;
+            position: absolute;
+            top:0;
+            left:0;
+            background: rgba(0,0,0,0.5);
+            z-index: 5;
+            color:#fff;
+            text-align: center;
+            display: none;
+        }
+        #uploadImage{
+            width:200px;
+            height:30px;
+            top:0;
+            left:0;
+            z-index: 2;
+            text-align: center;
+            cursor: pointer;
+            color: red;
+            font-weight: bold;
+            border-radius: 30px;
+            border: 1px #0077B3 dashed;
+        }
+        #container img{
+            width:100%;
+            position: absolute;
+            top:0;
+            left:0;
+            z-index: 1;
+        }
+	</style>
+</html>

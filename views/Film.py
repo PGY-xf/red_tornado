@@ -243,7 +243,7 @@ class Film_details(BaseHandler):
 class Film_picture(BaseHandler):
     def get(self,id):
         video = sess.query(Video).filter_by(id=id).first()
-        self.render('../templates/film_picture.html', video=video,info = "上传图片")
+        self.render('../templates/film_picture.html', video=video,info = "上传电影图片")
     def post(self,id):
         video = sess.query(Video).filter_by(id=id).first()
         info = self.get_argument('info')
@@ -278,7 +278,7 @@ class Film_picture_delete(BaseHandler):
 class Film_video(BaseHandler):
     def get(self,id):
         video = sess.query(Video).filter_by(id=id).first()
-        self.render('../templates/film_video.html',video=video,info = "上传电影")
+        self.render('../templates/film_video.html',video=video,info = "上传电影视频")
     def post(self,id):
         video = sess.query(Video).filter_by(id=id).first()
         info = self.get_argument('info')
@@ -314,7 +314,7 @@ class Film_video_delete(BaseHandler):
 class Film_slideshow(BaseHandler):
     def get(self,id):
         video = sess.query(Video).filter_by(id=id).first()
-        self.render('../templates/film_slideshow.html', video=video,info = "上传轮播图")
+        self.render('../templates/film_slideshow.html', video=video,info = "上传电影轮播图")
     def post(self,id):
         video = sess.query(Video).filter_by(id=id).first()
         info = self.get_argument('info')

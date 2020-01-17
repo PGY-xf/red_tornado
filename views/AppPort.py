@@ -14,16 +14,16 @@ import jsonpath
 import time
 import os
 from config import *
-from qiniu import Auth,put_data,etag,urlsafe_base64_encode
+from qiniu import Auth, put_data, etag, urlsafe_base64_encode
 import logging
 from func_tools import *
-from werkzeug.security import generate_password_hash,check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
+access_key = ACCESS_KEY  # AK
+secret_key = SECRET_KEY  # SK
+bucket_name = BUCKET_NAME  # name
+url = QINIU_URL  # url
 
-access_key = ACCESS_KEY  #AK
-secret_key = SECRET_KEY    #SK
-bucket_name = BUCKET_NAME   #name
-url = QINIU_URL  #url
 
 class GetToken(BaseHandler):
     def get(self, *args, **kwargs):
@@ -48,24 +48,24 @@ class GetToken(BaseHandler):
         # 3600为token过期时间，秒为单位。3600等于一小时
         token = q.upload_token(bucket_name, key, 3600, policy)
         print("有人取走了token")
-        self.write(json.dumps({"uptoken":token,"domain":domain }, ensure_ascii=False))
+        self.write(json.dumps({"uptoken": token, "domain": domain}, ensure_ascii=False))
 
-#七牛云token
+
+# 七牛云token
 class QiNiuHandler(BaseHandler):
     async def get(self):
-        q = Auth('E2IZM3koC1GR1DUqJHactmixzdyZZhx0edBKqDsk','GDnMkvRoE_kFhCSuvdqQj0VcNsRDOHzYJJ_bVd0_')
+        q = Auth('E2IZM3koC1GR1DUqJHactmixzdyZZhx0edBKqDsk', 'GDnMkvRoE_kFhCSuvdqQj0VcNsRDOHzYJJ_bVd0_')
         token = q.upload_token('redinnovation')
         print("有人过来取走了token")
-        self.write(json.dumps({'uptoken':token},ensure_ascii=False))
+        self.write(json.dumps({'uptoken': token}, ensure_ascii=False))
 
 
-
-#推荐页微视频
+# 推荐页微视频
 class gitVideolist(BaseHandler):
-    def get(self, id,*args, **kwargs):
+    def get(self, id, *args, **kwargs):
         id = int(id)
         # microall =random.sample(sess.query(Micro_video).filter(Micro_video.video_url!=None).all(),10)
-        microall = sess.query(Micro_video).filter(Micro_video.video_url!=None).all()[id:id+10]
+        microall = sess.query(Micro_video).filter(Micro_video.video_url != None).all()[id:id + 10]
         video_list = []
         for micro in microall:
             item = {}
@@ -76,7 +76,7 @@ class gitVideolist(BaseHandler):
             try:
                 item["video_img"] = micro.video_img
             except:
-                item["video_img"]=""
+                item["video_img"] = ""
             try:
                 item["video_url"] = micro.video_url
             except:
@@ -85,16 +85,16 @@ class gitVideolist(BaseHandler):
                 item["length"] = micro.length
             except:
                 item["length"] = ""
-            author = sess.query(Author.id,Author.name, Author.img).filter(Author.id == micro.auth_id)
+            author = sess.query(Author.id, Author.name, Author.img).filter(Author.id == micro.auth_id)
             item["column_id"] = author[0][0]
             item["column_name"] = author[0][1]
             item["column_img"] = author[0][2]
             video_list.append(item)
-        return self.write(json.dumps({"status": 200, "msg": "返回成功", 'video_list':video_list}, cls=AlchemyEncoder, ensure_ascii=False))
+        return self.write(json.dumps({"status": 200, "msg": "返回成功", 'video_list': video_list}, cls=AlchemyEncoder,
+                                     ensure_ascii=False))
 
 
- 
-#主页栏目的四个视频
+# 主页栏目的四个视频
 class gitColumnsVideofourList(BaseHandler):
     def get(self, *args, **kwargs):
         listitem = []
@@ -117,8 +117,8 @@ class gitColumnsVideofourList(BaseHandler):
                 videoobj["isHot"] = "true"
                 item["bodyList"].append(videoobj)
             listitem.append(item)
-        return self.write(json.dumps({"status": 200, "msg": "返回成功", 'columnsVideoList':listitem}, cls=AlchemyEncoder, ensure_ascii=False))
-
+        return self.write(json.dumps({"status": 200, "msg": "返回成功", 'columnsVideoList': listitem}, cls=AlchemyEncoder,
+                                     ensure_ascii=False))
 
 
 # APP获取验证码
@@ -129,7 +129,7 @@ class App_getverification(BaseHandler):
         if code_type == "reg":
             phone = self.get_argument("phoneno")
             # 判断用户是否输入了手机号
-            isphone = re.match('^1[3,5,7,8,9]\d{9}$',phone)
+            isphone = re.match('^1[3,5,7,8,9]\d{9}$', phone)
             if isphone:
                 # 判断次手机号是否已经注册
                 user = sess.query(User).filter(User.phone == phone).first()
@@ -138,7 +138,7 @@ class App_getverification(BaseHandler):
                     # 生成验证并将验证码发送到用户手机号上！
                     phone = phone
                     # 调用发送验证码的函数
-                    set_code_toRedis(code_type,phone)
+                    set_code_toRedis(code_type, phone)
                     return self.write(
                         json.dumps({"status": 200, "msg": "验证码"}, cls=AlchemyEncoder,
                                    ensure_ascii=False))
@@ -155,14 +155,15 @@ class App_getverification(BaseHandler):
             return self.write(
                 json.dumps({"status": 201, "msg": "缺少验证码类型"}, cls=AlchemyEncoder, ensure_ascii=False))
 
-#发送验证码
-def set_code_toRedis(code_type,phone):
+
+# 发送验证码
+def set_code_toRedis(code_type, phone):
     try:
         phone = phone
         code_type = code_type
-        code = ''.join(str(i) for i in random.sample(range(0, 9),4))  # 随机数
+        code = ''.join(str(i) for i in random.sample(range(0, 9), 4))  # 随机数
         send_data(to=str(phone), body=code)
-        redis_conn.hset(code_type,phone,code)  # 设置过期时间为2分钟
+        redis_conn.hset(code_type, phone, code)  # 设置过期时间为2分钟
         redis_conn.expire(code_type, 120)
         return "200"
     except:
@@ -177,12 +178,13 @@ class App_register_user(BaseHandler):
         password = self.get_argument("password")
         code = self.get_argument("code")
         invitation = self.get_argument("invitation")
-        #不需要做对手机号重复的判断，只需要对验证码进行判断。
-        #拿到验证码之后去缓存库中判断，以key：手机号  val:验证码
-        iscode = redis_conn.hget("reg",phone).decode()
+        # 不需要做对手机号重复的判断，只需要对验证码进行判断。
+        # 拿到验证码之后去缓存库中判断，以key：手机号  val:验证码
+        iscode = redis_conn.hget("reg", phone).decode()
         print(iscode)
         if iscode == code:
-            add_user = User(phone=phone,password=generate_password_hash(password),name=phone,user_img="/static/common/default_userimg.jpg")
+            add_user = User(phone=phone, password=generate_password_hash(password), name=phone,
+                            user_img="/static/common/default_userimg.jpg")
             sess.add(add_user)
             sess.commit()
             return self.write(
@@ -199,9 +201,9 @@ class App_login_user(BaseHandler):
     def post(self, *args, **kwargs):
         phone = self.get_argument("phoneno")
         password = self.get_argument("password")
-        user_info = sess.query(User).filter(User.phone==phone).one()
+        user_info = sess.query(User).filter(User.phone == phone).one()
         if user_info:
-            if check_password_hash(user_info.password,password):
+            if check_password_hash(user_info.password, password):
                 item = {}
                 item["id"] = user_info.id
                 item["mobile"] = user_info.phone
@@ -224,15 +226,15 @@ class App_login_user(BaseHandler):
                            ensure_ascii=False))
 
 
-#用户修改密码
+# 用户修改密码
 class APP_user_update_password(BaseHandler):
     def post(self, *args, **kwargs):
         userid = self.get_argument("userid")
         oldpassword = self.get_argument("oldpassword")
-        newpassword= self.get_argument("newpassword")
-        useruppassword = sess.query(User).filter(User.id==userid).one()
+        newpassword = self.get_argument("newpassword")
+        useruppassword = sess.query(User).filter(User.id == userid).one()
         if useruppassword:
-            if useruppassword.password==oldpassword:
+            if useruppassword.password == oldpassword:
                 useruppassword.password = newpassword
                 sess.commit()
                 return self.write(
@@ -240,7 +242,7 @@ class APP_user_update_password(BaseHandler):
                                ensure_ascii=False))
             else:
                 return self.write(
-                    json.dumps({"status": 200, "msg":"旧密码输入错误！"}, cls=AlchemyEncoder,
+                    json.dumps({"status": 200, "msg": "旧密码输入错误！"}, cls=AlchemyEncoder,
                                ensure_ascii=False))
         else:
             return self.write(
@@ -248,12 +250,10 @@ class APP_user_update_password(BaseHandler):
                            ensure_ascii=False))
 
 
-
-
 # 获取主持人列表
 class getIndexCompere_list(BaseHandler):
     def get(self, *args, **kwargs):
-        mingxing_info = sess.query(Big_V).all()
+        mingxing_info = sess.query(Big_V).order_by(-Big_V.id).all()
         pro_list = []
         for info in mingxing_info:
             item = {}
@@ -285,15 +285,15 @@ class getIndexCompere_list(BaseHandler):
                 else:
                     pass
         return self.write(
-            json.dumps({"status": 200, "msg": "返回成功","zhuchiren_list":pro_list[:10]}, cls=AlchemyEncoder,
+            json.dumps({"status": 200, "msg": "返回成功", "zhuchiren_list": pro_list[:10]}, cls=AlchemyEncoder,
                        ensure_ascii=False))
 
 
-#明星详情页
+# 明星详情页
 class getIndexCompere_particulars(BaseHandler):
-    def get(self,id, *args, **kwargs):
+    def get(self, id, *args, **kwargs):
         id = int(id)
-        mingxing_info = sess.query(Big_V).filter(Big_V.id==id).one()
+        mingxing_info = sess.query(Big_V).filter(Big_V.id == id).one()
         item = {}
         item["id"] = mingxing_info.id
         item["name"] = mingxing_info.name
@@ -321,20 +321,19 @@ class getIndexCompere_particulars(BaseHandler):
                        ensure_ascii=False))
 
 
-
-#主页-电影-视频列表
+# 主页-电影-视频列表
 class getIndexfilm_videolist(BaseHandler):
     def get(self, *args, **kwargs):
         # id 名字  视频图片  播放次数  热度
         videoinfoList = []
-        videoObj = sess.query(Video.id,Video.name,Video.video_img1,Video.amount,Video.hot,Video.intro).filter(
-            Video.video_src != None, Video.is_show == 1,Video.video_img1 != None).all()
+        videoObj = sess.query(Video.id, Video.name, Video.video_img1, Video.amount, Video.hot, Video.intro).filter(
+            Video.video_src != None, Video.is_show == 1, Video.video_img1 != None).all()
         for videoinfo in videoObj:
             item = {}
             item["id"] = videoinfo[0]
             item["title"] = videoinfo[1]
             item["img"] = videoinfo[2]
-            item["lookNum"] = videoinfo[3]+3000
+            item["lookNum"] = videoinfo[3] + 3000
             if videoinfo[4] > 5:
                 item["isHot"] = True
             else:
@@ -351,7 +350,7 @@ class getIndexfilm_videolist(BaseHandler):
 class getIndexColumnsList(BaseHandler):
     def get(self, *args, **kwargs):
         # 展示栏目但不展示不带图片的
-        columns = sess.query(Columns).filter(Columns.columns_img != "",Columns.columns_img != None).all()
+        columns = sess.query(Columns).filter(Columns.columns_img != "", Columns.columns_img != None).all()
         column_list = []
         for info in columns:
             item = {}
@@ -364,16 +363,18 @@ class getIndexColumnsList(BaseHandler):
                        ensure_ascii=False))
 
 
-#获取图片的主色
+# 获取图片的主色
 from PIL import Image
 import colorsys
+
+
 def get_dominant_color(image):
     # 颜色模式转换，以便输出rgb颜色值
     image = image.convert('RGBA')
     # 生成缩略图，减少计算量，减小cpu压力
     image.thumbnail((200, 200))
-    max_score = 0 # 原来的代码此处为None
-    dominant_color = 0 # 原来的代码此处为None，但运行出错，改为0以后
+    max_score = 0  # 原来的代码此处为None
+    dominant_color = 0  # 原来的代码此处为None，但运行出错，改为0以后
     # 运行成功，原因在于在下面的
     # score > max_score的比较中，max_score的初始格式不定
     for count, (r, g, b, a) in image.getcolors(image.size[0] * image.size[1]):
@@ -389,8 +390,10 @@ def get_dominant_color(image):
         score = (saturation + 0.1) * count
         if score > max_score:
             max_score = score
-            dominant_color = (r,g,b)
+            dominant_color = (r, g, b)
     return dominant_color
+
+
 # print(get_dominant_color(Image.open('static/imgs/123321.png')))
 
 
@@ -399,9 +402,9 @@ def get_dominant_color(image):
 # 栏目列表
 class getAPP_IndexColumns_info(BaseHandler):
     def post(self, *args, **kwargs):
-        column_id = self.get_argument("id",0)
+        column_id = self.get_argument("id", 0)
         id = int(column_id)
-        if id >0:
+        if id > 0:
             column_info = sess.query(Columns.id, Columns.name, Columns.columns_img).filter(Columns.id == id).one()
             item = {}
             item["id"] = column_info[0]
@@ -412,13 +415,14 @@ class getAPP_IndexColumns_info(BaseHandler):
             item["desc"] = "欢迎观看" + column_info[1] + "的作品"
             item["colnum_videolist"] = []
             item["colnum_new_videolist"] = []
-            microall = sess.query(Micro_video.id, Micro_video.name, Micro_video.video_img).filter(Micro_video.is_show == 0,
-                                                                                                  Micro_video.video_url != None,
-                                                                                                  Micro_video.video_url != "",
-                                                                                                  Micro_video.video_img != None,
-                                                                                                  Micro_video.video_url != "",
-                                                                                                  Micro_video.column_id ==
-                                                                                                  column_info[0]).all()[:5]
+            microall = sess.query(Micro_video.id, Micro_video.name, Micro_video.video_img).filter(
+                Micro_video.is_show == 0,
+                Micro_video.video_url != None,
+                Micro_video.video_url != "",
+                Micro_video.video_img != None,
+                Micro_video.video_url != "",
+                Micro_video.column_id ==
+                column_info[0]).all()[:5]
             for video in microall:
                 video_item = {}
                 video_item["id"] = video[0]
@@ -443,16 +447,18 @@ class getAPP_IndexColumns_info(BaseHandler):
                 json.dumps({"status": 201, "msg": "返回成功"}, cls=AlchemyEncoder,
                            ensure_ascii=False))
 
-#视频详情页
+
+# 视频详情页
 class get_app_common_video_particulars(BaseHandler):
     def post(self, *args, **kwargs):
-        video_id = self.get_argument("video_id",0)
+        video_id = self.get_argument("video_id", 0)
         id = int(video_id)
-        if id>0:
-            info = sess.query(Micro_video.id, Micro_video.name, Micro_video.video_url, Columns.id, Columns.name, Author.id,
+        if id > 0:
+            info = sess.query(Micro_video.id, Micro_video.name, Micro_video.video_url, Columns.id, Columns.name,
+                              Author.id,
                               Author.name, Author.img).join(Columns, Columns.id == Micro_video.column_id).join(Author,
                                                                                                                Author.id == Micro_video.auth_id).filter(
-                Micro_video.id == 1).one()
+                Micro_video.id == id).one()
             item = {}
             item["id"] = info[0]
             item["video_name"] = info[1]
@@ -464,9 +470,202 @@ class get_app_common_video_particulars(BaseHandler):
             item["author_img"] = info[7]
             item["is_comment"] = 1
             return self.write(
-                json.dumps({"status": 200, "msg": "返回成功","info_item":item}, cls=AlchemyEncoder,
+                json.dumps({"status": 200, "msg": "返回成功", "info_item": item}, cls=AlchemyEncoder,
                            ensure_ascii=False))
         else:
             return self.write(
                 json.dumps({"status": 201, "msg": "失败"}, cls=AlchemyEncoder,
                            ensure_ascii=False))
+
+'''
+由于放心不下这个模板毕竟搞了一天半，写的也不怎么好，但是还得继续努力一下，知难而退是好事情，但是迎难而上才是我应该做的。
+- 解决思路：
+    退步，既然用点击渲染无法做到那就直接使用两种方式结合
+../../pages/friend-link/common-link?weburl={weburl}  里面填写web的url地址
+../../pages/common/common-video-content?id={id}   视频详情页
+../../pages/column/column-info?id={id}   栏目详情页
+../../pages/celebrity/celebrity?id={id}  主持人信息页面
+'''
+
+advertisinglinks=[
+            {
+                'id':1,
+                'name':"不跳转到任何连接！",
+                "linkinfo":"",
+                "dataTable":None
+            },
+            {
+                'id': 2,
+                'name': "外部网页",
+                "linkinfo": "../../pages/friend-link/common-link?weburl=",
+                "dataTable":None
+            },
+            {
+                'id': 3,
+                'name': "视频详情页",
+                "linkinfo": "../../pages/common/common-video-content?id=",
+                "dataTable":Micro_video
+            },
+            {
+                'id': 4,
+                'name': "栏目详情页",
+                "linkinfo": "../../pages/column/column-info?id=",
+                "dataTable":Columns
+            },
+            {
+                'id': 5,
+                'name': "主持人详情页",
+                "linkinfo": "../../pages/celebrity/celebrity?id=",
+                "dataTable":Big_V
+            },
+            {
+                'id': 6,
+                'name': "电影详情页",
+                "linkinfo": "",
+                "dataTable":Video
+            },
+        ]
+advertising_gonggao = [
+                    {
+                        'id':1,
+                        'value':'首页的公告'
+                    },
+                    {
+                        'id': 2,
+                        'value': '电影页的广告'
+                    },
+                ]
+advertising_lunbotu = [
+                    {
+                        'id': 3,
+                        'value': '首页的轮播图'
+                    },
+                    {
+                        'id': 4,
+                        'value': '电影页的轮播图'
+                    },
+                    {
+                        'id': 7,
+                        'value': '推荐页的轮播图'
+                    },
+                ]
+advertising_guanggao = [
+                    {
+                        'id': 5,
+                        'value': '个人中心的广告'
+                    },
+                    {
+                        'id': 6,
+                        'value': '推荐页的广告'
+                    },
+                ]
+#添加公告\轮播图\广告图 this 管理
+class advertising_manage_page(BaseHandler):
+    def get(self, *args, **kwargs):
+        places = [
+            {
+                'typename':'公告',
+                'placetype':1,
+                'placelist':advertising_gonggao
+            },
+            {
+                'typename': '轮播图',
+                'placetype': 2,
+                'placelist':advertising_lunbotu
+            },
+            {
+                'typename': '广告',
+                'placetype': 3,  #广告
+                'placelist':advertising_guanggao
+            },
+        ]
+        # 必须从1开始
+        links = advertisinglinks
+        self.render("../templates/000feidemo.html", places=places ,links=links)
+
+#添加数据
+class advertising_manage_add(BaseHandler):
+    advertisinglinks = advertisinglinks
+    def post(self, *args, **kwargs):
+        print("被请求了！")
+        _istype = self.get_argument('_istype')
+        _place = self.get_argument('_place')
+        _title = self.get_argument('_title')
+        _imgsrc = self.get_argument('_imgsrc')
+        _linksrc = self.get_argument('_linksrc')
+        _linkinfo = self.get_argument('_linkinfo')
+        if not [_istype,_place,_title,_imgsrc,_linksrc]:
+            print("参数不完整！")
+        else:
+            types = _istype
+            title = _title
+            imgsrc = _imgsrc
+            place = _place
+            linksrc = ""
+            for item in advertisinglinks:
+                if int(item['id']) == int(_linksrc):
+                    linksrc += str(item["linkinfo"])
+                    linksrc += str(_linkinfo)
+
+            print("类型："+types)  #公告 / 轮播图 / 广告
+            print("投放位置:"+place)
+            print("公告名称:"+title)
+            print("图片地址:"+imgsrc)
+            print("连接地址:"+linksrc)
+
+            return self.write(
+                json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
+
+    #获取位置数据
+class advertising_manage_getplacedata(BaseHandler):
+    advertisinglinks = advertisinglinks
+    def post(self, *args, **kwargs):
+        try:
+            place_info = self.get_argument("place_info")
+            # 3微视频
+            datainfo = []
+            for item in advertisinglinks:
+                if int(item["id"]) == int(place_info):
+                    data = sess.query(item["dataTable"].id, item["dataTable"].name).order_by(-item["dataTable"].id).all()
+                    for value in data:
+                        dataitem = {}
+                        dataitem["id"] = value[0]
+                        dataitem["value"] = value[1]
+                        datainfo.append(dataitem)
+            # print(datainfo)
+            return self.write(
+                json.dumps({"status": 200, "msg": "成功",'datainfo':datainfo}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
+        except:
+            return self.write(
+                json.dumps({"status": 200, "msg": "失败"}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
+
+
+
+#验证链接
+class advertising_manage_request_link(BaseHandler):
+    def post(self, *args, **kwargs):
+        url = self.get_argument("url")
+        if url:
+            url = self.get_argument("url")
+            try:
+                response = requests.get(url=url)
+                if response.status_code == 200:
+                    return self.write(
+                        json.dumps({"status": 200, "msg": "可用链接"}, cls=AlchemyEncoder,
+                                   ensure_ascii=False))
+            except:
+                return self.write(
+                    json.dumps({"status": 200, "msg": "无效链接"}, cls=AlchemyEncoder,
+                               ensure_ascii=False))
+            else:
+                return self.write(
+                    json.dumps({"status": 200, "msg": "无效链接"}, cls=AlchemyEncoder,
+                               ensure_ascii=False))
+        else:
+            return self.write(
+            json.dumps({"status": 200, "msg": "没有获取到地址"}, cls=AlchemyEncoder,
+                       ensure_ascii=False))
+

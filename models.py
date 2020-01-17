@@ -265,15 +265,15 @@ class System(Base):
 #################
 
 
-# 厂家广告表
+#新表
 class Advertising(Base,IdBase):
     __tablename__ = "advertising"
-    name = Column(String(100))                                  #广告名称
-    advertising_img = Column(String(255))                       #广告封面图
-    advertising_link = Column(String(255))                      #广告链接
-    is_show = Column(Integer,default=0)                         #0未审核  1已审核
-    types = Column(Integer,default=0)                           #页面展示  0精选页  1电影页  2电视剧页  3动漫页 
-    creation_time = Column(DateTime(),default=datetime.now)     #发布时间（精确到秒）
+    title = Column(String(100))                                 #标题
+    imgsrc = Column(String(255))                                #图片地址
+    jumplink = Column(String(255))                              #跳转的链接
+    place = Column(Integer,default=0)                           #投放位置
+    types = Column(Integer,default=0)                           #类型
+    create_time = Column(DateTime(),default=datetime.now)       #创建时间（精确到秒）
 
 
 

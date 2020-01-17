@@ -215,7 +215,7 @@ class Celebrity_details(BaseHandler):
 class Celebrity_picture(BaseHandler):
     def get(self,id):
         big_v = sess.query(Big_V).filter_by(id=id).first()
-        self.render('../templates/celebrity_picture.html', big_v=big_v,info = "上传图片")
+        self.render('../templates/celebrity_picture.html', big_v=big_v,info = "上传明星图片")
     def post(self,id):
         big_v = sess.query(Big_V).filter_by(id=id).first()
         info = self.get_argument('info')

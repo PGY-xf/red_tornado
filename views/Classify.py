@@ -185,7 +185,7 @@ class Product_column_del(BaseHandler):
 class Product_column_picture(BaseHandler):
     def get(self,id):
         columnss = sess.query(Columns).filter_by(id=id).first()
-        self.render('../templates/product_column_picture.html', columnss=columnss,info = "上传封面图")
+        self.render('../templates/product_column_picture.html', columnss=columnss,info = "上传栏目封面图")
     def post(self,id):
         columnss = sess.query(Columns).filter_by(id=id).first()
         info = self.get_argument('info')
@@ -322,7 +322,7 @@ class Product_label_del(BaseHandler):
 class Product_label_picture(BaseHandler):
     def get(self,id):
         label = sess.query(Label).filter_by(id=id).first()
-        self.render('../templates/product_label_picture.html', label=label,info = "上传封面图")
+        self.render('../templates/product_label_picture.html', label=label,info = "上传标签封面图")
     def post(self,id):
         label = sess.query(Label).filter_by(id=id).first()
         info = self.get_argument('info')
