@@ -364,10 +364,7 @@ class getIndexColumnsList(BaseHandler):
 
 
 # 获取图片的主色
-from PIL import Image
 import colorsys
-
-
 def get_dominant_color(image):
     # 颜色模式转换，以便输出rgb颜色值
     image = image.convert('RGBA')
@@ -392,10 +389,6 @@ def get_dominant_color(image):
             max_score = score
             dominant_color = (r, g, b)
     return dominant_color
-
-
-# print(get_dominant_color(Image.open('static/imgs/123321.png')))
-
 
 
 
