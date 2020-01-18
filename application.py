@@ -185,6 +185,8 @@ class Application(tornado.web.Application):
             (r"/afterend/affiche_manage/add", AppPort.affiche_manage_add),  # 广告管理页面
             (r"/afterend/affiche_manage/request_link", AppPort.affiche_manage_request_link),  # 验证链接
             (r"/afterend/affiche_manage/getplacedata", AppPort.affiche_manage_getplacedata),  # 获取位置数据
+            (r"/app/get/index/recommend/four_fanfuchanglian", AppPort.get_app_index_four_video),  #主页 反腐倡廉视频列表
+            (r"/app/post/common/movie_particulars",AppPort.get_app_common_movie_particulars), #电影详情页
             #############  新增
             (r"/gitVideodetails/(\d+)", AppPortone.gitVideodetails),  # 微视频视频详情页    
             (r"/gitColumnsList",AppPortone.gitColumnsList),         #栏目列表   

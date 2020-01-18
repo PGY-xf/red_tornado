@@ -65,7 +65,7 @@ class gitVideolist(BaseHandler):
     def get(self, id, *args, **kwargs):
         id = int(id)
         # microall =random.sample(sess.query(Micro_video).filter(Micro_video.video_url!=None).all(),10)
-        microall = sess.query(Micro_video).filter(Micro_video.video_url != None,Micro_video.column_id==1).all()[id:id + 10]
+        microall = sess.query(Micro_video).filter(Micro_video.video_url != None,Micro_video.column_id==1,Micro_video.is_show==1).all()[id:id + 10]
         video_list = []
         for micro in microall:
             item = {}
@@ -469,6 +469,81 @@ class get_app_common_video_particulars(BaseHandler):
             return self.write(
                 json.dumps({"status": 201, "msg": "失败"}, cls=AlchemyEncoder,
                            ensure_ascii=False))
+#主页下推荐栏-反腐倡廉
+class get_app_index_four_video(BaseHandler):
+    def get(self, *args, **kwargs):
+        datainfo = sess.query(Micro_video.id, Micro_video.name, Micro_video.info, Micro_video.video_img).filter(
+            Micro_video.column_id == 8).order_by(-Micro_video.id).limit(4).all()
+        datalist = []
+        for value in datainfo:
+            item = {}
+            item["id"] = value[0]
+            item["title"] = value[1]
+            item["info"] = value[2]
+            item["img"] = value[3]
+            item["isHot"] = True
+            datalist.append(item)
+        return self.write(
+            json.dumps({"status": 200, "msg": "返回成功", "datalist":datalist}, cls=AlchemyEncoder,
+                       ensure_ascii=False))
+
+#电影详情页
+class get_app_common_movie_particulars(BaseHandler):
+    def post(self, *args, **kwargs):
+        movie_id = self.get_argument("movie_id",0)
+        if movie_id ==0:
+            return self.write(
+                json.dumps({"status":404, "msg": "找不到页面"}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
+        else:
+            try:
+                movie_id = int(movie_id)
+                movieinfo = sess.query(Video).filter(Video.id == movie_id, Video.video_src != "",
+                                                     Video.video_src != None).one()
+                item = {}
+                item["id"] = movieinfo.id
+                item["title"] = movieinfo.name
+                item["info"] = movieinfo.intro
+                item["videosrc"] = movieinfo.video_src
+                item["tag"] = movieinfo.tag.split(',')
+                celebritylist = []
+                celebritylist.extend(movieinfo.director.split('、'))
+                celebritylist.extend(movieinfo.protagonist.split('、'))
+                item["celebrity"] = celebritylist
+                item["tuijian"] = []
+                if movieinfo.thiscat_id:
+                    tuijianlist = sess.query(Video.id, Video.name, Video.video_img1).filter(
+                        Video.thiscat_id == movieinfo.thiscat_id, Video.video_img1 != "", Video.video_img1 != None,
+                        Video.video_src != "", Video.video_src != None, Video.id != movieinfo.id).order_by(
+                        -Video.id).limit(5).all()
+                    for info in tuijianlist:
+                        tuijianitem = {}
+                        tuijianitem["id"] = info[0]
+                        tuijianitem["name"] = info[1]
+                        tuijianitem["img"] = info[2]
+                        item["tuijian"].append(tuijianitem)
+                else:
+                    videolist = sess.query(Video.id, Video.name, Video.video_img1).filter(Video.video_img1 != "",
+                                                                                          Video.video_img1 != None,
+                                                                                          Video.video_src != "",
+                                                                                          Video.video_src != None,
+                                                                                          Video.id != movieinfo.id).order_by(
+                        -Video.id).limit(5).all()
+                    for info in videolist:
+                        videoitem = {}
+                        videoitem["id"] = info[0]
+                        videoitem["name"] = info[1]
+                        videoitem["img"] = info[2]
+                        item["tuijian"].append(videoitem)
+                return self.write(
+                    json.dumps({"status": 200, "msg": "成功！",'movieinfo':item}, cls=AlchemyEncoder,
+                               ensure_ascii=False))
+            except:
+                print("返回的时候出了问题")
+                return self.write(
+                    json.dumps({"status": 404, "msg": "找不到页面"}, cls=AlchemyEncoder,
+                               ensure_ascii=False))
+
 
 '''
 由于放心不下这个模板毕竟搞了一天半，写的也不怎么好，但是还得继续努力一下，知难而退是好事情，但是迎难而上才是我应该做的。
@@ -480,7 +555,7 @@ class get_app_common_video_particulars(BaseHandler):
 ../../pages/celebrity/celebrity?id={id}  主持人信息页面
 '''
 
-affichelinks=[
+advertisinglinks=[
             {
                 'id':1,
                 'name':"不跳转到任何连接！",
@@ -518,7 +593,7 @@ affichelinks=[
                 "dataTable":Video
             },
         ]
-affiche_gonggao = [
+advertising_gonggao = [
                     {
                         'id':1,
                         'value':'首页的公告'
@@ -528,7 +603,7 @@ affiche_gonggao = [
                         'value': '电影页的广告'
                     },
                 ]
-affiche_lunbotu = [
+advertising_lunbotu = [
                     {
                         'id': 3,
                         'value': '首页的轮播图'
@@ -542,7 +617,7 @@ affiche_lunbotu = [
                         'value': '推荐页的轮播图'
                     },
                 ]
-affiche_guanggao = [
+advertising_guanggao = [
                     {
                         'id': 5,
                         'value': '个人中心的广告'
@@ -553,32 +628,32 @@ affiche_guanggao = [
                     },
                 ]
 #添加公告\轮播图\广告图 this 管理
-class affiche_manage_page(BaseHandler):
+class advertising_manage_page(BaseHandler):
     def get(self, *args, **kwargs):
         places = [
             {
                 'typename':'公告',
                 'placetype':1,
-                'placelist':affiche_gonggao
+                'placelist':advertising_gonggao
             },
             {
                 'typename': '轮播图',
                 'placetype': 2,
-                'placelist':affiche_lunbotu
+                'placelist':advertising_lunbotu
             },
             {
                 'typename': '广告',
                 'placetype': 3,  #广告
-                'placelist':affiche_guanggao
+                'placelist':advertising_guanggao
             },
         ]
         # 必须从1开始
-        links = affichelinks
+        links = advertisinglinks
         self.render("../templates/000feidemo.html", places=places ,links=links)
 
 #添加数据
-class affiche_manage_add(BaseHandler):
-    affichelinks = affichelinks
+class advertising_manage_add(BaseHandler):
+    advertisinglinks = advertisinglinks
     def post(self, *args, **kwargs):
         print("被请求了！")
         _istype = self.get_argument('_istype')
@@ -595,38 +670,38 @@ class affiche_manage_add(BaseHandler):
             imgsrc = _imgsrc
             place = _place
             linksrc = ""
-            for item in affichelinks:
+            for item in advertisinglinks:
                 if int(item['id']) == int(_linksrc):
                     linksrc += str(item["linkinfo"])
                     linksrc += str(_linkinfo)
 
-            print("类型："+types)  #公告 / 轮播图 / 广告
-            print("投放位置:"+place)
-            print("公告名称:"+title)
-            print("图片地址:"+imgsrc)
-            print("连接地址:"+linksrc)
+            # print("类型："+types)  #公告 / 轮播图 / 广告
+            # print("投放位置:"+place)
+            # print("公告名称:"+title)
+            # print("图片地址:"+imgsrc)
+            # print("连接地址:"+linksrc)
 
-            # try:
-            add_data = Affiche(title=title,imgsrc=imgsrc,jumplink=linksrc,place=place,types=types)
-            sess.add(add_data)
-            sess.commit()
-            return self.write(
-            json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,
-                       ensure_ascii=False))
-            # except:
-            #     return self.write(
-            #         json.dumps({"status": 201, "msg": "失败"}, cls=AlchemyEncoder,
-            #                    ensure_ascii=False))
+            try:
+                add_data = Advertising(title=title,imgsrc=imgsrc,jumplink=linksrc,place=place,types=types)
+                sess.add(add_data)
+                sess.commit()
+                return self.write(
+                json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
+            except:
+                return self.write(
+                    json.dumps({"status": 201, "msg": "失败"}, cls=AlchemyEncoder,
+                               ensure_ascii=False))
 
     #获取位置数据
-class affiche_manage_getplacedata(BaseHandler):
-    affichelinks = affichelinks
+class advertising_manage_getplacedata(BaseHandler):
+    advertisinglinks = advertisinglinks
     def post(self, *args, **kwargs):
         try:
             place_info = self.get_argument("place_info")
             # 3微视频
             datainfo = []
-            for item in affichelinks:
+            for item in advertisinglinks:
                 if int(item["id"]) == int(place_info):
                     data = sess.query(item["dataTable"].id, item["dataTable"].name).order_by(-item["dataTable"].id).all()
                     for value in data:
@@ -646,7 +721,7 @@ class affiche_manage_getplacedata(BaseHandler):
 
 
 #验证链接
-class affiche_manage_request_link(BaseHandler):
+class advertising_manage_request_link(BaseHandler):
     def post(self, *args, **kwargs):
         url = self.get_argument("url")
         if url:
