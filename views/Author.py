@@ -190,15 +190,16 @@ class Author_picture(BaseHandler):
 
 #删除作者图片  
 class Author_picture_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         author = sess.query(Author).filter_by(id=id).first()
         img = str(author.img)
-        print(img)
+        # print(img)
         a = 'http://qiniu.weiinng.cn/'
         picture = img.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         author.img = ''
         sess.commit()
-        self.redirect("/author_list")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))

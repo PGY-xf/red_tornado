@@ -247,18 +247,19 @@ class Product_micro_picture(BaseHandler):
 
 #删除微视频图片  
 class Micro_picture_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
         video_img = str(micro_video.video_img)
-        print(video_img)
+        # print(video_img)
         a = 'http://qiniu.weiinng.cn/'
         picture = video_img.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         micro_video.video_img = ''
         sess.commit()
-        self.redirect("/product_micro")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
 
 
 
@@ -276,7 +277,7 @@ class Product_micro_video(BaseHandler):
         try:
             micro_video.video_url = url
             sess.commit()
-            print(url)
+            # print(url)
             self.redirect("/product_micro")
         except:
             self.write('服务器错误')
@@ -284,18 +285,21 @@ class Product_micro_video(BaseHandler):
 
 #删除微视频视频  
 class Micro_video_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
         video_url = str(micro_video.video_url)
-        print(video_url)
+        # print(video_url)
         a = 'http://qiniu.weiinng.cn/'
         picture = video_url.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         micro_video.video_url = ''
         sess.commit()
-        self.redirect("/product_micro")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
 
 
 
@@ -320,15 +324,16 @@ class Product_micro_slideshow(BaseHandler):
 
 #删除微视频轮播图
 class Micro_slideshow_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
         video_slideshow = str(micro_video.video_slideshow)
-        print(video_slideshow)
+        # print(video_slideshow)
         a = 'http://qiniu.weiinng.cn/'
         picture = video_slideshow.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         micro_video.video_slideshow = ''
         sess.commit()
-        self.redirect("/product_micro")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))

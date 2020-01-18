@@ -24,7 +24,7 @@ class Login(BaseHandler):
         mes['data'] = ''
         account = self.get_argument("account","")
         password = self.get_argument("password","")
-        print(account,password)
+        # print(account,password)
         if not all([account,password]):
             mes['data'] = "不能为空"
             self.render('../templates/login.html',**mes)
@@ -55,7 +55,7 @@ class Register(BaseHandler):
         account = self.get_argument("account","")
         password1 = self.get_argument("password1","")
         password2 = self.get_argument("password2","")
-        print(account,password1,password2)
+        # print(account,password1,password2)
         if not all([account,password1,password2]):
             mes['data'] = "不能为空"
             self.render('../templates/register.html',**mes)
@@ -86,7 +86,7 @@ class Login_camera(BaseHandler):
         mes['data'] = ''
         account = self.get_argument("account","")
         password = self.get_argument("password","")
-        print(account,password)
+        # print(account,password)
         if not all([account,password]):
             mes['data'] = "不能为空"
             self.render('../templates/camera/login_camera.html',**mes)
@@ -353,18 +353,20 @@ class Lmicro_picture(BaseHandler):
 
 #摄制中心删除微视频图片  
 class Lmicro_picture_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
         video_img = str(micro_video.video_img)
-        print(video_img)
+        # print(video_img)
         a = 'http://qiniu.weiinng.cn/'
         picture = video_img.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         micro_video.video_img = ''
         sess.commit()
-        self.redirect("/lmicro")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
 
 
 
@@ -389,18 +391,19 @@ class Lmicro_video(BaseHandler):
 
 #摄制中心删除微视频视频  
 class Lmicro_video_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
         video_url = str(micro_video.video_url)
-        print(video_url)
+        # print(video_url)
         a = 'http://qiniu.weiinng.cn/'
         picture = video_url.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         micro_video.video_url = ''
         sess.commit()
-        self.redirect("/lmicro")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
 
 
 
@@ -442,15 +445,16 @@ class Lmicro_slideshow(BaseHandler):
 
 #摄制中心删除微视频轮播图
 class Lmicro_slideshow_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
         video_slideshow = str(micro_video.video_slideshow)
-        print(video_slideshow)
+        # print(video_slideshow)
         a = 'http://qiniu.weiinng.cn/'
         picture = video_slideshow.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         micro_video.video_slideshow = ''
         sess.commit()
-        self.redirect("/lmicro")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))

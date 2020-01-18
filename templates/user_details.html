@@ -64,8 +64,9 @@
 				<th class="text-r">图片信息：</th>
 				{% if video_info['user_img']%}
 				<td colspan="2"><img src="{{video_info['user_img']}}" width="200" height="150" >
-					<button  class="btn btn-default radius" type="button"><a href="/user_picture_delete/{{video_info['id']}}" style="color:red"> 删除图片</a></button>
-				
+					<button  class="btn btn-default radius" type="button">
+						<a title="删除" href="javascript:;" onclick="user_picture_delete({{video_info['id']}})" class="ml-5" style="color:red">删除图片</a>
+					</button>
 				</td>
 				{% else %}
 				<th class="text-l" colspan="2"><a href="/upload_micro/{{video_info['id']}}">
@@ -101,7 +102,36 @@
 <script type="text/javascript" src="/static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="/static/h-ui.admin/js/H-ui.admin.js"></script> 
 <!--/_footer 作为公共模版分离出去-->
-
+<script type="text/javascript">
+	/*
+		参数解释：
+		title	标题
+		url		请求的url
+		id		需要操作的数据id
+		w		弹出层宽度（缺省调默认值）
+		h		弹出层高度（缺省调默认值）
+	*/
+	
+	/*-删除*/
+	function user_picture_delete(id){
+		layer.confirm('确认要删除吗？',function(index){
+			$.ajax({
+				type: 'post',
+				url: '/user_picture_delete/'+id,
+				dataType: 'json',
+				data : { 'id' : id },
+				success: function(data){
+					layer.msg('已删除!',{icon:1,time:1000});
+					window.location.reload();
+				},
+				error:function(data) {
+					console.log(data.msg);
+				},
+			});		
+		});
+	}
+	
+	</script>
 <!--请在下方写此页面业务相关的脚本-->
 </body>
 </html>

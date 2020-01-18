@@ -232,15 +232,16 @@ class Celebrity_picture(BaseHandler):
 
 #删除明星图片  
 class Celebrity_picture_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         big_v = sess.query(Big_V).filter_by(id=id).first()
         big_v_img1 = str(big_v.big_v_img1)
-        print(big_v_img1)
+        # print(big_v_img1)
         a = 'http://qiniu.weiinng.cn/'
         picture = big_v_img1.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         big_v.big_v_img1 = ''
         sess.commit()
-        self.redirect("/celebrity_list")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))

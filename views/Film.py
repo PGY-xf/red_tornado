@@ -261,20 +261,22 @@ class Film_picture(BaseHandler):
 
 
 
-#删除电影图片  
+# #删除电影图片  
 class Film_picture_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         video = sess.query(Video).filter_by(id=id).first()
         video_img1 = str(video.video_img1)
-        print(video_img1)
+        # print(video_img1)
         a = 'http://qiniu.weiinng.cn/'
         picture = video_img1.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         video.video_img1 = ''
         sess.commit()
-        self.redirect("/film_list")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
 
 
 
@@ -290,7 +292,7 @@ class Film_video(BaseHandler):
         try:
             video.video_src = url
             sess.commit()
-            print('添加成功')
+            # print('添加成功')
             self.redirect("/film_list")
         except:
             self.write('服务器错误')
@@ -299,18 +301,21 @@ class Film_video(BaseHandler):
 
 #删除电影视频
 class Film_video_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         video = sess.query(Video).filter_by(id=id).first()
         video_src = str(video.video_src)
-        print(video_src)
+        # print(video_src)
         a = 'http://qiniu.weiinng.cn/'
         picture = video_src.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         video.video_src = ''
         sess.commit()
-        self.redirect("/film_list")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
 
 
 
@@ -335,15 +340,16 @@ class Film_slideshow(BaseHandler):
 
 #删除电影轮播图
 class Film_slideshow_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         video = sess.query(Video).filter_by(id=id).first()
         video_slideshow = str(video.video_slideshow)
-        print(video_slideshow)
+        # print(video_slideshow)
         a = 'http://qiniu.weiinng.cn/'
         picture = video_slideshow.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         video.video_slideshow = ''
         sess.commit()
-        self.redirect("/film_list")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))

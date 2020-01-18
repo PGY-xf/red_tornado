@@ -132,18 +132,19 @@ class Notice_edit(BaseHandler):
 
 #删除公告图片  
 class Notice_picture_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         notice = sess.query(Notice).filter_by(id=id).first()
         notice_img = str(notice.notice_img)
-        print(notice_img)
+        # print(notice_img)
         a = 'http://qiniu.weiinng.cn/'
         picture = notice_img.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         notice.notice_img = ''
         sess.commit()
-        self.redirect("/notice_list")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
 
 
 
@@ -265,21 +266,13 @@ class Advertising_add(BaseHandler):
 
 
 #删除广告
-# class Advertising_del(BaseHandler):
-#     def get(self, id):
-#         advertising = sess.query(Advertising).filter(Advertising.id == id).one()
-#         sess.delete(advertising)
-#         sess.commit()
-#         self.redirect('/advertising_list')
-
-
 class Advertising_del(BaseHandler):
     def post(self, id):
         id = int(id)
         advertising = sess.query(Advertising).filter(Advertising.id == id).one()
         sess.delete(advertising)
         sess.commit()
-        print("删除成功！")
+        # print("删除成功！")
         return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
 
 
@@ -330,20 +323,19 @@ class Advertising_edit(BaseHandler):
 
 #删除广告图片  
 class Advertising_picture_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         advertising = sess.query(Advertising).filter_by(id=id).first()
         advertising_img = str(advertising.advertising_img)
-        print(advertising_img)
+        # print(advertising_img)
         a = 'http://qiniu.weiinng.cn/'
         picture = advertising_img.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         advertising.advertising_img = ''
         sess.commit()
-        self.redirect("/advertising_list")
-
-
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
 
 
 

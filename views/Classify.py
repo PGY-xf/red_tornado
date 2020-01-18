@@ -202,18 +202,23 @@ class Product_column_picture(BaseHandler):
 
 #删除栏目图片
 class Column_picture_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         columnss = sess.query(Columns).filter_by(id=id).first()
         columns_img = str(columnss.columns_img)
-        print(columns_img)
+        # print(columns_img)
         a = 'http://qiniu.weiinng.cn/'
         picture = columns_img.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         columnss.columns_img = ''
         sess.commit()
-        self.redirect("/product_column")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
+
+
 
 
 
@@ -342,7 +347,8 @@ class Product_label_picture(BaseHandler):
 
 #删除栏目图片
 class Label_picture_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         label = sess.query(Label).filter_by(id=id).first()
         label_img = str(label.label_img)
         print(label_img)
@@ -353,7 +359,9 @@ class Label_picture_delete(BaseHandler):
         print('---删除成功----')
         label.label_img = ''
         sess.commit()
-        self.redirect("/product_label")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
 
 
 

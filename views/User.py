@@ -244,15 +244,16 @@ class User_picture(BaseHandler):
 
 #删除用户头像
 class User_picture_delete(BaseHandler):
-    def get(self,id):
+    def post(self, id):
+        id = int(id)
         user = sess.query(User).filter_by(id=id).first()
         user_img = str(user.user_img)
-        print(user_img)
+        # print(user_img)
         a = 'http://qiniu.weiinng.cn/'
         picture = user_img.replace(a,'') 
-        print(picture)
+        # print(picture)
         deleteap(picture)
-        print('---删除成功----')
+        # print('---删除成功----')
         user.user_img = ''
         sess.commit()
-        self.redirect("/user_list")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
