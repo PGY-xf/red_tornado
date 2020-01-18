@@ -79,8 +79,9 @@
 					</span></td>
 
 					<td class="f-14 product-brand-manage">
-						<a href="/celebrity_edit/{{ i['id'] }}">编辑</a>
-						<a href="/celebrity_del/{{ i['id'] }}">删除</a>
+						<a title="编辑" href="/celebrity_edit/{{ i['id'] }}" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont"></i></a>
+						<a title="删除" href="javascript:;" onclick="celebrity_del({{ i['id'] }})" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont"></i></a>
+
 					</td>
 
 				</tr>
@@ -109,6 +110,25 @@ $('.table-sort').dataTable({
 	  {"orderable":false,"aTargets":[0,2,3,4,5,6,7,8]}// 制定列不参与排序
 	]
 });
+
+/*-删除*/
+function celebrity_del(id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'post',
+			url: '/celebrity_del/'+id,
+			dataType: 'json',
+			data : { 'id' : id },
+			success: function(data){
+				layer.msg('已删除!',{icon:1,time:1000});
+				window.location.reload();
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
 </script>
 </body>
 </html>

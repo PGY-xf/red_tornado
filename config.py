@@ -15,13 +15,13 @@ setting = {
     'static_path':os.path.join(BASE_DIRS,'static'),         # 静态资源
     'template_path':os.path.join(BASE_DIRS,'templates'),    # html页面
     'debug':True,
-    # 'autoreload':True  flase
+    # 'autoreload':True  False
 }
 
 #mysql配置
 HOSTNAME = '106.13.67.197'   #ip地址
 PORT = '3306'                #端口
-DATABASE = 'red_dbs'          #数据库名  主库:red_dbs  测试库:zzzz,red_db
+DATABASE = 'xxxx'          #数据库名  主库:red_dbs  测试库:zzzz,red_db
 USERNAME = 'root'            #账号
 PASSWORD = '@weining123'          #密码
 

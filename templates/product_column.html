@@ -66,8 +66,9 @@
 							{% end %}
 						</span></td>
 						<td class="td-manage">
-							<a href="/product_column_edit/{{ i['id'] }}">编辑</a>
-							<a href="/product_column_del/{{ i['id'] }}">删除</a>
+							<a title="编辑" href="/product_column_edit/{{ i['id'] }}" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont"></i></a>
+							<a title="删除" href="javascript:;" onclick="product_column_del({{ i['id'] }})" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont"></i></a>
+
 					</tr>
 					{% end %}
 				</tbody>
@@ -125,6 +126,26 @@ $('.table-sort').dataTable({
 	  {"orderable":false,"aTargets":[0,2,3,4]}// 制定列不参与排序
 	]
 });
+
+
+/*-删除*/
+function product_column_del(id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'post',
+			url: '/product_column_del/'+id,
+			dataType: 'json',
+			data : { 'id' : id },
+			success: function(data){
+				layer.msg('已删除!',{icon:1,time:1000});
+				window.location.reload();
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
 
 </script>
 </body>

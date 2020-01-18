@@ -140,11 +140,14 @@ class Feedment_list(BaseHandler):
 
 # 删除评论
 class Feedment_del(BaseHandler):
-    def get(self, id):
+    def post(self, id):
+        id = int(id)
         comment = sess.query(Comment).filter(Comment.id == id).one()
         sess.delete(comment)
         sess.commit()
-        self.redirect('/product_list')
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
 
 
 #意见反馈
@@ -158,6 +161,17 @@ class Feedback_list(BaseHandler):
         opinion = sess.query(Opinion).filter(Opinion.name.like('%' + title + '%')).all()
         lens = len(opinion)
         pass
+
+
+
+#删除意见反馈
+class Feedback_del(BaseHandler):
+    def post(self, id):
+        id = int(id)
+        opinion = sess.query(Opinion).filter(Opinion.id == id).one()
+        sess.delete(opinion)
+        sess.commit()
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
 
 
 
@@ -273,63 +287,3 @@ class IndexHandler(BaseHandler):
     def get(self, *args, **kwargs):
         self.write("Hello, world123")
         # self.finish({'name':'你好'})
-
-
-###################################################################
-import json
-import re
-
-class RegisterHanler(BaseHandler):
-    async def get(self, *args, **kwargs):
-        self.write(json.dumps({"status":200,"msg":"返回成功"},ensure_ascii=False,indent=4))
-    async def post(self ,*args ,**kwargs):
-        phoneno = self.get_argument('phoneno')
-        password = self.get_argument('password')
-        code = self.get_argument('code')
-        if not all([phoneno,password,code]):
-            self.write(json.dumps({'status':10010,'msg':'内容输入不全'},ensure_ascii=False,index=4))
-        else:
-            if re.match('^1[3578]\d{9}$',phoneno):
-                user = sess.query(User).filter(User.phone == phoneno).first()
-                if not user:
-                    user = User(phone=phoneno,password=password)
-                    sess.add(user)
-                    sess.commit()
-                    self.write(json.dumps({'status':200,'msg':'注册成功'},ensure_ascii=False,indent=4))
-                else:
-                    self.write(json.dumps({'status':10011,'msg':'手机号已注册'},ensure_ascii=False,indent=4))
-            else:
-                self.write(json.dumps({'status':10012,'msg':'手机号格式不正确'},ensure_ascii=False,indent=4))
-
-
-
-
-class LoginHanler(BaseHandler):
-    async def get(self, *args, **kwargs):
-        self.write(json.dumps({'status':200,'msg':'返回成功'},ensure_ascii=False,indent=4))
-    async def post(self, *args, **kwargs):
-        phoneno = self.get_argument('phoneno')
-        password = self.get_argument('password')
-        if not all([phoneno,password]):
-            self.write(json.dumps({'status':10010,'msg':'内容输入不全'},ensure_ascii=False,indent=4))
-        else:
-            user = sess.query(User).filter(User.phone==phoneno).first()
-            if user:
-                if user.password == password:
-                    self.write(json.dumps({'status':200,'msg':'登录成功'},ensure_ascii=False,indent=4))
-                else:
-                    self.write(json.dumps({'status':10010,'msg':'密码错误，请重新输入'},ensure_ascii=False,indent=4))
-            else:
-                self.write(json.dumps({'status':10011,'msg':'用户名不存在，请注册'},ensure_ascii=False,indent=4))
-
-            
-
-     
-
-class IndexHanler(BaseHandler):
-    async def get(self, *args, **kwargs):
-        self.write(json.dumps({'status':200,'msg':'返回成功'},ensure_ascii=False,indent=4))
-    async def post(self, *args, **kwargs):
-        pass
-
-

@@ -19,7 +19,7 @@
 <script type="text/javascript" src="/static/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>微电影列表</title>
+<title>通告列表</title>
 <link rel="stylesheet" href="/static/lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
 </head>
 <body class="pos-r">
@@ -28,107 +28,49 @@
 </div> -->
 <div style="margin-left:10px;">
 <form action="" method="post" class="form form-horizontal" id="form-article-add">
-
-	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 产品管理 <span class="c-gray en">&gt;</span> 视频列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 广告管理 <span class="c-gray en">&gt;</span> 通告列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="page-container">
 
 		<div class="text-c"> 日期范围：
 			<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })" id="logmin" class="input-text Wdate" style="width:120px;">
 			
 			<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })" id="logmax" class="input-text Wdate" style="width:120px;">
-			<input type="text" name="title" id="" placeholder=" 微视频名称" style="width:250px" class="input-text">
-			<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜微视频</button>
+			<input type="text" name="title" id="" placeholder=" 通告名称" style="width:250px" class="input-text">
+			<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜通告</button>
 		</div>
-		<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius"  href="/lmicro_add"><i class="Hui-iconfont">&#xe600;</i> 添加微视频</a></span> <span class="r">共有数据：<strong>{{ lens }}</strong> 条</span> </div>
+		<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius"  href="/afterend/affiche_manage/page"><i class="Hui-iconfont">&#xe600;</i> 添加通告</a></span> <span class="r">共有数据：<strong>{{ lens }}</strong> 条</span> </div>
 		<div class="mt-20">
 		
 			<table class="table table-border table-bordered table-bg table-hover table-sort">
 				<thead>
 					<tr class="text-c">
- 						<th width="30"><input name="" type="checkbox" value=""></th>
- 						<th width="60">ID</th>
-						<th width="70">微视频名称</th>
-						<th width="60">栏目</th>
-						<th width="60">作者</th>
-						<th width="60">图片地址</th>
-						<th width="60">微视频地址</th>
-						<th width='60'>轮播图</th>
-						<th width="60">发布时间</th>
- 						<th width="60">是否审核</th>
+						<th width="40"><input name="" type="checkbox" value=""></th>
+						<th width="40">ID</th>
+						<th width="80">标题</th>
+						<th width="100">图片地址</th>
+						<th width="100">跳转的链接</th>
+						<th width="80">投放位置</th>
+						<th width="50">类型</th>
 						<th width="100">操作</th>
 					</tr>
 				</thead>
 				
 				<tbody>
-					{% for i in micro_video %}
-						<tr class="text-c va-m">
-							<td><input name="" type="checkbox" value=""></td>
-							<td>{{ i["id"] }}</td>
-							<td class="price">
-								<b><a href="/lmicro_details/{{ i['id'] }}">{{ i['name'] }}</a></b>
-							</td>
-							
-							<!--栏目-->
-							<td class="price">
-								{{ i['column_name'] }}
-							</td>
+					{% for i in affiche %}
+					<tr class="text-c">
+						<td><input name="" type="checkbox" value=""></td>
+						<td>{{ i['id'] }}</td>
+						<td>{{ i['title'] }}</td>
+						<td>{{ i['imgsrc'] }}</td>
+						<td>{{ i['jumplink'] }}</td>
+						<td>{{ i['place'] }}</td>
+						<td>{{ i['types'] }}</td>
+						<td class="td-manage">
+							<a title="编辑" href="" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont"></i></a>
+							<a title="删除" href="javascript:;" onclick="member_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont"></i></a>
 
-							<!--作者-->
-							<td class="price">
-								{{ i['auth_name'] }}
-							</td>
-							
-							<!--关于图片-->
-							<td>
-								{% if i['video_img']%}
-									<a href="/lmicro_details/{{ i['id'] }}"><span class="label label-success radius">查看图片</span></a>
-								{% else %}
-									<a href="/lmicro_picture/{{i['id']}}"><span class="label radius">上传图片</span></a>
-								{% end %}
-							</td>
-							<!--关于视频-->
-							<td>
-								{% if i['video_url']%}
-									<a href="/lmicro_details/{{ i['id'] }}"><span class="label label-success radius">查看微视频</span></a>
-								{% else %}
-									<a href="/lmicro_video/{{i['id']}}"><span class="label radius">上传微视频</span></a>
-								{% end %}
-							</td>
-
-							<td>
-								{% if i['video_slideshow']%}
-									<a href="/lmicro_details/{{ i['id'] }}"><span class="label label-success radius">查看轮播图</span></a>
-								{% else %}
-									<a href="/lmicro_slideshow/{{i['id']}}"><span class="label radius">上传轮播图</span></a>
-								{% end %}
-							</td>
-
-							<td class="price">
-								{{ i['show_time'] }}
-							</td>
-
-							<td class="td-status">
-							{% if i['is_show'] == 0 %}
-							<span class="label radius">未审核</span>
-
-							{% elif i['is_show'] == 1 %}
-							<span class="label label-success radius">审核通过</span>
-
-							{% end %}
 						</td>
-					
-						<td width="23">
-							<a title="编辑" href="/lmicro_edit/{{ i['id'] }}" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont"></i></a>
-							<a title="删除" href="javascript:;" onclick="lmicro_del({{ i['id'] }})" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont"></i></a>
-
-							{% if i['is_show'] == 0 %}
-							
-							{% elif i['is_show'] == 1 %}
-							<a style="text-decoration:none" href="/lmicro_block/{{ i['id'] }}" title="下架"><i class="Hui-iconfont"></i></a>
-
-							{% end %}
-						</td>
-						</tr>
+					</tr>
 					{% end %}
 				</tbody>
 			</table>
@@ -182,16 +124,16 @@ $('.table-sort').dataTable({
 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 	"bStateSave": true,//状态保存
 	"aoColumnDefs": [
-	  {"orderable":false,"aTargets":[0,2,3,4,5,6,7,8]}// 制定列不参与排序
+	  {"orderable":false,"aTargets":[0,2,3,4,5,6,7]}// 制定列不参与排序
 	]
 });
 
 /*-删除*/
-function lmicro_del(id){
+function member_del(id){
 	layer.confirm('确认要删除吗？',function(index){
 		$.ajax({
 			type: 'post',
-			url: '/lmicro_del/'+id,
+			url: '',
 			dataType: 'json',
 			data : { 'id' : id },
 			success: function(data){

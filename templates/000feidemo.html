@@ -9,6 +9,16 @@
 		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 	</head>
 	<body>
+		<div class="pop_con">
+			<div class="mask">
+				<div class="pop">
+					<button id='jixu'>继续上传</button>
+					<button id='fanhui'>返回</button>
+				</div>
+			</div>
+		</div>
+			
+			
 			<div class="body">
 				<h1>添加轮播图或公告</h1>
 				<div class="index-list1">
@@ -16,7 +26,7 @@
 						请选择要添加的类型：
 					</div>
 					<div class="group">
-					    {% for value in places%}
+					    {% for value in places %}
 					    	<label id="active{{value['placetype']}}">
 					        <input type="radio" name="istype" value="{{value['placetype']}}" checked="checked"/>
 					        {{value['typename']}}</label>
@@ -150,14 +160,6 @@
                 var myimg  = ""
 				myimg += "<img src='http://qiniu.weiinng.cn/"+infohash.hash+"' style='width:200px;height:200px'/>";
 				$(".img-div").html(myimg);
-                
-                
-//               $(".upload-progress").hide();
-//               $("#constants").show()
-//               var img = new Image();                                      //创建一个Image对象，实现图片的预下载
-//               img.src = "http://qiniu.weiinng.cn/"+infohash.hash;
-//               $("#container").append(img);
-                
             },
 
             'Error': function(up, err, errTip) {
@@ -169,8 +171,13 @@
         }
     });
 		$(function(){
-			
-
+			$("#jixu").click(function(){
+				window.location.reload();
+			})
+			$("#fanhui").click(function(){
+				window.location.replace("/user_list");
+			})
+				
 			  var demand_str = $('input:radio:checked').val()
 			  console.log(demand_str)
 			  $(".group label").click(function () {
@@ -284,7 +291,7 @@
 			getdata.click(function(){
 				$.ajax({
 					type:"post",
-					url:"/afterend/advertising_manage/getplacedata",
+					url:"/afterend/affiche_manage/getplacedata",
 					async:true,
 					data:{
 						'place_info':$("[name='link_type']").val()
@@ -416,7 +423,7 @@
 			function sed_ajax(ja_type,aj_place,aj_title,aj_imgsrc,aj_linksrc,aj_linkinfo){
 				$.ajax({
 					type:"post",
-					url:"/afterend/advertising_manage/add",
+					url:"/afterend/affiche_manage/add",
 					async:true,
 					data:{
 						'_istype':ja_type,
@@ -429,49 +436,86 @@
 					success:function(datas){
 						var datais = JSON.parse(datas)
 						if(datais.status ==200){
-							alert("成功！")
+							$('.pop_con').fadeIn();
 						}
+						else{
+						    $('.pop_con').fadeIn();
+                        }
 					}
 				});
 			}
-//			$("#ifrequest").click(function(){
-//				if(add_link.val()){
-//					$.ajax({
-//						type:"post",
-//						url:"/afterend/advertising_manage/request_link",
-//						async:true,
-//						data:{
-//							"url":add_link.val()
-//						},
-//						success:function(datas){
-//							console.log(datas)
-//							if(datas.status == 200){
-//								alert(datas.msg)
-//							}
-//							else{
-//								alert("发生异常")
-//							}
-//						},
-//						error:function (XMLHttpRequest, textStatus, errorThrown) {
-//		                    // 状态码
-//		                    console.log(XMLHttpRequest.status);
-//		                    // 状态
-//		                    console.log(XMLHttpRequest.readyState);
-//		                    // 错误信息   
-//		                    console.log(textStatus);
-//			            }	
-//					});
-//				}
-//				else{
-//					alert("请补充链接！")
-//				}
-//			})
+		
+				var btn = $('#btn');
+				
+				btn.click(function(){
+					$('.pop_con').fadeIn();
+					return false;
+				})
+//				$(document).click(function(){
+//					$('.pop_con').fadeOut();
+//				});
+				
+				$('.pop').click(function(){
+					return false;
+				})
+				
+				$('#close').click(function(){
+					$('.pop_con').fadeOut();
+				})
 	})
+		
+
+				
+
 	</script>
 	<style type="text/css">
 
+	.pop{
+		position: fixed;
+		width: 500px;
+		height: 300px;
+		border-radius: 30px;
+		background-color: #0088CC;
+		border: 3px solid #000;
+		left: 50%;
+		top: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-left: -250px;
+		margin-top: -150px;
+	}
+	.pop>button{
+		text-align: center;
+		border: 1px solid #006DCC;
+		width: 100px;
+		height: 30px;
+		border-radius: 30px;
 		
-		
+	}
+	.mask{
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		background-color:rgba(0,0,0,0.4);
+		left: 0;
+		top: 0;
+		z-index: 99990;
+
+	}
+	
+	.pop_con{
+		display: none;
+	}
+	.close{
+		float: right;
+		font-size: 30px;
+	}
+
+
+
+
+	
 	.group>label{
 	    /*未选中状态*/
 	    float: left;

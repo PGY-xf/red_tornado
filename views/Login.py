@@ -239,13 +239,17 @@ class Lmicro_add(BaseHandler):
                 self.render('../templates/camera/lmicro_add.html',author=author,columns=columns,**mes)
 
 
+
 #摄制中心删除微视频
 class Lmicro_del(BaseHandler):
-    def get(self, id):
+    def post(self, id):
+        id = int(id)
         micro_video = sess.query(Micro_video).filter(Micro_video.id == id).one()
         sess.delete(micro_video)
         sess.commit()
-        self.redirect('/lmicro')
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
 
 #摄制中心微视频审核
 class Lmicro_audit(BaseHandler):

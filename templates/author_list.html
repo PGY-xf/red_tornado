@@ -47,11 +47,11 @@
 					<th width="25"><input type="checkbox" name="" value=""></th>
 					<th width="70">ID</th>
 					<th width="80">姓名</th>
-					<th width="150">信息</th>
+					<th width="200">信息</th>
 					<th width='150'>作者图片</th>
 					<th width='150'>是否审核</th>
 					<th width='150'>注册时间</th>
-					<th>操作</th>
+					<th width='150'>操作</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -82,13 +82,12 @@
 					<td>{{ i['create_time'] }}</td>
 
 					<td class="f-14 product-brand-manage">
-						<a href="/author_edit/{{ i['id'] }}">编辑</a>
-						<a href="/author_del/{{ i['id'] }}">删除</a>
-
+						<a style="text-decoration:none" class="ml-5" href="/author_edit/{{ i['id'] }}" title="编辑"><i class="Hui-iconfont"></i></a>
+						<a title="删除" href="javascript:;" onClick="picture_del({{ i['id'] }})" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont"></i></a>
 						{% if i['is_activate'] == 0 %}
-						<a href="/author_audit/{{ i['id'] }}">审核</a>
+						<a style="text-decoration:none"  href="/author_audit/{{ i['id'] }}" title="审核"><i class="icon Hui-iconfont"></i></a>
 						{% elif i['is_activate'] == 1 %}
-						<a href="/author_block/{{ i['id'] }}">停用</a>
+						<a style="text-decoration:none" href="/author_block/{{ i['id'] }}" title="停用"><i class="Hui-iconfont"></i></a>
 						{% end %}
 
 					</td>
@@ -119,6 +118,26 @@ $('.table-sort').dataTable({
 	  {"orderable":false,"aTargets":[0,2,3,4,5,6,7]}// 制定列不参与排序
 	]
 });
+
+/*-删除*/
+function picture_del(id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'post',
+			url: '/author_del/'+id,
+			dataType: 'json',
+			data : { 'id' : id },
+			success: function(data){
+				layer.msg('已删除!',{icon:1,time:1000});
+				window.location.reload();
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+
 </script>
 </body>
 </html>

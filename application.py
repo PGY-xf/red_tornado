@@ -80,7 +80,8 @@ class Application(tornado.web.Application):
 
 
 
-            (r"/inform_add", Notice.inform_add),  # 通知管理
+            (r"/feidemo_list", Notice.Feidemo_list),  # 通知管理
+
 
 
             (r"/notice_list", Notice.Notice_list),  # 公告管理
@@ -180,10 +181,10 @@ class Application(tornado.web.Application):
             (r"/app/get/index/recommend/column_list", AppPort.getIndexColumnsList),  #主页-栏目-大全
             (r"/app/post/index/recommend/column_info", AppPort.getAPP_IndexColumns_info),  # 主页-栏目-info
             (r"/app/post/common/video_particulars", AppPort.get_app_common_video_particulars),  # 视频详情页
-            (r"/afterend/advertising_manage/page",AppPort.advertising_manage_page),   #广告管理页面
-            (r"/afterend/advertising_manage/add", AppPort.advertising_manage_add),  # 广告管理页面
-            (r"/afterend/advertising_manage/request_link", AppPort.advertising_manage_request_link),  # 验证链接
-            (r"/afterend/advertising_manage/getplacedata", AppPort.advertising_manage_getplacedata),  # 获取位置数据
+            (r"/afterend/affiche_manage/page",AppPort.affiche_manage_page),   #广告管理页面
+            (r"/afterend/affiche_manage/add", AppPort.affiche_manage_add),  # 广告管理页面
+            (r"/afterend/affiche_manage/request_link", AppPort.affiche_manage_request_link),  # 验证链接
+            (r"/afterend/affiche_manage/getplacedata", AppPort.affiche_manage_getplacedata),  # 获取位置数据
             #############  新增
             (r"/gitVideodetails/(\d+)", AppPortone.gitVideodetails),  # 微视频视频详情页    
             (r"/gitColumnsList",AppPortone.gitColumnsList),         #栏目列表   
@@ -212,10 +213,12 @@ class Application(tornado.web.Application):
             (r"/admin_edit/(\d)", adminuser.Admin_edit),  # 管理员编辑
             (r"/admin_delete/(\d)", adminuser.Admin_delete),  # 管理员编辑
 
-
-            (r"/feedment_list", Index.Feedment_list),           # 评论列表
+ 
+            (r"/feedment_list", Index.Feedment_list),           # 评论列表  
             (r"/feedment_del/(\d+)", Index.Feedment_del),       # 删除评论
             (r"/feedback_list", Index.Feedback_list),           # 意见反馈
+            (r"/feedback_del/(\d+)", Index.Feedback_del),       # 删除意见反馈
+
 
 
             (r"/charts_1", Index.Charts_1),  # 折线图

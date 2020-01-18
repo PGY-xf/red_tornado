@@ -84,13 +84,12 @@ class Product_category_edit(BaseHandler):
 
 # 删除分类
 class Category_del(BaseHandler):
-    def get(self, id):
+    def post(self, id):
+        id = int(id)
         classify = sess.query(Classify).filter(Classify.id == id).one()
         sess.delete(classify)
         sess.commit()
-        self.redirect('/product_category')
-
-
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
 
 
 
@@ -173,11 +172,14 @@ class Product_column_edit(BaseHandler):
 
 # 删除栏目
 class Product_column_del(BaseHandler):
-    def get(self, id):
+    def post(self, id):
+        id = int(id)
         columns = sess.query(Columns).filter(Columns.id == id).one()
         sess.delete(columns)
         sess.commit()
-        self.redirect('/product_column')
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
 
 
 
@@ -309,12 +311,12 @@ class Product_label_edit(BaseHandler):
 
 # 删除标签
 class Product_label_del(BaseHandler):
-    def get(self, id):
+    def post(self, id):
+        id = int(id)
         label = sess.query(Label).filter(Label.id == id).one()
         sess.delete(label)
         sess.commit()
-        self.redirect('/product_label')
-
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
 
 
 

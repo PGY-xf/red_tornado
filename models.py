@@ -142,18 +142,15 @@ class Label(Base,IdBase):
 
 
 
-
-# 公告广告表 
+#新表
 class Affiche(Base,IdBase):
     __tablename__ = "affiche"
-    name = Column(String(100))                                  #名称
-    img = Column(String(255))                                   #封面图
-    link = Column(String(255))                                  #链接
-    is_advertising = Column(Integer,default=0)                  #是否广告（0：公告   1：广告）
-    is_show = Column(Integer,default=0)                         #0未审核  1已审核
-    types = Column(Integer,default=0)                           #页面展示  0精选页  1电影页  2电视剧页  3动漫页 
-    creation_time = Column(DateTime(),default=datetime.now)     #发布时间（精确到秒）
-
+    title = Column(String(100))                                 #标题
+    imgsrc = Column(String(255))                                #图片地址
+    jumplink = Column(String(255))                              #跳转的链接
+    place = Column(Integer,default=0)                           #投放位置
+    types = Column(Integer,default=0)                           #类型
+    create_time = Column(DateTime(),default=datetime.now)       #创建时间（精确到秒）
 
 
 
@@ -264,16 +261,15 @@ class System(Base):
 
 #################
 
-
-#新表
+# 广告表 
 class Advertising(Base,IdBase):
     __tablename__ = "advertising"
-    title = Column(String(100))                                 #标题
-    imgsrc = Column(String(255))                                #图片地址
-    jumplink = Column(String(255))                              #跳转的链接
-    place = Column(Integer,default=0)                           #投放位置
-    types = Column(Integer,default=0)                           #类型
-    create_time = Column(DateTime(),default=datetime.now)       #创建时间（精确到秒）
+    name = Column(String(100))                                  #广告名称
+    advertising_img = Column(String(255))                       #广告图片
+    advertising_link = Column(String(255))                      #广告链接
+    is_show = Column(Integer,default=0)                         #0未审核  1已审核
+    types = Column(Integer,default=0)                           #页面展示  0精选页  1电影页  2电视剧页  3动漫页 
+    creation_time = Column(DateTime(),default=datetime.now)     #发布时间（精确到秒）
 
 
 

@@ -97,11 +97,12 @@ class Author_add(BaseHandler):
 
 #删除作者
 class Author_del(BaseHandler):
-    def get(self, id):
+    def post(self, id):
+        id = int(id)
         author = sess.query(Author).filter(Author.id == id).one()
         sess.delete(author)
         sess.commit()
-        self.redirect('/author_list')
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
 
 
 #作者审核通过

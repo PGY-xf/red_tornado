@@ -134,13 +134,17 @@ class Film_add(BaseHandler):
                 self.render('../templates/film_add.html',classify=classify,label=label,**mes)
 
 
-#删除微视频
+#删除电影
 class Film_del(BaseHandler):
-    def get(self, id):
+    def post(self, id):
+        id = int(id)
         video = sess.query(Video).filter(Video.id == id).one()
         sess.delete(video)
         sess.commit()
-        self.redirect('/film_list')
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
+
 
 #电影审核
 class Film_audit(BaseHandler):

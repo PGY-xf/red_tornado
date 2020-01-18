@@ -79,11 +79,15 @@ class Notice_add(BaseHandler):
 
 #删除公告
 class Notice_del(BaseHandler):
-    def get(self, id):
+    def post(self, id):
+        id = int(id)
         notice = sess.query(Notice).filter(Notice.id == id).one()
         sess.delete(notice)
         sess.commit()
-        self.redirect('/notice_list')
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
+
 
 #公告审核
 class Notice_audit(BaseHandler):
@@ -261,12 +265,25 @@ class Advertising_add(BaseHandler):
 
 
 #删除广告
+# class Advertising_del(BaseHandler):
+#     def get(self, id):
+#         advertising = sess.query(Advertising).filter(Advertising.id == id).one()
+#         sess.delete(advertising)
+#         sess.commit()
+#         self.redirect('/advertising_list')
+
+
 class Advertising_del(BaseHandler):
-    def get(self, id):
+    def post(self, id):
+        id = int(id)
         advertising = sess.query(Advertising).filter(Advertising.id == id).one()
         sess.delete(advertising)
         sess.commit()
-        self.redirect('/advertising_list')
+        print("删除成功！")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
+
 
 #广告审核
 class Advertising_audit(BaseHandler):
@@ -372,8 +389,36 @@ class Advertising_picture(BaseHandler):
 
 
 
-
-class inform_add(BaseHandler):
+# 通知列表
+class Feidemo_list(BaseHandler):
     def get(self,*args,**kwargs):
-        self.render('../templates/inform_add.html')
-        
+        affiche = sess.query(Affiche).all()
+        lens = len(affiche)
+        a_list = []
+        for info in affiche:
+            item={}
+            item["id"] = info.id
+            item["title"]=info.title
+            item["imgsrc"]=info.imgsrc
+            item["jumplink"]=info.jumplink
+            item["place"]=info.place
+            item["types"]=info.types
+            item["create_time"]=info.create_time
+            a_list.append(item)
+        self.render('../templates/000feidemo_list.html',affiche=a_list,lens=lens)
+    def post(self,*args,**kwargs):
+        title = self.get_argument('title', '')
+        affiche = sess.query(Affiche).filter(Affiche.title.like('%' + title + '%')).all()
+        lens = len(affiche)
+        a_list = []
+        for info in affiche:
+            item={}
+            item["id"] = info.id
+            item["title"]=info.title
+            item["imgsrc"]=info.imgsrc
+            item["jumplink"]=info.jumplink
+            item["place"]=info.place
+            item["types"]=info.types
+            item["create_time"]=info.create_time
+            a_list.append(item)
+        self.render('../templates/notice_list.html', affiche=a_list, lens=lens)

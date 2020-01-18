@@ -132,11 +132,15 @@ class Product_micro_add(BaseHandler):
 
 #删除微视频
 class Product_micro_del(BaseHandler):
-    def get(self, id):
+    def post(self, id):
+        id = int(id)
         micro_video = sess.query(Micro_video).filter(Micro_video.id == id).one()
         sess.delete(micro_video)
         sess.commit()
-        self.redirect('/product_micro')
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
+
 
 #微视频审核
 class Product_micro_audit(BaseHandler):

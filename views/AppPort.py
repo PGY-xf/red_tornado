@@ -60,12 +60,12 @@ class QiNiuHandler(BaseHandler):
         self.write(json.dumps({'uptoken': token}, ensure_ascii=False))
 
 
-# 推荐页微视频
+# 爱看页面的小视频 ID 必须为1
 class gitVideolist(BaseHandler):
     def get(self, id, *args, **kwargs):
         id = int(id)
         # microall =random.sample(sess.query(Micro_video).filter(Micro_video.video_url!=None).all(),10)
-        microall = sess.query(Micro_video).filter(Micro_video.video_url != None).all()[id:id + 10]
+        microall = sess.query(Micro_video).filter(Micro_video.video_url != None,Micro_video.column_id==1).all()[id:id + 10]
         video_list = []
         for micro in microall:
             item = {}
@@ -480,7 +480,7 @@ class get_app_common_video_particulars(BaseHandler):
 ../../pages/celebrity/celebrity?id={id}  主持人信息页面
 '''
 
-advertisinglinks=[
+affichelinks=[
             {
                 'id':1,
                 'name':"不跳转到任何连接！",
@@ -518,7 +518,7 @@ advertisinglinks=[
                 "dataTable":Video
             },
         ]
-advertising_gonggao = [
+affiche_gonggao = [
                     {
                         'id':1,
                         'value':'首页的公告'
@@ -528,7 +528,7 @@ advertising_gonggao = [
                         'value': '电影页的广告'
                     },
                 ]
-advertising_lunbotu = [
+affiche_lunbotu = [
                     {
                         'id': 3,
                         'value': '首页的轮播图'
@@ -542,7 +542,7 @@ advertising_lunbotu = [
                         'value': '推荐页的轮播图'
                     },
                 ]
-advertising_guanggao = [
+affiche_guanggao = [
                     {
                         'id': 5,
                         'value': '个人中心的广告'
@@ -553,32 +553,32 @@ advertising_guanggao = [
                     },
                 ]
 #添加公告\轮播图\广告图 this 管理
-class advertising_manage_page(BaseHandler):
+class affiche_manage_page(BaseHandler):
     def get(self, *args, **kwargs):
         places = [
             {
                 'typename':'公告',
                 'placetype':1,
-                'placelist':advertising_gonggao
+                'placelist':affiche_gonggao
             },
             {
                 'typename': '轮播图',
                 'placetype': 2,
-                'placelist':advertising_lunbotu
+                'placelist':affiche_lunbotu
             },
             {
                 'typename': '广告',
                 'placetype': 3,  #广告
-                'placelist':advertising_guanggao
+                'placelist':affiche_guanggao
             },
         ]
         # 必须从1开始
-        links = advertisinglinks
+        links = affichelinks
         self.render("../templates/000feidemo.html", places=places ,links=links)
 
 #添加数据
-class advertising_manage_add(BaseHandler):
-    advertisinglinks = advertisinglinks
+class affiche_manage_add(BaseHandler):
+    affichelinks = affichelinks
     def post(self, *args, **kwargs):
         print("被请求了！")
         _istype = self.get_argument('_istype')
@@ -595,7 +595,7 @@ class advertising_manage_add(BaseHandler):
             imgsrc = _imgsrc
             place = _place
             linksrc = ""
-            for item in advertisinglinks:
+            for item in affichelinks:
                 if int(item['id']) == int(_linksrc):
                     linksrc += str(item["linkinfo"])
                     linksrc += str(_linkinfo)
@@ -606,19 +606,27 @@ class advertising_manage_add(BaseHandler):
             print("图片地址:"+imgsrc)
             print("连接地址:"+linksrc)
 
+            # try:
+            add_data = Affiche(title=title,imgsrc=imgsrc,jumplink=linksrc,place=place,types=types)
+            sess.add(add_data)
+            sess.commit()
             return self.write(
-                json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,
-                           ensure_ascii=False))
+            json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,
+                       ensure_ascii=False))
+            # except:
+            #     return self.write(
+            #         json.dumps({"status": 201, "msg": "失败"}, cls=AlchemyEncoder,
+            #                    ensure_ascii=False))
 
     #获取位置数据
-class advertising_manage_getplacedata(BaseHandler):
-    advertisinglinks = advertisinglinks
+class affiche_manage_getplacedata(BaseHandler):
+    affichelinks = affichelinks
     def post(self, *args, **kwargs):
         try:
             place_info = self.get_argument("place_info")
             # 3微视频
             datainfo = []
-            for item in advertisinglinks:
+            for item in affichelinks:
                 if int(item["id"]) == int(place_info):
                     data = sess.query(item["dataTable"].id, item["dataTable"].name).order_by(-item["dataTable"].id).all()
                     for value in data:
@@ -632,13 +640,13 @@ class advertising_manage_getplacedata(BaseHandler):
                            ensure_ascii=False))
         except:
             return self.write(
-                json.dumps({"status": 200, "msg": "失败"}, cls=AlchemyEncoder,
+                json.dumps({"status": 201, "msg": "失败"}, cls=AlchemyEncoder,
                            ensure_ascii=False))
 
 
 
 #验证链接
-class advertising_manage_request_link(BaseHandler):
+class affiche_manage_request_link(BaseHandler):
     def post(self, *args, **kwargs):
         url = self.get_argument("url")
         if url:

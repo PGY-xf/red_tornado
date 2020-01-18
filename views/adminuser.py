@@ -74,11 +74,12 @@ class Admin_edit(BaseHandler):
 
 #管理员删除
 class Admin_delete(BaseHandler):
-    def get(self,id, *args, **kwargs):
+    def post(self, id):
+        id = int(id)
         adminuser = sess.query(AdminUser).filter(AdminUser.id==id).one()
         sess.delete(adminuser)
         sess.commit()
-        self.write("删除成功！")
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
 
 
 

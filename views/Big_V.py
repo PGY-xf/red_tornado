@@ -125,11 +125,12 @@ class Celebrity_add(BaseHandler):
 
 #删除明星
 class Celebrity_del(BaseHandler):
-    def get(self, id):
+    def post(self, id):
+        id = int(id)
         big_v = sess.query(Big_V).filter(Big_V.id == id).one()
         sess.delete(big_v)
         sess.commit()
-        self.redirect('/celebrity_list')
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
 
 
 

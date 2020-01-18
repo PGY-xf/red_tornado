@@ -105,11 +105,13 @@ class User_add(BaseHandler):
 
 #删除用户
 class User_del(BaseHandler):
-    def get(self, id):
+    def post(self, id):
+        id = int(id)
         user = sess.query(User).filter(User.id == id).one()
         sess.delete(user)
         sess.commit()
-        self.redirect('/user_list')
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
+
 
 
 #用户停用
