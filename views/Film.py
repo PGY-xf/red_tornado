@@ -101,6 +101,7 @@ class Film_add(BaseHandler):
         intro = self.get_argument('intro')
         video_img1 = self.get_argument('video_img1')
         video_slideshow = self.get_argument('video_slideshow')
+        tag = self.get_argument('tag')
         video_src = self.get_argument('video_src')
         classify_id = self.get_argument('classify_id','')
         hot = self.get_argument('hot','')
@@ -108,7 +109,7 @@ class Film_add(BaseHandler):
         is_vip = self.get_argument('is_vip','')
         thiscat_id = self.get_argument('is_vip','')
         is_selection = self.get_argument('thiscat_id','')
-        if not all([name,director,intro]):
+        if not all([name,director,intro,tag]):
             mes['data'] = "请将带红色*参数填写完整！"
             self.render('../templates/film_add.html',classify=classify,label=label,**mes)
         else:
@@ -124,6 +125,7 @@ class Film_add(BaseHandler):
                     intro=intro,
                     region = region,
                     video_img1=video_img1,
+                    tag=tag,
                     video_slideshow=video_slideshow,
                     video_src=video_src,
                     classify_id=classify_id,
@@ -193,6 +195,7 @@ class Film_edit(BaseHandler):
         video_slideshow = self.get_argument('video_slideshow')
         protagonist = self.get_argument('protagonist','')
         video_src = self.get_argument('video_src')
+        tag = self.get_argument('tag')
         classify_id = self.get_argument('classify_id','')
         hot = self.get_argument('hot','')
         is_show = self.get_argument('is_show','')
@@ -207,8 +210,9 @@ class Film_edit(BaseHandler):
         video.protagonist = protagonist
         video.video_img1 = video_img1
         video.video_slideshow = video_slideshow
-        video.video_src = video_src
+        video.video_src = video_src  
         video.classify_id = classify_id
+        video.tag = tag
         video.thiscat_id = thiscat_id
         video.hot = hot
         video.is_show = is_show

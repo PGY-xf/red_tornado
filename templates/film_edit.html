@@ -60,6 +60,15 @@
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-2">
 					<span class="c-red">*</span>
+					标签：</label>
+				<div class="formControls col-xs-6 col-sm-6">
+					<input type="text" class="input-text" value="{{ video.tag }}" placeholder="请输标签(格式：XX、XX[以、分割])" id="tag" name="tag">
+				</div>
+			</div>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">
+					<span class="c-red">*</span>
 					上映时间：</label>
 				<div class="formControls col-xs-6 col-sm-6">
 					<input type="text" class="input-text" value="{{ video.year }}" placeholder="请输入制片年份(格式：XXXX年XX月XX日)" id="year" name="year">
