@@ -556,97 +556,39 @@ class get_app_common_movie_particulars(BaseHandler):
 '''
 
 affichelinks=[
-            {
-                'id':1,
-                'name':"不跳转到任何连接！",
-                "linkinfo":"",
-                "dataTable":None
-            },
-            {
-                'id': 2,
-                'name': "外部网页",
-                "linkinfo": "../../pages/friend-link/common-link?weburl=",
-                "dataTable":None
-            },
-            {
-                'id': 3,
-                'name': "视频详情页",
-                "linkinfo": "../../pages/common/common-video-content?id=",
-                "dataTable":Micro_video
-            },
-            {
-                'id': 4,
-                'name': "栏目详情页",
-                "linkinfo": "../../pages/column/column-info?id=",
-                "dataTable":Columns
-            },
-            {
-                'id': 5,
-                'name': "主持人详情页",
-                "linkinfo": "../../pages/celebrity/celebrity?id=",
-                "dataTable":Big_V
-            },
-            {
-                'id': 6,
-                'name': "电影详情页",
-                "linkinfo": "",
-                "dataTable":Video
-            },
-        ]
-affiche_gonggao = [
-                    {
-                        'id':1,
-                        'value':'首页的公告'
-                    },
-                    {
-                        'id': 2,
-                        'value': '电影页的广告'
-                    },
+    {'id':1,'name':"不跳转到任何连接！","linkinfo":"","dataTable":None},
+    {'id': 2,'name': "外部网页","linkinfo": "../../pages/friend-link/common-link?weburl=","dataTable":None},
+    {'id': 3,'name': "视频详情页","linkinfo": "../../pages/common/common-video-content?id=","dataTable":Micro_video},
+    {'id': 4,'name': "栏目详情页","linkinfo": "../../pages/column/column-info?id=","dataTable":Columns},
+    {'id': 5,'name': "主持人详情页","linkinfo": "../../pages/celebrity/celebrity?id=","dataTable":Big_V},
+    {'id': 6,'name': "电影详情页","linkinfo": "","dataTable":Video},
+]
+
+_places = [
+            {'typename':'公告','placetype':1,'placelist':
+                [
+                    {'id':1,'value':'首页的公告','remark':"text_index"},
+                    {'id': 2,'value': '电影页的广告','remark':"text_movie"},
                 ]
-affiche_lunbotu = [
-                    {
-                        'id': 3,
-                        'value': '首页的轮播图'
-                    },
-                    {
-                        'id': 4,
-                        'value': '电影页的轮播图'
-                    },
-                    {
-                        'id': 7,
-                        'value': '推荐页的轮播图'
-                    },
+             },
+            {'typename': '轮播图','placetype': 2,'placelist':
+                [
+                    {'id': 3,'value': '首页的轮播图','remark':"img_index"},
+                    {'id': 4,'value': '电影页的轮播图','remark':"img_movie"},
+                    {'id': 7,'value': '推荐页的轮播图','remark':"img_tuijian"},
                 ]
-affiche_guanggao = [
-                    {
-                        'id': 5,
-                        'value': '个人中心的广告'
-                    },
-                    {
-                        'id': 6,
-                        'value': '推荐页的广告'
-                    },
+             },
+            {'typename': '广告','placetype': 3,'placelist':
+                [
+                    {'id': 5, 'value': '个人中心的广告', 'remark': "guanggao_gerenzhongxin"},
+                    {'id': 6, 'value': '推荐页的广告', 'remark': "guanggao_tuijian"},
                 ]
+             },
+         ]
 #添加公告\轮播图\广告图 this 管理
 class affiche_manage_page(BaseHandler):
     def get(self, *args, **kwargs):
-        places = [
-            {
-                'typename':'公告',
-                'placetype':1,
-                'placelist':affiche_gonggao
-            },
-            {
-                'typename': '轮播图',
-                'placetype': 2,
-                'placelist':affiche_lunbotu
-            },
-            {
-                'typename': '广告',
-                'placetype': 3,  #广告
-                'placelist':affiche_guanggao
-            },
-        ]
+        places = _places
         # 必须从1开始
         links = affichelinks
         self.render("../templates/000feidemo.html", places=places ,links=links)
@@ -674,12 +616,6 @@ class affiche_manage_add(BaseHandler):
                 if int(item['id']) == int(_linksrc):
                     linksrc += str(item["linkinfo"])
                     linksrc += str(_linkinfo)
-
-            # print("类型："+types)  #公告 / 轮播图 / 广告
-            # print("投放位置:"+place)
-            # print("公告名称:"+title)
-            # print("图片地址:"+imgsrc)
-            # print("连接地址:"+linksrc)
 
             try:
                 add_data = Affiche(title=title,imgsrc=imgsrc,jumplink=linksrc,place=place,types=types)
@@ -745,8 +681,6 @@ class affiche_manage_request_link(BaseHandler):
             json.dumps({"status": 200, "msg": "没有获取到地址"}, cls=AlchemyEncoder,
                        ensure_ascii=False))
 
-
-
 #获取所有广告信息
 class get_app_common_news_list(BaseHandler):
     def get(self, *args, **kwargs):
@@ -775,3 +709,6 @@ class get_app_common_news_list(BaseHandler):
             return self.write(
                 json.dumps({"status": 500, "msg": "服务器发生错误！"}, cls=AlchemyEncoder,
                            ensure_ascii=False))
+
+
+
