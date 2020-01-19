@@ -745,3 +745,33 @@ class affiche_manage_request_link(BaseHandler):
             json.dumps({"status": 200, "msg": "没有获取到地址"}, cls=AlchemyEncoder,
                        ensure_ascii=False))
 
+
+
+#获取所有广告信息
+class get_app_common_news_list(BaseHandler):
+    def get(self, *args, **kwargs):
+        try:
+            print("你去了！")
+            places = _places
+            info_item = {}
+            for places_item in places:
+                for item in places_item['placelist']:
+                    info_item[item["remark"]] = []
+                    datalist = sess.query(Affiche).filter(Affiche.place == item['id']).order_by(-Affiche.id).limit(
+                        5).all()
+                    lenght = len(datalist)
+                    for data in datalist:
+                        remarkobj = {}
+                        remarkobj["text"] = data.title
+                        remarkobj["img"] = data.imgsrc
+                        remarkobj["tolink"] = data.jumplink
+                        remarkobj["lenght"] = lenght
+                        info_item[item["remark"]].append(remarkobj)
+            return self.write(
+                json.dumps({"status":200, "msg": "成功！","info_item":info_item}, cls=AlchemyEncoder,
+                           ensure_ascii=False))
+        except:
+            print("失败!")
+            return self.write(
+                json.dumps({"status": 500, "msg": "服务器发生错误！"}, cls=AlchemyEncoder,
+                           ensure_ascii=False))

@@ -100,9 +100,9 @@ class Video(Base,IdBase):
     director = Column(String(100),default="")    #导演
     cinemanufacturer = Column(String(100))       #制片人
     length = Column(String(100))                 #片长
-    video_img1 = Column(String(100))             #视频封面图
-    video_slideshow = Column(String(100))        #轮播图
-    video_src = Column(String(100))              #视频地址  （必填）
+    video_img1 = Column(Text)                    #视频封面图
+    video_slideshow = Column(Text)               #轮播图
+    video_src = Column(Text)                     #视频地址  （必填）
     protagonist = Column(String(100))            #主演
     classify_id = Column(Integer)                #分类id
     column_id = Column(Integer)                  #栏目id

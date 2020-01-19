@@ -24,6 +24,8 @@ class Film_list(BaseHandler):
             item["director"]=video.director
             item["year"]=video.year
             item["region"]=video.region  
+            item["protagonist"]=video.protagonist  
+
             #图片
             item["video_img1"] = video.video_img1
             #链接
@@ -55,6 +57,8 @@ class Film_list(BaseHandler):
             item["director"]=video.director
             item["year"]=video.year
             item["region"]=video.region
+            item["protagonist"]=video.protagonist  
+
             #图片
             item["video_img1"] = video.video_img1
             #链接
@@ -89,8 +93,9 @@ class Film_add(BaseHandler):
         label = sess.query(Label).all()
         mes = {}
         mes['data'] = ''
-        name = self.get_argument('name','')
+        name = self.get_argument('name','')   
         director = self.get_argument('director','')
+        protagonist = self.get_argument('protagonist','')
         year = self.get_argument('year')
         region = self.get_argument('region')
         intro = self.get_argument('intro')
@@ -99,9 +104,10 @@ class Film_add(BaseHandler):
         video_src = self.get_argument('video_src')
         classify_id = self.get_argument('classify_id','')
         hot = self.get_argument('hot','')
-        is_show = self.get_argument('is_show','')
+        is_show = self.get_argument('is_show','')  
         is_vip = self.get_argument('is_vip','')
-        is_selection = self.get_argument('is_selection','')
+        thiscat_id = self.get_argument('is_vip','')
+        is_selection = self.get_argument('thiscat_id','')
         if not all([name,director,intro]):
             mes['data'] = "请将带红色*参数填写完整！"
             self.render('../templates/film_add.html',classify=classify,label=label,**mes)
@@ -121,8 +127,10 @@ class Film_add(BaseHandler):
                     video_slideshow=video_slideshow,
                     video_src=video_src,
                     classify_id=classify_id,
+                    thiscat_id=thiscat_id,
                     hot=hot,
                     is_show=is_show,
+                    protagonist=protagonist,
                     is_vip=is_vip,
                     is_selection=is_selection
                 )
@@ -183,21 +191,25 @@ class Film_edit(BaseHandler):
         intro = self.get_argument('intro')
         video_img1 = self.get_argument('video_img1')
         video_slideshow = self.get_argument('video_slideshow')
+        protagonist = self.get_argument('protagonist','')
         video_src = self.get_argument('video_src')
         classify_id = self.get_argument('classify_id','')
         hot = self.get_argument('hot','')
         is_show = self.get_argument('is_show','')
         is_vip = self.get_argument('is_vip','')
         is_selection = self.get_argument('is_selection','')
+        thiscat_id = self.get_argument('thiscat_id','')
         video.name = name
         video.director = director
         video.year = year
         video.region = region
         video.intro = intro
+        video.protagonist = protagonist
         video.video_img1 = video_img1
         video.video_slideshow = video_slideshow
         video.video_src = video_src
         video.classify_id = classify_id
+        video.thiscat_id = thiscat_id
         video.hot = hot
         video.is_show = is_show
         video.is_vip = is_vip
@@ -225,12 +237,13 @@ class Film_details(BaseHandler):
         video_obj["hot"] = video.hot
         video_obj["video_slideshow"] = video.video_slideshow
 
+        video_obj["protagonist"] = video.protagonist
         video_obj["year"] = video.year
         video_obj["region"] = video.region
         video_obj["amount"] = video.amount
         video_obj["is_show"] = video.is_show
 
-        if video.is_show != 0:
+        if video.is_show != 1:
             video_obj["is_show"] = "未发布"
         else:
             video_obj["is_show"] = "已发布"

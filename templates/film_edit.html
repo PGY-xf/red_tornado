@@ -50,8 +50,17 @@
 
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-2">
+					<span class="c-red"></span>
+					主演：</label>
+				<div class="formControls col-xs-6 col-sm-6">
+					<input type="text" class="input-text" value="{{ video.protagonist }}" placeholder="请输入主演名字(格式：XXXX)" id="protagonist" name="protagonist">
+				</div>
+			</div>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">
 					<span class="c-red">*</span>
-					制片年份：</label>
+					上映时间：</label>
 				<div class="formControls col-xs-6 col-sm-6">
 					<input type="text" class="input-text" value="{{ video.year }}" placeholder="请输入制片年份(格式：XXXX年XX月XX日)" id="year" name="year">
 				</div>
