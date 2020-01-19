@@ -175,7 +175,7 @@
 				window.location.reload();
 			})
 			$("#fanhui").click(function(){
-				window.location.replace("/user_list");
+				window.location.replace("/feidemo_list");
 			})
 				
 			  var demand_str = $('input:radio:checked').val()
@@ -339,6 +339,8 @@
 								alert("请选择跳转的位置！")
 							}
 							else if($("[name='link_type']").val() == 1){
+							    _linksrc = $("[name='link_type']").val()
+                             _linkinfo = ""
 								//不填写连接的情况下发起的请求
 								sed_ajax(_istype,_place,_title,_imgsrc,_linksrc,_linkinfo)
 							}

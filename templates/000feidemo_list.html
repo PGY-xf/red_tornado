@@ -67,7 +67,7 @@
 						<td>{{ i['types'] }}</td>
 						<td class="td-manage">
 							<a title="编辑" href="" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont"></i></a>
-							<a title="删除" href="javascript:;" onclick="member_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont"></i></a>
+							<a title="删除" href="javascript:;" onclick="feidemo_del({{ i['id'] }})" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont"></i></a>
 
 						</td>
 					</tr>
@@ -129,11 +129,11 @@ $('.table-sort').dataTable({
 });
 
 /*-删除*/
-function member_del(id){
+function feidemo_del(id){
 	layer.confirm('确认要删除吗？',function(index){
 		$.ajax({
 			type: 'post',
-			url: '',
+			url: '/feidemo_del/'+id,
 			dataType: 'json',
 			data : { 'id' : id },
 			success: function(data){

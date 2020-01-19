@@ -78,9 +78,8 @@ class Application(tornado.web.Application):
             (r'/advertising_picture_delete/(\d+)', Notice.Advertising_picture_delete),   # 删除广告图片
 
 
-
-
-            (r"/feidemo_list", Notice.Feidemo_list),  # 通知管理
+            (r"/feidemo_list", Notice.Feidemo_list),  # 通知管理  
+            (r"/feidemo_del/(\d+)", Notice.Feidemo_del),  #删除通知 
 
 
 

@@ -414,3 +414,13 @@ class Feidemo_list(BaseHandler):
             item["create_time"]=info.create_time
             a_list.append(item)
         self.render('../templates/notice_list.html', affiche=a_list, lens=lens)
+
+
+#删除通知
+class Feidemo_del(BaseHandler):
+    def post(self, id):
+        id = int(id)
+        affiche = sess.query(Affiche).filter(Affiche.id == id).one()
+        sess.delete(affiche)
+        sess.commit()
+        return self.write(json.dumps({"status": 200, "msg": "成功！"}, cls=AlchemyEncoder,ensure_ascii=False))
