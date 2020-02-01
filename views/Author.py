@@ -183,9 +183,10 @@ class Author_picture(BaseHandler):
         try:
             author.img = url
             sess.commit()
-            self.redirect("/author_list")
+            return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
         except:
-            self.write('服务器错误')
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False)) 
+
 
 
 #删除作者图片  

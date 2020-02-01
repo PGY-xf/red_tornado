@@ -117,10 +117,22 @@
                     data:
                         {
                             "info":infohash.hash
-                        }
+                        },
+                    success: function(data){
+                      if(data.status == 200){
+                        alert('上传成功')
+                        window.location.replace("/advertising_list");
+                      }else{
+                        alert('上传失败，请重新上传')
+				        window.location.reload();
+                      }
+                    },
+                    error:function(){
+                        alert("系统繁忙！！");
+                    },
                 })
                 
-                window.location.replace("/advertising_list");
+                
 
                 
                 //$(".upload-progress").hide();

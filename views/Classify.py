@@ -195,9 +195,9 @@ class Product_column_picture(BaseHandler):
         try:
             columnss.columns_img = url
             sess.commit()
-            self.redirect("/product_column")
+            return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
         except:
-            self.write('服务器错误')
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False)) 
 
 
 #删除栏目图片
@@ -337,9 +337,9 @@ class Product_label_picture(BaseHandler):
         try:
             label.label_img = url
             sess.commit()
-            self.redirect("/product_label")
+            return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
         except:
-            self.write('服务器错误')
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False)) 
 
 
 

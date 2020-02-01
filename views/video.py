@@ -239,10 +239,9 @@ class Product_micro_picture(BaseHandler):
         try:
             micro_video.video_img = url
             sess.commit()
-            self.redirect("/product_micro")
+            return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
         except:
-            self.write('服务器错误')
-
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False)) 
 
 
 #删除微视频图片  
@@ -277,10 +276,9 @@ class Product_micro_video(BaseHandler):
         try:
             micro_video.video_url = url
             sess.commit()
-            # print(url)
-            self.redirect("/product_micro")
+            return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
         except:
-            self.write('服务器错误')
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False)) 
 
 
 #删除微视频视频  
@@ -316,9 +314,9 @@ class Product_micro_slideshow(BaseHandler):
         try:
             micro_video.video_slideshow = url
             sess.commit()
-            self.redirect("/product_micro")
+            return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
         except:
-            self.write('服务器错误')
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False)) 
 
 
 

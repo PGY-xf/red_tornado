@@ -46,7 +46,7 @@ QINIUURLNAME = "http://qiniu.weiinng.cn/"
 '''
 
 
-
+#管理员登录装饰器
 def log_decorator(func):
     def decorator(self,*args,**kwargs):
         cookie = self.get_cookie('cookie')
@@ -59,7 +59,7 @@ def log_decorator(func):
     return decorator
 
 
-
+#摄制中心登录装饰器
 def log_camera(func):
     def decorator(self,*args,**kwargs):
         cookie = self.get_cookie('cookie')

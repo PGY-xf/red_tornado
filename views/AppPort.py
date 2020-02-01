@@ -1,21 +1,8 @@
-import random
-import string
 import re
 from .base import BaseHandler
 from models import *
-import json
-from components import qiniu_upload
-from qiniu import Auth, put_file, etag
-from qiniu import BucketManager
-import qiniu.config
 import requests
 import json
-import jsonpath
-import time
-import os
-from config import *
-from qiniu import Auth, put_data, etag, urlsafe_base64_encode
-import logging
 from func_tools import *
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -23,6 +10,18 @@ access_key = ACCESS_KEY  # AK
 secret_key = SECRET_KEY  # SK
 bucket_name = BUCKET_NAME  # name
 url = QINIU_URL  # url
+
+
+
+def auto_rollback(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as err:
+            sess.rollback()
+            sess.error(err)
+            raise err
+    return wrapper
 
 
 class GetToken(BaseHandler):
@@ -62,29 +61,19 @@ class QiNiuHandler(BaseHandler):
 
 # 爱看页面的小视频 ID 必须为1
 class gitVideolist(BaseHandler):
+    @auto_rollback
     def get(self, id, *args, **kwargs):
         id = int(id)
-        # microall =random.sample(sess.query(Micro_video).filter(Micro_video.video_url!=None).all(),10)
-        microall = sess.query(Micro_video).filter(Micro_video.video_url != None,Micro_video.column_id==1,Micro_video.is_show==1).all()[id:id + 10]
+        microall = sess.query(Micro_video).filter(Micro_video.video_url != None,Micro_video.column_id==1,Micro_video.is_show==1,Micro_video.video_img != "",Micro_video != None).all()[id:id + 10]
         video_list = []
         for micro in microall:
             item = {}
             item["id"] = micro.id
             item["title"] = micro.name
-
             item["playnum"] = micro.amount
-            try:
-                item["video_img"] = micro.video_img
-            except:
-                item["video_img"] = ""
-            try:
-                item["video_url"] = micro.video_url
-            except:
-                item["video_url"] = ""
-            try:
-                item["length"] = micro.length
-            except:
-                item["length"] = ""
+            item["video_img"] = micro.video_img
+            item["video_url"] = micro.video_url
+            item["length"] = ""
             author = sess.query(Author.id, Author.name, Author.img).filter(Author.id == micro.auth_id)
             item["column_id"] = author[0][0]
             item["column_name"] = author[0][1]
@@ -96,6 +85,7 @@ class gitVideolist(BaseHandler):
 
 # 主页栏目的四个视频
 class gitColumnsVideofourList(BaseHandler):
+    @auto_rollback
     def get(self, *args, **kwargs):
         listitem = []
         columns = sess.query(Columns).all()
@@ -105,7 +95,7 @@ class gitColumnsVideofourList(BaseHandler):
             item["headerTitle"] = col.name
             item["bodyList"] = []
             microall = sess.query(Micro_video).filter(Micro_video.video_url != None, Micro_video.is_show == 1,
-                                                      Micro_video.column_id == col.id).all()[:4]
+                                                      Micro_video.column_id == col.id).all()
             for vid in microall:
                 videoobj = {}
                 videoobj["id"] = vid.id
@@ -172,6 +162,7 @@ def set_code_toRedis(code_type, phone):
 
 # APP账号注册
 class App_register_user(BaseHandler):
+    @auto_rollback
     def post(self, *args, **kwargs):
         phone = self.get_argument("phoneno")
         print("手机号为{}的用户申请注册".format(phone))
@@ -198,6 +189,7 @@ class App_register_user(BaseHandler):
 
 # APP账号登录
 class App_login_user(BaseHandler):
+    @auto_rollback
     def post(self, *args, **kwargs):
         phone = self.get_argument("phoneno")
         password = self.get_argument("password")
@@ -228,6 +220,7 @@ class App_login_user(BaseHandler):
 
 # 用户修改密码
 class APP_user_update_password(BaseHandler):
+    @auto_rollback
     def post(self, *args, **kwargs):
         userid = self.get_argument("userid")
         oldpassword = self.get_argument("oldpassword")
@@ -252,6 +245,7 @@ class APP_user_update_password(BaseHandler):
 
 # 获取主持人列表
 class getIndexCompere_list(BaseHandler):
+    @auto_rollback
     def get(self, *args, **kwargs):
         mingxing_info = sess.query(Big_V).order_by(-Big_V.id).all()
         pro_list = []
@@ -291,6 +285,7 @@ class getIndexCompere_list(BaseHandler):
 
 # 明星详情页
 class getIndexCompere_particulars(BaseHandler):
+    @auto_rollback
     def get(self, id, *args, **kwargs):
         id = int(id)
         mingxing_info = sess.query(Big_V).filter(Big_V.id == id).one()
@@ -323,11 +318,12 @@ class getIndexCompere_particulars(BaseHandler):
 
 # 主页-电影-视频列表
 class getIndexfilm_videolist(BaseHandler):
+    @auto_rollback
     def get(self, *args, **kwargs):
         # id 名字  视频图片  播放次数  热度
         videoinfoList = []
         videoObj = sess.query(Video.id, Video.name, Video.video_img1, Video.amount, Video.hot, Video.intro).filter(
-            Video.video_src != None, Video.is_show == 1, Video.video_img1 != None).all()
+            Video.video_src != None, Video.is_show == 1, Video.video_img1 != None,Video.video_img1 != "").all()
         for videoinfo in videoObj:
             item = {}
             item["id"] = videoinfo[0]
@@ -342,12 +338,13 @@ class getIndexfilm_videolist(BaseHandler):
             videoinfoList.append(item)
             # print(item)
         return self.write(
-            json.dumps({"status": 200, "msg": "返回成功", "filmvideolist": videoinfoList[:4]}, cls=AlchemyEncoder,
+            json.dumps({"status": 200, "msg": "返回成功", "filmvideolist": videoinfoList}, cls=AlchemyEncoder,
                        ensure_ascii=False))
 
 
 # 栏目列表
 class getIndexColumnsList(BaseHandler):
+    @auto_rollback
     def get(self, *args, **kwargs):
         # 展示栏目但不展示不带图片的
         columns = sess.query(Columns).filter(Columns.columns_img != "", Columns.columns_img != None).all()
@@ -394,6 +391,7 @@ def get_dominant_color(image):
 
 # 栏目列表
 class getAPP_IndexColumns_info(BaseHandler):
+    @auto_rollback
     def post(self, *args, **kwargs):
         column_id = self.get_argument("id", 0)
         id = int(column_id)
@@ -443,6 +441,7 @@ class getAPP_IndexColumns_info(BaseHandler):
 
 # 视频详情页
 class get_app_common_video_particulars(BaseHandler):
+    @auto_rollback
     def post(self, *args, **kwargs):
         video_id = self.get_argument("video_id", 0)
         id = int(video_id)
@@ -471,6 +470,7 @@ class get_app_common_video_particulars(BaseHandler):
                            ensure_ascii=False))
 #主页下推荐栏-反腐倡廉
 class get_app_index_four_video(BaseHandler):
+    @auto_rollback
     def get(self, *args, **kwargs):
         datainfo = sess.query(Micro_video.id, Micro_video.name, Micro_video.info, Micro_video.video_img).filter(
             Micro_video.column_id == 8).order_by(-Micro_video.id).limit(4).all()
@@ -489,6 +489,7 @@ class get_app_index_four_video(BaseHandler):
 
 #电影详情页
 class get_app_common_movie_particulars(BaseHandler):
+    @auto_rollback
     def post(self, *args, **kwargs):
         movie_id = self.get_argument("movie_id",0)
         if movie_id ==0:
@@ -505,7 +506,7 @@ class get_app_common_movie_particulars(BaseHandler):
                 item["title"] = movieinfo.name
                 item["info"] = movieinfo.intro
                 item["videosrc"] = movieinfo.video_src
-                item["tag"] = movieinfo.tag.split(',')
+                item["tag"] = movieinfo.tag.split('、')
                 celebritylist = []
                 celebritylist.extend(movieinfo.director.split('、'))
                 celebritylist.extend(movieinfo.protagonist.split('、'))
@@ -596,6 +597,7 @@ class affiche_manage_page(BaseHandler):
 #添加数据
 class affiche_manage_add(BaseHandler):
     affichelinks = affichelinks
+    @auto_rollback
     def post(self, *args, **kwargs):
         print("被请求了！")
         _istype = self.get_argument('_istype')
@@ -632,6 +634,8 @@ class affiche_manage_add(BaseHandler):
     #获取位置数据
 class affiche_manage_getplacedata(BaseHandler):
     affichelinks = affichelinks
+
+    @auto_rollback
     def post(self, *args, **kwargs):
         try:
             place_info = self.get_argument("place_info")
@@ -658,6 +662,7 @@ class affiche_manage_getplacedata(BaseHandler):
 
 #验证链接
 class affiche_manage_request_link(BaseHandler):
+    @auto_rollback
     def post(self, *args, **kwargs):
         url = self.get_argument("url")
         if url:
@@ -682,7 +687,9 @@ class affiche_manage_request_link(BaseHandler):
                        ensure_ascii=False))
 
 #获取所有广告信息
+
 class get_app_common_news_list(BaseHandler):
+    @auto_rollback
     def get(self, *args, **kwargs):
         try:
             print("你去了！")
@@ -711,4 +718,17 @@ class get_app_common_news_list(BaseHandler):
                            ensure_ascii=False))
 
 
-
+class get_app_index_column_list_name(BaseHandler):
+    @auto_rollback
+    def get(self, *args, **kwargs):
+        lanmu = sess.query(Columns).filter(Columns.columns_img != None,Columns.columns_img !="").order_by(-Columns.creation_time).all()
+        info_list = []
+        for info in lanmu:
+            item = {}
+            item["id"] = info.id
+            item["title"] = info.name
+            item["img"] = info.columns_img
+            info_list.append(item)
+        return self.write(
+            json.dumps({"status": 200, "msg": "成功！", "info_list":info_list}, cls=AlchemyEncoder,
+                       ensure_ascii=False))

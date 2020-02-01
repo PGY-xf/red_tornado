@@ -2,9 +2,11 @@
 <html lang="zh">
 
 	<center><h1 style="color: blue">{{info}}</h1></center>
-	<center><h2 style="color: red">上传时，请不要做任何操作</h2></center>
+	<center><h2 style="color: red">温馨提示：上传时，请不要做任何操作</h2></center>
 	<center><h2 style="color: red">上传完毕后自动会跳转管理页面，如不确定上传是否成功 可点击详情进行查看</h2></center>
-        <h2 style="color: #0a6999">标题：{{micro_video.name}}</h2>
+	<center><h2 style="color: red">[---视频时长不得超过5分钟---]</h2></center>
+    <h2 style="color: #0a6999">标题：{{micro_video.name}}</h2>  
+
         <br>
 
 <head>
@@ -117,10 +119,21 @@
                     data:
                         {
                             "info":infohash.hash
-                        }
+                        },
+                    success: function(data){
+                      if(data.status == 200){
+                        alert('上传成功')
+                        window.location.replace("/product_micro");
+                      }else{
+                        alert('上传失败，请重新上传')
+				        window.location.reload();
+                      }
+                    },
+                    error:function(){
+                        alert("系统繁忙！！");
+                    },
                 })
                 
-                window.location.replace("/product_micro");
 
                 
                 //$(".upload-progress").hide();

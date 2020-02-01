@@ -237,9 +237,9 @@ class User_picture(BaseHandler):
         try:
             user.user_img = url
             sess.commit()
-            self.redirect("/user_list")
+            return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
         except:
-            self.write('服务器错误')
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False)) 
 
 
 #删除用户头像

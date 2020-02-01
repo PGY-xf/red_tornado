@@ -165,7 +165,7 @@ class Application(tornado.web.Application):
 
 
 
-
+            ###############   app接口
             (r"/api/uptoken", AppPort.GetToken),
             (r"/demo/uptoken", AppPort.QiNiuHandler),
             (r"/app/get/index/love_look/video_list/(\d+)", AppPort.gitVideolist),   #app推荐
@@ -187,6 +187,7 @@ class Application(tornado.web.Application):
             (r"/app/get/index/recommend/four_fanfuchanglian", AppPort.get_app_index_four_video),  #主页 反腐倡廉视频列表
             (r"/app/post/common/movie_particulars",AppPort.get_app_common_movie_particulars), #电影详情页
             (r"/app/get/common/news_all", AppPort.get_app_common_news_list),  # 所有广告信息
+            (r"/app/get/index/below/new_column_list", AppPort.get_app_index_column_list_name),  # 所有广告信息
             #############  新增
             (r"/gitVideodetails/(\d+)", AppPortone.gitVideodetails),  # 微视频视频详情页    
             (r"/gitColumnsList",AppPortone.gitColumnsList),         #栏目列表   

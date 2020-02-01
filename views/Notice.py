@@ -186,9 +186,9 @@ class Notice_picture(BaseHandler):
         try:
             notice.notice_img = url
             sess.commit()
-            self.redirect("/notice_list")
+            return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
         except:
-            self.write('服务器错误')
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False)) 
 
 
 
@@ -374,10 +374,9 @@ class Advertising_picture(BaseHandler):
         try:
             advertising.advertising_img = url
             sess.commit()
-            self.redirect("/advertising_list")
+            return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
         except:
-            self.write('服务器错误')
-
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False)) 
 
 
 

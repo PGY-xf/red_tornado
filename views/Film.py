@@ -272,9 +272,9 @@ class Film_picture(BaseHandler):
         try:
             video.video_img1 = url
             sess.commit()
-            self.redirect("/film_list")
+            return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
         except:
-            self.write('服务器错误')
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False)) 
 
 
 
@@ -310,9 +310,9 @@ class Film_video(BaseHandler):
             video.video_src = url
             sess.commit()
             # print('添加成功')
-            self.redirect("/film_list")
+            return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
         except:
-            self.write('服务器错误')
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False)) 
 
 
 
@@ -348,9 +348,9 @@ class Film_slideshow(BaseHandler):
         try:
             video.video_slideshow = url
             sess.commit()
-            self.redirect("/film_list")
+            return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
         except:
-            self.write('服务器错误')
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False)) 
 
 
 

@@ -380,12 +380,16 @@ class Lmicro_video(BaseHandler):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
         info = self.get_argument('info')
         url = QINIUURLNAME+info
-        try:
-            micro_video.video_url = url
-            sess.commit()
-            self.redirect("/lmicro")
-        except:
-            self.write('服务器错误')
+        if time < 300:
+            try:
+                micro_video.video_url = url
+                sess.commit()
+                return self.write(json.dumps({"status": 200, "msg": "成功"}, cls=AlchemyEncoder,ensure_ascii=False))
+            except:
+                self.write('服务器错误')
+        else:
+            return self.write(json.dumps({"status": 10010, "msg": "失败"}, cls=AlchemyEncoder,ensure_ascii=False))
+
 
 
 

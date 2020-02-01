@@ -73,3 +73,21 @@ import time
 def get_order_code():
     order_no = str(time.strftime('%Y%m%d%H%M%S', time.localtime(time.time())))
     return order_no
+
+
+
+
+import os
+import sys
+import xlwt
+from moviepy.editor import VideoFileClip
+
+
+#判断视频时间长度
+def gitBideoTime(url):
+    try:
+        clip = VideoFileClip(url)
+        time = clip.duration
+        return int(time)
+    except:
+        return 0
