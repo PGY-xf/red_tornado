@@ -93,7 +93,9 @@
 
 			
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-2">电影简介：</label>
+				<label class="form-label col-xs-4 col-sm-2">
+					<span class="c-red">*</span>
+					电影简介：</label>
 				<div class="formControls col-xs-6 col-sm-6">
 					<textarea name="intro" cols="" rows="" class="textarea" placeholder="请输入电影简介......"*10-100" dragonfly="true" nullmsg="备注不能为空！" onkeyup="$.Huitextarealength(this,200)"></textarea>
 					<p class="textarea-numberbar">
@@ -106,7 +108,7 @@
 					<span class="c-red"></span>
 					图片地址：</label>
 				<div class="formControls col-xs-5 col-sm-5">
-					<input type="text" class="input-text" value="" placeholder="请输入图片地址[格式：http://qiniu.weiinng.cn/XXXXXX]" id="video_img1" name="video_img1">
+					<input type="text" class="input-text" placeholder="请输入图片地址[格式：http://qiniu.weiinng.cn/XXXXXX]" id="video_img1" name="video_img1">
 				</div>
 				<div class="formControls col-xs-4 col-sm-2">
 					<b style="color: red">(--可不填--)</b>
@@ -118,7 +120,7 @@
 					<span class="c-red"></span>
 					电影地址：</label>
 				<div class="formControls col-xs-5 col-sm-5">
-					<input type="text" class="input-text" value="" placeholder="请输入电影地址[格式：http://qiniu.weiinng.cn/XXXXXX]" id="video_src" name="video_src">
+					<input type="text" class="input-text" placeholder="请输入电影地址[格式：http://qiniu.weiinng.cn/XXXXXX]" id="video_src" name="video_src">
 				</div>
 				<div class="formControls col-xs-4 col-sm-2">
 					<b style="color: red">(--可不填--)</b>
@@ -130,7 +132,7 @@
 					<span class="c-red"></span>
 					轮播图地址：</label>
 				<div class="formControls col-xs-5 col-sm-5">
-					<input type="text" class="input-text" value="" placeholder="请输入轮播图地址[格式：http://qiniu.weiinng.cn/XXXXXX]" id="video_slideshow" name="video_slideshow">
+					<input type="text" class="input-text" placeholder="请输入轮播图地址[格式：http://qiniu.weiinng.cn/XXXXXX]" id="video_slideshow" name="video_slideshow">
 				</div>
 				<div class="formControls col-xs-4 col-sm-2">
 					<b style="color: red">(--可不填--)</b>
@@ -138,10 +140,10 @@
 			</div>
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-2">
-					<span class="c-red"></span>
+					<span class="c-red">*</span>
 					热度：</label>
 				<div class="formControls col-xs-6 col-sm-6">
-					<input type="text" class="input-text" value="" placeholder="热度默认为1.0【范围（1.0~10.0），越大越靠前】" id="hot" name="hot">
+					<input type="text" class="input-text" placeholder="热度默认为1.0【范围（1.0~10.0），越大越靠前】" id="hot" name="hot">
 				</div>
 			</div>
 
@@ -168,8 +170,8 @@
 				<div class="formControls col-xs-4 col-sm-2">
 					<span class="select-box">
 					<select name="thiscat_id" class="select">
-							{% for i in label %}
-							<option value="{{ i.id }}">{{ i.name }}</option>
+							{% for j in label %}
+							<option value="{{ j.id }}">{{ j.name }}</option>
 							{% end %}
 					</select>
 					</span>

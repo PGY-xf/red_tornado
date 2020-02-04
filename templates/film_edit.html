@@ -86,7 +86,9 @@
 
 			
 			<div class="row cl">
-				<label class="form-label col-xs-4 col-sm-2">电影简介：</label>
+				<label class="form-label col-xs-4 col-sm-2">
+					<span class="c-red">*</span>
+					电影简介：</label>
 				<div class="formControls col-xs-6 col-sm-6">
 					<textarea name="intro" cols="" rows="" class="textarea" placeholder="请输入电影简介......"*10-100" dragonfly="true" nullmsg="备注不能为空！" onkeyup="$.Huitextarealength(this,200)">{{ video.intro }}</textarea>
 					<p class="textarea-numberbar">
@@ -131,7 +133,7 @@
 			</div>
 			<div class="row cl">
 				<label class="form-label col-xs-4 col-sm-2">
-					<span class="c-red"></span>
+					<span class="c-red">*</span>
 					热度：</label>
 				<div class="formControls col-xs-6 col-sm-6">
 					<input type="text" class="input-text" value="{{ video.hot }}" placeholder="热度默认为1.0【范围（1.0~10.0），越大越靠前】" id="hot" name="hot">

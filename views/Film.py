@@ -93,9 +93,9 @@ class Film_add(BaseHandler):
         label = sess.query(Label).all()
         mes = {}
         mes['data'] = ''
-        name = self.get_argument('name','')   
-        director = self.get_argument('director','')
-        protagonist = self.get_argument('protagonist','')
+        name = self.get_argument('name')   
+        director = self.get_argument('director')
+        protagonist = self.get_argument('protagonist')
         year = self.get_argument('year')
         region = self.get_argument('region')
         intro = self.get_argument('intro')
@@ -103,13 +103,13 @@ class Film_add(BaseHandler):
         video_slideshow = self.get_argument('video_slideshow')
         tag = self.get_argument('tag')
         video_src = self.get_argument('video_src')
-        classify_id = self.get_argument('classify_id','')
-        hot = self.get_argument('hot','')
-        is_show = self.get_argument('is_show','')  
-        is_vip = self.get_argument('is_vip','')
-        thiscat_id = self.get_argument('is_vip','')
-        is_selection = self.get_argument('thiscat_id','')
-        if not all([name,director,intro,tag]):
+        classify_id = self.get_argument('classify_id')
+        hot = self.get_argument('hot')
+        is_show = self.get_argument('is_show')  
+        is_vip = self.get_argument('is_vip')
+        thiscat_id = self.get_argument('thiscat_id')
+        is_selection = self.get_argument('is_selection')
+        if not all([name,director,intro,tag,hot]):
             mes['data'] = "请将带红色*参数填写完整！"
             self.render('../templates/film_add.html',classify=classify,label=label,**mes)
         else:
@@ -186,22 +186,22 @@ class Film_edit(BaseHandler):
         self.render('../templates/film_edit.html',video=video,classify=classify,label=label,**mes)
     def post(self, id):
         video = sess.query(Video).filter_by(id=id).first()
-        name = self.get_argument('name','')
-        director = self.get_argument('director','')
+        name = self.get_argument('name')
+        director = self.get_argument('director')
         year = self.get_argument('year')
         region = self.get_argument('region')
         intro = self.get_argument('intro')
         video_img1 = self.get_argument('video_img1')
         video_slideshow = self.get_argument('video_slideshow')
-        protagonist = self.get_argument('protagonist','')
+        protagonist = self.get_argument('protagonist')
         video_src = self.get_argument('video_src')
         tag = self.get_argument('tag')
-        classify_id = self.get_argument('classify_id','')
-        hot = self.get_argument('hot','')
-        is_show = self.get_argument('is_show','')
-        is_vip = self.get_argument('is_vip','')
-        is_selection = self.get_argument('is_selection','')
-        thiscat_id = self.get_argument('thiscat_id','')
+        classify_id = self.get_argument('classify_id')
+        hot = self.get_argument('hot')
+        is_show = self.get_argument('is_show')
+        is_vip = self.get_argument('is_vip')
+        is_selection = self.get_argument('is_selection')
+        thiscat_id = self.get_argument('thiscat_id')
         video.name = name
         video.director = director
         video.year = year
