@@ -186,6 +186,7 @@ class Sinatv(Base,IdBase):
     img = Column(Text)                          #直播图片
     livesrc = Column(Text)                      #直播地址
     weight = Column(Integer,default=10)         #权重（0~99）越小越靠前默认为40
+    types = Column(Integer,default=0)           #类型 默认0
     is_show = Column(Integer,default=0)         #是否展示  0展示（默认）  1不展示
     create_time = Column(DateTime(),default=datetime.now)     #创建时间
 
