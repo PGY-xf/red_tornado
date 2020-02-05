@@ -732,3 +732,31 @@ class get_app_index_column_list_name(BaseHandler):
         return self.write(
             json.dumps({"status": 200, "msg": "成功！", "info_list":info_list}, cls=AlchemyEncoder,
                        ensure_ascii=False))
+
+
+class get_app_live_live_tv_list(BaseHandler):
+    @auto_rollback
+    def get(self, *args, **kwargs):
+        live_list = sess.query(Sinatv).filter(Sinatv.name != "", Sinatv.is_show == 0, Sinatv.img != "",
+                                              Sinatv.types == 0).order_by(-Sinatv.weight).all()
+        obj_list = []
+        for live_info in live_list:
+            item = {}
+            item["id"] = live_info.id
+            item["text"] = live_info.name
+            item["img"] = live_info.img
+            item["livesrc"] = live_info.livesrc
+            obj_list.append(item)
+        return self.write(json.dumps({"status": 200, "msg": "成功！","live_list":obj_list}, cls=AlchemyEncoder,ensure_ascii=False))
+
+
+class get_app_live_live_default_tv(BaseHandler):
+    @auto_rollback
+    def get(self, *args, **kwargs):
+        live_obj = sess.query(Sinatv).filter(Sinatv.weight==9999).one()
+        live_info = {}
+        live_info["id"] = live_obj.id
+        live_info["text"] = live_obj.name
+        live_info["img"] = live_obj.img
+        live_info["livesrc"] = live_obj.livesrc
+        return self.write(json.dumps({"status": 200, "msg": "成功！","live_info":live_info}, cls=AlchemyEncoder,ensure_ascii=False))

@@ -92,11 +92,11 @@ print()
 # out.show()
 
 
-##############图片加文字
+# ##############图片加文字
 
 # from PIL import Image,ImageFont,ImageDraw
 
-# image = Image.open("./IMG_20200203_175230.jpg")
+# image = Image.open("./abc.jpg")
 # text ='央视融媒.com'
 # # 指定要使用的字体和大小；
 # font = ImageFont.truetype('C:\Windows\Fonts\simhei.ttf',250)
@@ -107,10 +107,10 @@ print()
 # # 获取文本大小
 # text_size_x, text_size_y = image_draw.textsize(text, font=font)
 # # 设置文本文字位置
-# text_xy = (layer.size[0] - text_size_x-10, layer.size[1]-text_size_y-10)
-# # text_xy = (layer.size[0] - text_size_x-445, layer.size[1] - text_size_y-1670)  #中间
-# # text_xy = (layer.size[0]//2 - text_size_x//2, layer.size[1] - text_size_y)   #下中间
-# # text_xy =(layer.size[0] - text_size_x, layer.size[1] - text_size_y)   ##右下角
+# # text_xy = (layer.size[0] - text_size_x,layer.size[1]//8 - text_size_y*2)       #右上角
+# # text_xy =(layer.size[0] - text_size_x,layer.size[1] - text_size_y)             #右下角
+# # text_xy = (layer.size[0]//2 - text_size_x, layer.size[1]//8 - text_size_y*2)   #左上角
+# # text_xy = (layer.size[0]//2 - text_size_x, layer.size[1] - text_size_y)        #左下角
 # # 设置文本颜色和透明度和位置
 # image_draw.text(text_xy, text, font=font, fill=(255, 255, 255,250))
 # #将新生成的图片覆盖到需要加水印的图片上
@@ -118,15 +118,18 @@ print()
 # after.save('im_after.png')
 
 
-# ######## 图片加图片logo
+# # ######## 图片加图片logo
 # from PIL import Image
 # # 需要加水印的图片
-# img = Image.open("./IMG_20200203_175230.jpg")
+# img = Image.open("./abc.jpg")
 # # 水印图片
 # logo = Image.open("./央视融媒.jpg")
-# # 图层
+# # 图层  0是宽度，1是高度
 # layer = Image.new('RGBA', img.size, (255, 255, 255,0))
-# layer.paste(logo,(img.size[0]-logo.size[0],img.size[1]-logo.size[1]))
+# layer.paste(logo,(img.size[0]-logo.size[0],img.size[1]-logo.size[1]))         #右下角
+# layer.paste(logo,(img.size[0]-logo.size[0],img.size[1]//8-logo.size[1]))      #右上角
+# layer.paste(logo,(img.size[0]//6-logo.size[0],img.size[1]//8-logo.size[1]))   #左上角
+# layer.paste(logo,(img.size[0]//6-logo.size[0],img.size[1]-logo.size[1]))      #左下角
 # # 覆盖
 # img_after = Image.composite(layer, img,layer)
 # img_after.show()
@@ -135,7 +138,7 @@ print()
 
 
 
-##########  视频logo
+# #########  视频logo
 # import moviepy.editor as mp
 
 # video = mp.VideoFileClip("./tesst.mp4")

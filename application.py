@@ -202,6 +202,8 @@ class Application(tornado.web.Application):
             (r"/app/post/common/movie_particulars",AppPort.get_app_common_movie_particulars), #电影详情页
             (r"/app/get/common/news_all", AppPort.get_app_common_news_list),  # 所有广告信息
             (r"/app/get/index/below/new_column_list", AppPort.get_app_index_column_list_name),  # 所有广告信息
+            (r"/app/get/live/livetv/list",AppPort.get_app_live_live_tv_list),  # 直播电视列表
+            (r"/app/get/live/livetv/default", AppPort.get_app_live_live_default_tv),  # 默认的直播电视
             #############  新增
             (r"/gitVideodetails/(\d+)", AppPortone.gitVideodetails),  # 微视频视频详情页    
             (r"/gitColumnsList",AppPortone.gitColumnsList),         #栏目列表   
