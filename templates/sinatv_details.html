@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="../static/lib/html5shiv.js"></script>
+<script type="text/javascript" src="../static/lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="/static/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="../static/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>直播详情</title>
+</head>
+<body>
+	<div class="cl pd-20" style=" background-color:#5bacb6">
+
+
+		<dl style="margin-left:80px; color:#fff">
+			<dt>
+				<span class="f-18">{{video_info["name"]}}</span>
+				<span class="pl-10 f-12">评分：</span>
+			</dt>
+			<dd class="pt-10 f-12" style="margin-left:0">这管理员很懒，什么也没有留下</dd>
+		</dl>
+	</div>
+<div class="pd-20" style="background-color: orange">
+	<table class="table" border="5">
+		<tbody>
+
+			<tr>
+				<th class="text-r">直播名称：</th>
+				<td colspan="2"><a>{{video_info["name"]}}</a></td>
+			</tr>
+
+			
+
+			<tr>
+				<th class="text-r">直播视频：</th>
+				{% if video_info['livesrc']%}
+				<td><video src="{{video_info['livesrc']}}" controls="controls" width="200" height="150" ></video>
+					<button  class="btn btn-default radius" type="button">
+						<a title="删除视频" href="javascript:;" onclick="sinatv_video_delete({{video_info['id']}})" class="ml-5" style="color:blue">删除视频</a>
+					</button>
+				
+				</td>
+				{% else %}
+				<th class="text-l" colspan="2"><a href="/sinatv_video/{{video_info['id']}}">
+					<h4 style="color:blue">还没有视频哦，点击添加</h4>
+				</a></th>
+				{% end %}
+			</tr>
+
+
+			<tr>
+				<th class="text-r">图片：</th>
+				{% if video_info['img']%}
+				<td colspan="2"><img src="{{video_info['img']}}" width="200" height="150" >
+					<button  class="btn btn-default radius" type="button">
+						<a title="删除图片" href="javascript:;" onclick="sinatv_picture_delete({{video_info['id']}})" class="ml-5" style="color:red">删除图片</a>
+					</button>
+				
+				</td>
+				{% else %}
+				<th class="text-l" colspan="2"><a href="/sinatv_picture/{{video_info['id']}}">
+					<h4 style="color:red">还没有图片哦，点击添加</h4>
+				</a></th>
+				{% end %}
+			</tr>
+
+			<tr>
+				<th class="text-r">权重：</th>
+				<td colspan="2">{{video_info["weight"]}}</td>
+			</tr>
+
+			<tr>
+				<th class="text-r">类型：</th>
+				<td colspan="2">{{video_info["types"]}}</td>
+			</tr>
+
+			<tr>
+				<th class="text-r">展示状态：</th>
+				<td colspan="2">{{video_info["is_show"]}}</td>
+			</tr>
+
+
+			<tr>
+				<th class="text-r">发布时间：</th>
+				<td colspan="2">{{video_info["create_time"]}}</td>
+			</tr>
+			
+		
+		</tbody>
+	</table>
+</div>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="/static/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/static/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="/static/h-ui.admin/js/H-ui.admin.js"></script> 
+<!--/_footer 作为公共模版分离出去-->
+<script type="text/javascript">
+/*
+	参数解释：
+	title	标题
+	url		请求的url
+	id		需要操作的数据id
+	w		弹出层宽度（缺省调默认值）
+	h		弹出层高度（缺省调默认值）
+*/
+	/*-删除视频*/
+	function sinatv_video_delete(id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'post',
+			url: '/sinatv_video_delete/'+id,
+			dataType: 'json',
+			data : { 'id' : id },
+			success: function(data){
+				layer.msg('已删除!',{icon:1,time:1000});
+				window.location.reload();
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+
+	/*-删除图片*/
+	function sinatv_picture_delete(id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'post',
+			url: '/sinatv_picture_delete/'+id,
+			dataType: 'json',
+			data : { 'id' : id },
+			success: function(data){
+				layer.msg('已删除!',{icon:1,time:1000});
+				window.location.reload();
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+</script>
+<!--请在下方写此页面业务相关的脚本-->
+</body>
+</html>
+
+

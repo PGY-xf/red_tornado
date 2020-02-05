@@ -1,5 +1,5 @@
 import tornado.web
-from views import Index,adminuser,User,AppPort,video,Film,Big_V,Author,Classify,Login,Notice,AppPortone
+from views import Index,adminuser,User,AppPort,video,Film,Big_V,Author,Classify,Login,Notice,AppPortone,Sinatv
 import config
 
 
@@ -62,6 +62,20 @@ class Application(tornado.web.Application):
             (r'/film_video_delete/(\d+)', Film.Film_video_delete),   # 删除电影视频
             (r"/film_slideshow/(\d+)", Film.Film_slideshow),  # 电影轮播图上传
             (r'/film_slideshow_delete/(\d+)', Film.Film_slideshow_delete),   # 删除电影轮播图
+
+ 
+
+            (r"/sinatv_list", Sinatv.Sinatv_list),                       # 直播管理
+            (r"/sinatv_add", Sinatv.Sinatv_add),                         # 添加直播
+            (r'/sinatv_del/(\d+)', Sinatv.Sinatv_del),                   # 删除直播
+            (r'/sinatv_edit/(\d+)', Sinatv.Sinatv_edit),                 # 修改直播
+            (r'/sinatv_audit/(\d+)', Sinatv.Sinatv_audit),               # 直播审核  
+            (r'/sinatv_block/(\d+)', Sinatv.Sinatv_block),               # 直播下架   
+            (r'/sinatv_details/(\d+)', Sinatv.Sinatv_details),           # 直播详情
+            (r'/sinatv_video/(\d+)', Sinatv.Sinatv_video),               # 上传直播视频
+            (r'/sinatv_video_delete/(\d+)', Sinatv.Sinatv_video_delete), # 删除直播视频
+            (r"/sinatv_picture/(\d+)", Sinatv.Sinatv_picture),           # 上传直播图片
+            (r'/sinatv_picture_delete/(\d+)', Sinatv.Sinatv_picture_delete),   # 删除直播图片
 
  
 
