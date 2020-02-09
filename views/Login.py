@@ -380,6 +380,7 @@ class Lmicro_video(BaseHandler):
         micro_video = sess.query(Micro_video).filter_by(id=id).first()
         info = self.get_argument('info')
         url = QINIUURLNAME+info
+        time = gitBideoTime(url)
         if time < 300:
             try:
                 micro_video.video_url = url
