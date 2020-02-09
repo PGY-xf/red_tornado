@@ -136,25 +136,6 @@ print()
 # img_after.save('target.jpg')
 
 
-
-
-# #########  视频logo
-# import moviepy.editor as mp
-
-# video = mp.VideoFileClip("./tesst.mp4")
- 
-# logo = (mp.ImageClip("./央视融媒.jpg")
-#         .set_duration(video.duration) # 水印持续时间
-#         .resize(height=50) # 水印的高度，会等比缩放
-#         .margin(right=8, top=8, opacity=1) # 水印边距和透明度
-#         .set_pos(("right","top"))) # 水印的位置
-
-# final = mp.CompositeVideoClip([video, logo])
-# # mp4文件默认用libx264编码， 比特率单位bps
-# final.write_videofile("test.mp4",audio=False) 
-
-
-
 # from moviepy.editor import VideoFileClip
 
 # heve_filename = './tesst.mp4'
@@ -164,7 +145,109 @@ print()
 #     audioclip = clip1.audio                ## 视频声音
 #     clip2 = VideoFileClip(no_filename)
 #     clip2 = clip2.set_audio(audioclip)
-#     clip2.write_videofile('test.mp4')
+#     clip2.write_videofile('tests.mp4')
 
-# setaudio(heve_filename,no_filename)
 
+# #########  视频logo
+# import moviepy.editor as mp
+# def abc(videos,img):
+#     video = mp.VideoFileClip(videos)
+    
+#     logo = (mp.ImageClip(img)
+#             .set_duration(video.duration) # 水印持续时间
+#             .resize(height=80) # 水印的高度，会等比缩放
+#             .margin(right=0, top=0, opacity=0) # 水印边距和透明度
+#             .set_pos(("right","top"))) # 水印的位置   ##left左  right右   top上
+
+#     final = mp.CompositeVideoClip([video, logo])
+#     # mp4文件默认用libx264编码， 比特率单位bps
+#     final.write_videofile("test.mp4",audio=False) 
+#     setaudio(videos,'test.mp4')
+
+# abc('./tesst.mp4','./央视融媒.jpg')
+
+
+
+# #w微信登录获取code码
+# class WXlogin(BaseHandler):
+#     def get(self, *args, **kwargs):
+#         data = {}
+#         appid = 'dads'
+#         secret = 'asda'
+#         url = 'https://api.weixin.qq.com/sns/oauth2/access_token'
+#         params = {
+#             'appid':appid,
+#             'secret':secret,
+#             'code': 'code',
+#             'grant_type': 'authorization_code'
+#         }
+#         response = requests.get(url,params=params)
+#         data['code'] = 200
+#         data['url'] = response.url
+#         self.write(json.dumps(data))
+
+
+
+#微信登录测试
+# class Wxlogin(BaseHandler):
+#     appid = ''
+#     appsecret = ''
+#     code = ''
+#     state = ''
+#     def get_info(self):
+#         try:
+#             self.code = request.get('code')
+#             self.state = request.get("state")
+#         except:
+#             self.write('获取错误')
+#         try:
+#             url = 'https://api.weixin.qq.com/sns/oauth2/access_token'
+#             params = {
+#                 'appid': self.appid,
+#                 'secret': self.appsecret,
+#                 'code': self.code,
+#                 'grant_type': 'authorization_code'
+#             }
+#             res = requests.get(url, params=params).json()
+#             print(res)
+#             # access_token = res["access_token"]  # 只是呈现给大家看,可以删除这行
+#             # openid = res["openid"]  # 只是呈现给大家看,可以删除这行
+#         except:
+#             self.write('获取错误')
+#         try:
+#             user_info_url = 'https://api.weixin.qq.com/sns/userinfo'
+#             params = {
+#                 'access_token': res["access_token"],
+#                 'openid': res["openid"],
+#             }
+#             res = requests.get(user_info_url, params=params).json()
+#             print(res)
+#         except:
+#             self.write('获取错误')
+
+
+
+# from weixin.client import WeixinAPI
+# APP_ID = 'your app id'
+# APP_SECRET = 'your app secret'
+# REDIRECT_URI = 'http://your_domain.com/redirect_uri' # 这里一定要注意 地址一定要加上http/https
+# scope = ("snsapi_login", )
+# api = WeixinAPI(appid=APP_ID,
+#  app_secret=APP_SECRET,
+#  redirect_uri=REDIRECT_URI)
+# authorize_url = api.get_authorize_url(scope=scope)
+
+# access_token = api.exchange_code_for_access_token(code=code)
+
+
+
+# api = WeixinAPI(appid=APP_ID,
+#  app_secret=APP_SECRET,
+#  redirect_uri=REDIRECT_URI)
+# # 刷新或续期access_token使用
+# refresh_token = api.exchange_refresh_token_for_access_token(refresh_token=auth_info['refresh_token'])
+# api = WeixinAPI(access_token=auth_info['access_token'])
+# # 获取用户个人信息
+# user = api.user(openid=auth_info['openid'])
+# # 检查access_token有效性
+# v = api.validate_token(openid=auth_info['openid'])
