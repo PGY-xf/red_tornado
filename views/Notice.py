@@ -391,7 +391,7 @@ class Feidemo_list(BaseHandler):
             item["id"] = info.id
             item["title"]=info.title
             item["imgsrc"]=info.imgsrc
-            item["jumplink"]=info.jumplink
+            item["jumplink"]=info.jumplink.replace('../../pages/friend-link/common-link?weburl=','')
             item["place"]=info.place
             item["types"]=info.types
             item["create_time"]=info.create_time

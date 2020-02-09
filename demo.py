@@ -188,10 +188,54 @@ print()
 
 
 
-#微信登录测试
+# (r"/wxlogin", Index.WXlogin), 
+
+# import requests
+
+# class WXlogin(BaseHandler):
+#     def get(self, *args, **kwargs):
+#         data = {}
+#         appid = 'wx0b67ef4186f1cc34'
+#         secret = '3d9c16586ddb85ccc75cc7b579a4c676'
+#         url = 'https://api.weixin.qq.com/sns/oauth2/access_token'
+#         params = {
+#             'appid':appid,
+#             'secret':secret,
+#             'code': 'code',
+#             'grant_type': 'authorization_code'
+#         }
+#         response = requests.get(url,params=params)
+#         data['code'] = 200
+#         data['url'] = response.url
+#         self.write(json.dumps(data))
+
+# import requests
+
+# class WXlogin(BaseHandler):
+#     def get(self, *args, **kwargs):
+#         data = {}
+#         appid = 'wx0b67ef4186f1cc34'
+#         secret = '3d9c16586ddb85ccc75cc7b579a4c676'
+#         code = ''
+#         url = 'https://api.weixin.qq.com/sns/oauth2/access_token'
+#         params = {
+#             'appid':appid,
+#             'secret':secret,
+#             'code': code,
+#             'grant_type': 'authorization_code'
+#         }
+#         response = requests.get(url,params=params)
+#         data['code'] = 200
+#         data['url'] = response.url
+#         self.write(json.dumps(data))
+
+
+
+
+# 微信登录测试
 # class Wxlogin(BaseHandler):
-#     appid = ''
-#     appsecret = ''
+#     appid = 'wx0b67ef4186f1cc34'
+#     appsecret = '3d9c16586ddb85ccc75cc7b579a4c676'
 #     code = ''
 #     state = ''
 #     def get_info(self):
